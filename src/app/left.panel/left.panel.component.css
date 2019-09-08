@@ -1,7 +1,6 @@
 .left-panel {
     margin: 10px;
-    width: 400px;
-    height: 1100px;
+    height: 100vh;
     display:flex;
     flex-direction: column;
     background-color: #FEFEFE;
@@ -64,9 +63,4 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-}
-
-.contacts {
-    width: 100%;
-    height: 7vh;
 }
