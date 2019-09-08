@@ -1,0 +1,72 @@
+.left-panel {
+    margin: 10px;
+    width: 400px;
+    height: 1100px;
+    display:flex;
+    flex-direction: column;
+    background-color: #FEFEFE;
+    border-radius: 6px;
+    box-shadow: -9px 8px 17px -9px rgba(0,0,0,0.75);
+}
+
+.user-panel {
+    width: 100%;
+    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    background-color: #F1F1F1;
+    border-radius: 6px 0 0 0;
+    
+}
+
+.user-app-logo {
+    height: 100%;
+    width: 25%;
+}
+
+.user-app-logo-img {
+    height: 70%;
+    margin: 10px 0px 10px 20px;
+    border-radius: 25px;
+    border-color: white 1px;
+}
+
+.user-app-burger {
+    width: 75%;
+}
+
+.user-app-burger-img {
+    float: right;
+    height:50%;
+    margin: 15px 25px 15px 0px;
+    filter: invert(50%) sepia(6%) saturate(84%) hue-rotate(97deg) brightness(95%) contrast(86%);
+    opacity: 0.5;
+}
+
+.search-contact-container{
+    width:100%;
+    height: 7vh;
+    background-color: #F8F8F8;
+}
+
+.search-contact-inputfield{
+    border: none;
+    border-radius: 7px;
+    width: 85%;
+    height: 70%;
+    margin: 8px 30px 8px 30px;
+    padding-left: 25px;
+}
+
+.rooms-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.contacts {
+    width: 100%;
+    height: 7vh;
+}
