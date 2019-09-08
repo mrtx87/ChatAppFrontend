@@ -2,7 +2,7 @@
     width:100vw;
     padding: 0;
     display: grid;
-    grid-template-rows: 90vh 10vh;
+    grid-template-rows: 95vh 5vh;
     grid-template-columns: 20% 80%;
 }
 
