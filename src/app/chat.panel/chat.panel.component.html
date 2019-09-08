@@ -1,5 +1,19 @@
-
-<!-- REGISTER FORM -->
-
-
-<!-- REGISTER FORM -->
+<div style="display:flex; flex-direction:column;">
+    <div style="width:100%;">
+        <!-- REGISTER FORM -->
+        <div class="register-form">
+            <label>Register</label>
+            <div class="register-row">
+                <input type="text" [(ngModel)]="registerUsername">
+            </div>
+            <div class="register-row">
+                <input type="password" [(ngModel)]="registerPassword">
+            </div>
+            <div class="send-btn" (click)="requestRegistration()">
+                Senden
+            </div>
+        </div>
+        <!-- REGISTER FORM -->
+    </div>
+    <app-displaychat></app-displaychat>
+</div>
