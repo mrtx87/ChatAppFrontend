@@ -8,6 +8,9 @@ import { RoomsComponent } from './rooms/rooms.component';
 import { DisplaychatComponent } from './displaychat/displaychat.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ChatService } from './chat.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,11 @@ import { ProfileComponent } from './profile/profile.component';
     ProfileComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule,
+    FormsModule      
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
