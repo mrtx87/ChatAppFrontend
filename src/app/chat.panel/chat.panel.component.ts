@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-chat.panel',
+  selector: 'app-chat-panel',
   templateUrl: './chat.panel.component.html',
   styleUrls: ['./chat.panel.component.css']
 })
-export class Chat.PanelComponent implements OnInit {
+export class ChatPanelComponent implements OnInit {
 
   constructor() { }
 
