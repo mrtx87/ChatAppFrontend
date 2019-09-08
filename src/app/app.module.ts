@@ -11,6 +11,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ChatService } from './chat.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { LoginregisterComponent } from './loginregister/loginregister.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormsModule } from '@angular/forms';
     RoomsComponent,
     DisplaychatComponent,
     ContactsComponent,
-    ProfileComponent
+    ProfileComponent,
+    LoginregisterComponent
   ],
   imports: [
     BrowserModule,

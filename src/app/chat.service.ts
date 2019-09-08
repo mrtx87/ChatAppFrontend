@@ -9,6 +9,15 @@ export class ChatService {
 
   private registerUsername_ : string;
   private registerPassword_ : string;
+
+  private availableRooms_ : string[] = ['Goran', 'Ralf', 'Patrick'] //MOCK
+
+  get availableRooms() : string[] {
+    return this.availableRooms_;
+  }
+  set availableRooms(val : string[]){
+    this.availableRooms_ = val;
+  }
   
   get registerUsername() : string {
     return this.registerUsername_;

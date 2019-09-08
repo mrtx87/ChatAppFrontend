@@ -1,0 +1,21 @@
+<div *ngIf="!isLoggedIn" class="login-register-container">
+        <!-- REGISTER FORM -->
+        <div class="register-form">
+            <h3 style="color:white;">Register?</h3>
+            <div class="register-row">
+                <label >Benutzername:</label>
+                <input type="text" [(ngModel)]="registerUsername">
+            </div>
+            <div class="register-row">
+                <label >Passwort:</label>
+                <input type="password" [(ngModel)]="registerPassword">
+                <label >wiederhole Passwort:</label>
+                <input type="password" [(ngModel)]="registerPassword2">
+    
+            </div>
+            <div class="send-btn" (click)="requestRegistration()">
+                Senden
+            </div>
+        </div>
+        <!-- REGISTER FORM -->
+    </div>

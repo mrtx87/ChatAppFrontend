@@ -1,5 +1,6 @@
 .container {
-    width:100vw;
+    position: relative;
+    width: 100vw;
     padding: 0;
     display: grid;
     grid-template-rows: 95vh 5vh;
@@ -7,22 +8,29 @@
 }
 
 .left-panel-container {
-    grid-column-start:1; 
-    grid-column-end:2; 
-    grid-row-start:1; 
-    grid-row-end:2; 
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    border-right: 1px solid #F1F1F1;
+    ;
 }
 
 .left-chat-container {
-    grid-column-start:2; 
-    grid-column-end:3; 
-    grid-row-start:1; 
-    grid-row-end:2; 
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
 }
 
 .footer-container {
-    grid-column-start:1; 
-    grid-column-end:3; 
-    grid-row-start:2; 
-    grid-row-end:3; 
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    display: flex;
+    align-items: center;
+    justify-items: flex-start;
+    justify-content: space-evenly;
+    padding: 5px;
 }

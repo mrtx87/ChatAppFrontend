@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-rooms',
@@ -7,7 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomsComponent implements OnInit {
 
-  constructor() { }
+  
+  get availableRooms() : string[] {
+    return this.chatService.availableRooms;
+  }
+  set availableRooms(val : string[]){
+    this.chatService.availableRooms = val;
+  }
+  
+
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
   }

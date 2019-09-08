@@ -1,0 +1,42 @@
+.login-register-container {
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    align-items: center;
+    border: solid 1px black;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.452);
+    border-radius: 5px;
+}
+
+.register-form label {
+    color: white;
+}
+
+.register-row {
+    width: 90%;
+}
+
+.register-row input {
+    width: 100%;
+    margin-bottom: 10px;
+    height: 3vh;
+}
+
+.send-btn {
+    padding: 2px 5px;
+    border: solid 1px black;
+    color: white;
+}
