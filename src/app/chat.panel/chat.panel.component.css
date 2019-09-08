@@ -1,4 +1,3 @@
-
 .senden-container {
     width: 100%;
     height: 5vh;
@@ -6,6 +5,32 @@
     padding: 5px;
 }
 
-.senden-container input{
+.senden-container input {
     width: 100%;
+}
+
+.chat-panel-header {
+    width: 100%;
+    height: 7vh;
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.menu-img {
+    height:35px;
+    opacity: 0.5;
+}
+
+.magnifier-img {
+    height: 25px;
+    opacity: 0.5;
+}
+
+.menu-img:hover, .magnifier-img:hover  {
+    opacity: 1;
+}
+
+.menu-item-container {
+    padding: 10px;
 }
