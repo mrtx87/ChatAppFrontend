@@ -1,9 +1,10 @@
 .left-panel {
     height: 100vh;
-    display:flex;
+    display: flex;
     flex-direction: column;
     background-color: #FEFEFE;
     border-radius: 6px;
+    border-right: #DFDDDE solid 2px;
 }
 
 .user-panel {
@@ -24,7 +25,21 @@
     height: 70%;
     margin: 10px 0px 10px 20px;
     border-radius: 25px;
+    border:none;
+}
+
+.user-app-logo-img:hover {
+    height: 70%;
+    margin: 10px 0px 10px 20px;
+    border-radius: 25px;
     border: white solid 2px;
+}
+
+.user-app-logo-img:active {
+    height: 70%;
+    margin: 10px 0px 10px 20px;
+    border-radius: 25px;
+    border: white solid 4px;
 }
 
 .user-app-burger {
@@ -38,6 +53,15 @@
     filter: invert(50%) sepia(6%) saturate(84%) hue-rotate(97deg) brightness(95%) contrast(86%);
     opacity: 0.5;
 }
+
+.user-app-burger-img:hover {
+    opacity: 1;
+}
+
+.user-app-burger-img:active {
+    height: 45%;
+    margin: 16px 26px 15px 0px;
+} 
 
 .search-contact-container{
     width:100%;
