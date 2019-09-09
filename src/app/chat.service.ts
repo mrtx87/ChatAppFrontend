@@ -23,14 +23,21 @@ export class ChatService {
 
 
   //LOCAL USER PROPERTIES
-  localUser: User;
-  isLoggedIn_: boolean = false;
+  private localUser_: User;
+  private isLoggedIn_: boolean = false;
 
 
   //DEBUG MOCKS
 
   chatroom1: Chatroom = Chatroom.createRandom();
   private availableRooms_: Chatroom[] = [this.chatroom1] //MOCK
+
+  get localUser(): User {
+    return this.localUser_;
+  }
+  set localUser(val: User) {
+    this.localUser_ = val;
+  }
 
   get loginUsername(): string {
     return this.loginUsername_;

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../chat.service';
+import { User } from '../Entities/user';
 
 @Component({
   selector: 'app-left-panel',
@@ -7,7 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeftPanelComponent implements OnInit {
 
-  constructor() { }
+  get localUser(): User {
+    return this.chatService.localUser;
+  }
+  set localUser(val: User) {
+    this.chatService.localUser = val;
+  }
+
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
   }
