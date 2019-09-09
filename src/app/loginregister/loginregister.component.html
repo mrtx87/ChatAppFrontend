@@ -1,21 +1,52 @@
 <div *ngIf="!isLoggedIn" class="login-register-container">
-        <!-- REGISTER FORM -->
-        <div class="register-form">
-            <h3 style="color:white;">Register?</h3>
-            <div class="register-row">
-                <label >Benutzername:</label>
-                <input type="text" [(ngModel)]="registerUsername">
-            </div>
-            <div class="register-row">
-                <label >Passwort:</label>
-                <input type="password" [(ngModel)]="registerPassword">
-                <label >wiederhole Passwort:</label>
-                <input type="password" [(ngModel)]="registerPassword2">
-    
-            </div>
-            <div class="send-btn" (click)="requestRegistration()">
-                Senden
-            </div>
+
+    <!-- LOGIN FORM -->
+    <div *ngIf="!displayRegistration" class="login-form">
+        <h3 style="color:white;">Anmelden</h3>
+        <div class="register-row">
+            <label>Benutzername</label>
+            <input type="text" [(ngModel)]="loginUsername">
         </div>
-        <!-- REGISTER FORM -->
+        <div class="register-row">
+            <label>Passwort</label>
+            <input type="password" [(ngModel)]="loginPassword">
+        </div>
+
+        <div class="send-btn" (click)="requestLogin()">
+            Senden
+        </div>
+        <div style="color:white;"> Noch kein Account ? <a (click)="displayRegistration = true"> register now.</a>
+        </div>
     </div>
+
+    <!-- LOGIN FORM -->
+
+
+    <!-- REGISTER FORM -->
+    <div *ngIf="displayRegistration" class="register-form">
+        <h3 style="color:white;">Registration</h3>
+        <div class="register-row">
+            <label>Benutzername</label>
+            <input type="text" [(ngModel)]="registerUsername">
+        </div>
+        <div class="register-row">
+            <label>Passwort</label>
+            <input type="password" [(ngModel)]="registerPassword">
+            <label>wiederhole Passwort</label>
+            <input type="password" [(ngModel)]="registerPasswordRepeat">
+            <div [hidden]="registrationValid" style="color:red; font-size:11px;"> passwörter stimmen nicht überein
+            </div>
+
+        </div>
+        <div class="send-btn" (click)="requestRegistration()">
+            Senden
+        </div>
+
+        <div style="color:white;"> Bereits registriert? <a (click)="displayRegistration = false"> Hier anmelden.</a></div>
+
+    </div>
+
+
+    <!-- <div [hidden] ="!isRegistering"> <h2>registering your account...</h2></div> -->
+    <!-- REGISTER FORM -->
+</div>

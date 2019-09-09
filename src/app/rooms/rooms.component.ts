@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
+import { Chatroom } from '../Entities/chatroom';
 
 @Component({
   selector: 'app-rooms',
@@ -9,10 +10,10 @@ import { ChatService } from '../chat.service';
 export class RoomsComponent implements OnInit {
 
   
-  get availableRooms() : string[] {
+  get availableRooms() : Chatroom[] {
     return this.chatService.availableRooms;
   }
-  set availableRooms(val : string[]){
+  set availableRooms(val : Chatroom[]){
     this.chatService.availableRooms = val;
   }
   

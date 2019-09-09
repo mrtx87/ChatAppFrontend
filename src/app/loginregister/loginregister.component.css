@@ -13,7 +13,7 @@
 .register-form {
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 250px;
     align-items: center;
     border: solid 1px black;
     padding: 5px;
@@ -21,7 +21,7 @@
     border-radius: 5px;
 }
 
-.register-form label {
+.register-form label, .login-form label {
     color: white;
 }
 
@@ -39,4 +39,16 @@
     padding: 2px 5px;
     border: solid 1px black;
     color: white;
+}
+
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    align-items: center;
+    border: solid 1px black;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.452);
+    border-radius: 5px;
 }
