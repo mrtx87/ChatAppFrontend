@@ -11,6 +11,7 @@ export class ChatPanelComponent implements OnInit {
   constructor(private chatService : ChatService) { }
 
   ngOnInit() {
+
   }
 
 }

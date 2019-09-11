@@ -12,6 +12,7 @@ import { ChatService } from './chat.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LoginregisterComponent } from './loginregister/loginregister.component';
+import { AdduserComponent } from './adduser/adduser.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LoginregisterComponent } from './loginregister/loginregister.component'
     DisplaychatComponent,
     ContactsComponent,
     ProfileComponent,
-    LoginregisterComponent
+    LoginregisterComponent,
+    AdduserComponent
   ],
   imports: [
     BrowserModule,

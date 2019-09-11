@@ -26,7 +26,6 @@ export class ChatService {
   private localUser_: User;
   private isLoggedIn_: boolean = false;
 
-
   //DEBUG MOCKS
 
   chatroom1: Chatroom = Chatroom.createRandom();
