@@ -109,6 +109,24 @@
     border-bottom: 1px solid #F1F1F1;
 }
 
+.create-room-icon-container{
+    display: none;
+}
+
+.create-room-icon-container:hover .create-room-icon{
+    height: 33px;
+    width: 33px;
+}
+
 .new-contact-row:hover{
     background-color: #F1F1F1;
+}
+
+.new-contact-row:hover .create-room-icon-container{
+    display: flex;
+}
+
+.create-room-icon{
+    height: 30px;
+    width: 30px;
 }
