@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ChatService } from './chat.service';
+import { Constants } from './constants';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +9,11 @@ import { ChatService } from './chat.service';
 })
 export class AppComponent {
 
+  public currentDisplayedLeftPanel : string;
 
-  constructor(private chatService : ChatService) {
-
+  constructor(private chatService : ChatService, private constants : Constants) {
+    chatService.registerAppComponent(this);
+    this.currentDisplayedLeftPanel = constants.LEFT_PANEL;
   }
 
 

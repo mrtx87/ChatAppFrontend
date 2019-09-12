@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Constants } from './constants';
 import { Chatroom } from './Entities/chatroom';
 import { User } from './Entities/user';
+import { AppComponent } from './app.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-
-
+  
+  
   // LOGIN AND REGISTRATION PROPERTIES
   private registerUsername_: string;
   private registerPassword_: string;
@@ -17,20 +18,48 @@ export class ChatService {
 
   private loginUsername_: string;
   private loginPassword_ : string;
-
+  private searchNewContactInputText_ : string;
+  private newContactsList_ : User[];
   
-
-
-
+  
+  public appComponent : AppComponent;
+  public registerAppComponent(appComponent : AppComponent){
+    this.appComponent = appComponent;
+  }
+  
+  
+  
   //LOCAL USER PROPERTIES
   private localUser_: User;
   private isLoggedIn_: boolean = false;
-
+  
   //DEBUG MOCKS
-
+  
   chatroom1: Chatroom = Chatroom.createRandom();
   private availableRooms_: Chatroom[] = [this.chatroom1] //MOCK
+  
 
+
+  triggerNewContactSearch() {
+    this.http.get(this.constants.BASE_URL+"/userId/1337/users/"+this.searchNewContactInputText).subscribe(response => {
+      this.newContactsList = <User[]> response;
+    })
+  }
+
+  get newContactsList() : User[]{
+    return this.newContactsList_;
+  }
+  set newContactsList(val : User[]){
+    this.newContactsList_ = val;
+  }
+  
+  get searchNewContactInputText(): string{
+    return this.searchNewContactInputText_;
+  }
+  set searchNewContactInputText(val: string){
+    this.searchNewContactInputText_ = val;
+  }
+  
   get localUser(): User {
     return this.localUser_;
   }
@@ -92,7 +121,7 @@ export class ChatService {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     this.http
-      .post(Constants.BASE_URL + "/register", { username: this.registerUsername, password: this.registerPassword }, { headers })
+      .post(this.constants.BASE_URL + "/register", { username: this.registerUsername, password: this.registerPassword }, { headers })
       .subscribe(response => {
         this.localUser = <User>response;
         this.isLoggedIn = true;
@@ -104,7 +133,7 @@ export class ChatService {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     this.http
-      .post(Constants.BASE_URL + "/login", { username: this.loginUsername, password: this.loginPassword }, { headers })
+      .post(this.constants.BASE_URL + "/login", { username: this.loginUsername, password: this.loginPassword }, { headers })
       .subscribe(response => {
         this.localUser = <User>response;
         this.isLoggedIn = true;
@@ -112,5 +141,5 @@ export class ChatService {
       });  }
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private constants: Constants) { }
 }

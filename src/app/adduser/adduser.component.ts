@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../chat.service';
+import { User } from '../Entities/user';
 
 @Component({
   selector: 'app-adduser',
@@ -7,7 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdduserComponent implements OnInit {
 
-  constructor() { }
+
+  get searchNewContactInputText(): string{
+    return this.chatService.searchNewContactInputText;
+  }
+  set searchNewContactInputText(val: string){
+    this.chatService.searchNewContactInputText = val;
+  }
+
+  get newContactsList() : User[]{
+    return this.chatService.newContactsList;
+  }
+  set newContactsList(val : User[]){
+    this.chatService.newContactsList = val;
+  }
+
+  constructor(private chatService : ChatService) { }
+
+  triggerNewContactSearch(){
+    this.chatService.triggerNewContactSearch();
+  }
 
   ngOnInit() {
   }

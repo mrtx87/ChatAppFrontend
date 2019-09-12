@@ -1,1 +1,16 @@
-<p>adduser works!</p>
+<div class="left-panel">
+        <div class="user-panel">
+        
+        </div>
+        <div class="search-rooms-container">
+            <div class="search-contact-container">
+                <input [(ngModel)]="searchNewContactInputText" class="search-contact-inputfield" type="text" placeholder="search new contact" (keyup.enter)="triggerNewContactSearch()">
+            </div>
+            <div class="rooms-container">
+                <div *ngFor="let contact of newContactsList">
+                    Name: {{contact?.name}}
+                    Info: {{contact?.info}}
+                </div>
+            </div>
+        </div>
+    </div>
