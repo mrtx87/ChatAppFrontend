@@ -43,16 +43,26 @@
     border: white solid 4px; */
 }
 .user-name {
-    width: 50%;
+    width: 40%;
     overflow: hidden;
+}
+
+.user-list {
+    width: 10%;
+}
+
+.user-list-img {
+    height: 25px;
+    opacity: 0.5;
 }
 
 .new-user-logo {
     width: 10%;
+    padding: 10px;
 }
 
 .new-user-logo-img {
-    height: 35px;
+    height: 25px;
     opacity: 0.5;
 }
 
@@ -61,7 +71,7 @@
 }
 
 .user-app-burger {
-    width: 15%; 
+    width: 10%; 
     padding: 10px;
 }
 
