@@ -31,7 +31,7 @@ export class ChatService {
   
   //LOCAL USER PROPERTIES
   private localUser_: User;
-  private isLoggedIn_: boolean = false;
+  private isLoggedIn_: boolean = true;
   
   //DEBUG MOCKS
   

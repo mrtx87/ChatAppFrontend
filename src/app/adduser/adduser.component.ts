@@ -9,7 +9,6 @@ import { User } from '../Entities/user';
 })
 export class AdduserComponent implements OnInit {
 
-
   get searchNewContactInputText(): string{
     return this.chatService.searchNewContactInputText;
   }
@@ -32,5 +31,9 @@ export class AdduserComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  change(event:any) {
+    console.log(event.target.files);
+    }
 
 }
