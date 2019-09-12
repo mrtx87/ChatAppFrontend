@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { User } from '../Entities/user';
+import { Driver } from 'selenium-webdriver/opera';
 
 @Component({
   selector: 'app-adduser',
@@ -8,7 +9,6 @@ import { User } from '../Entities/user';
   styleUrls: ['./adduser.component.css']
 })
 export class AdduserComponent implements OnInit {
-
 
   get searchNewContactInputText(): string{
     return this.chatService.searchNewContactInputText;
@@ -27,10 +27,14 @@ export class AdduserComponent implements OnInit {
   constructor(private chatService : ChatService) { }
 
   triggerNewContactSearch(){
-    this.chatService.triggerNewContactSearch();
+      this.chatService.triggerNewContactSearch();
   }
 
   ngOnInit() {
   }
+
+  change(event:any) {
+    console.log(event.target.files);
+    }
 
 }

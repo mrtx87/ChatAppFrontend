@@ -1,16 +1,22 @@
 <div class="left-panel">
-        <div class="user-panel">
-        
+    <div class="user-panel">
+
+    </div>
+    <div class="search-rooms-container">
+        <div class="search-contact-container">
+            <!-- <input type="file"  multiple="multiple" (change)="change($event)"> -->
+            <input [(ngModel)]="searchNewContactInputText" class="search-contact-inputfield" type="text"
+                placeholder="search new contact" (keyup.enter)="triggerNewContactSearch()">
         </div>
-        <div class="search-rooms-container">
-            <div class="search-contact-container">
-                <input [(ngModel)]="searchNewContactInputText" class="search-contact-inputfield" type="text" placeholder="search new contact" (keyup.enter)="triggerNewContactSearch()">
-            </div>
-            <div class="rooms-container">
-                <div *ngFor="let contact of newContactsList">
-                    Name: {{contact?.name}}
-                    Info: {{contact?.info}}
+        <div class="rooms-container">
+            <div *ngFor="let contact of newContactsList" class="new-contact-row">
+                <div>
+                    <img src="assets/testicon.png" class="new-contact-icon">
+                </div>
+                <div class="new-contact-text-container">
+                    {{contact?.name}}
                 </div>
             </div>
         </div>
     </div>
+</div>

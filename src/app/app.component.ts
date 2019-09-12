@@ -11,6 +11,8 @@ export class AppComponent {
 
   public currentDisplayedLeftPanel : string;
 
+
+  
   constructor(private chatService : ChatService, private constants : Constants) {
     chatService.registerAppComponent(this);
     this.currentDisplayedLeftPanel = constants.LEFT_PANEL;
