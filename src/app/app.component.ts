@@ -15,7 +15,4 @@ export class AppComponent {
     chatService.registerAppComponent(this);
     this.currentDisplayedLeftPanel = constants.LEFT_PANEL;
   }
-
-
-
 }

@@ -1,13 +1,13 @@
 <div *ngIf="!isLoggedIn" class="login-register-container">
 
     <!-- LOGIN FORM -->
-    <div *ngIf="!displayRegistration" class="login-form">
+    <div *ngIf="!displayRegistration" class="login-form" >
         <h3 style="color:white;">Anmelden</h3>
         <div class="register-row">
             <label>Benutzername</label>
             <input type="text" [(ngModel)]="loginUsername">
         </div>
-        <div class="register-row">
+        <div class="register-row" (keyup.enter)="requestLogin()">
             <label>Passwort</label>
             <input type="password" [(ngModel)]="loginPassword">
         </div>
