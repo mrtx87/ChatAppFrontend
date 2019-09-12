@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { User } from '../Entities/user';
+import { Driver } from 'selenium-webdriver/opera';
 
 @Component({
   selector: 'app-adduser',
@@ -26,7 +27,7 @@ export class AdduserComponent implements OnInit {
   constructor(private chatService : ChatService) { }
 
   triggerNewContactSearch(){
-    this.chatService.triggerNewContactSearch();
+      this.chatService.triggerNewContactSearch();
   }
 
   ngOnInit() {

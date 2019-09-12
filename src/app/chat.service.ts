@@ -9,57 +9,61 @@ import { AppComponent } from './app.component';
   providedIn: 'root'
 })
 export class ChatService {
-  
-  
+
+
   // LOGIN AND REGISTRATION PROPERTIES
   private registerUsername_: string;
   private registerPassword_: string;
   private registerPasswordRepeat_: string
 
   private loginUsername_: string;
-  private loginPassword_ : string;
-  private searchNewContactInputText_ : string;
-  private newContactsList_ : User[];
-  
-  
-  public appComponent : AppComponent;
-  public registerAppComponent(appComponent : AppComponent){
+  private loginPassword_: string;
+  private searchNewContactInputText_: string;
+  private newContactsList_: User[];
+
+
+  public appComponent: AppComponent;
+  public registerAppComponent(appComponent: AppComponent) {
     this.appComponent = appComponent;
   }
-  
-  
-  
+
+
+
   //LOCAL USER PROPERTIES
   private localUser_: User;
   private isLoggedIn_: boolean = true;
-  
+
   //DEBUG MOCKS
-  
+
   chatroom1: Chatroom = Chatroom.createRandom();
   private availableRooms_: Chatroom[] = [this.chatroom1] //MOCK
-  
+
 
 
   triggerNewContactSearch() {
-    this.http.get(this.constants.BASE_URL+"/userId/1337/users/"+this.searchNewContactInputText).subscribe(response => {
-      this.newContactsList = <User[]> response;
-    })
+    if (this.searchNewContactInputText.length >= 3) {
+      this.http.get(this.constants.BASE_URL + "/userId/1337/users/" + this.searchNewContactInputText).subscribe(response => {
+        this.newContactsList = <User[]>response;
+      })
+    } else{
+      this.newContactsList = null;
+    }
   }
 
-  get newContactsList() : User[]{
+  get newContactsList(): User[] {
     return this.newContactsList_;
   }
-  set newContactsList(val : User[]){
+  set newContactsList(val: User[]) {
     this.newContactsList_ = val;
   }
-  
-  get searchNewContactInputText(): string{
+
+  get searchNewContactInputText(): string {
     return this.searchNewContactInputText_;
   }
-  set searchNewContactInputText(val: string){
+  set searchNewContactInputText(val: string) {
     this.searchNewContactInputText_ = val;
   }
-  
+
   get localUser(): User {
     return this.localUser_;
   }
@@ -138,7 +142,8 @@ export class ChatService {
         this.localUser = <User>response;
         this.isLoggedIn = true;
         console.log(this.localUser);
-      });  }
+      });
+  }
 
 
   constructor(private http: HttpClient, private constants: Constants) { }
