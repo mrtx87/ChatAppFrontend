@@ -1,6 +1,6 @@
-<div style="width:100vw; height:100vh; display:flex; align-content: center; align-items: center; background-color: aquamarine;">
+<div style="width:100vw; height:100vh; display:flex; align-content: center; align-items: center; background-color: var(--main-background);">
     <div class="container">
-        <app-left-panel *ngIf="constants.LEFT_PANEL === currentDisplayedLeftPanel" class="left-panel-container"></app-left-panel>
+        <app-left-panel *ngIf="constants.DEFAULT_PANEL === currentDisplayedLeftPanel" class="left-panel-container"></app-left-panel>
         
         <app-adduser  *ngIf="constants.ADD_USER_PANEL === currentDisplayedLeftPanel" class="adduser-container">
                 {{currentDisplayedLeftPanel}}

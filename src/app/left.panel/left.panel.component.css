@@ -56,9 +56,9 @@
     opacity: 0.5;
 }
 
-.new-user-logo-img:hover {
+/* .new-user-logo-img:hover {
     opacity: 1;
-}
+} */
 
 .user-app-burger {
     width: 15%; 
@@ -70,9 +70,9 @@
     opacity: 0.5;
 }
 
-.user-app-burger-img:hover {
+/* .user-app-burger-img:hover {
     opacity: 1;
-}
+} */
 
 .search-contact-container{
     width:100%;

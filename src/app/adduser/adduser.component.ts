@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { User } from '../Entities/user';
 import { Driver } from 'selenium-webdriver/opera';
+import { Constants } from '../constants';
 
 @Component({
   selector: 'app-adduser',
@@ -24,7 +25,7 @@ export class AdduserComponent implements OnInit {
     this.chatService.newContactsList = val;
   }
 
-  constructor(private chatService : ChatService) { }
+  constructor(private chatService : ChatService, private constants:Constants) { }
 
   triggerNewContactSearch(){
       this.chatService.triggerNewContactSearch();
