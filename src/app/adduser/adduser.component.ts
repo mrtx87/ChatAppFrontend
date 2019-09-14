@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
-import { User } from '../Entities/user';
 import { Driver } from 'selenium-webdriver/opera';
 import { Constants } from '../constants';
+import { Contact } from '../Entities/contact';
 
 @Component({
   selector: 'app-adduser',
@@ -18,17 +18,17 @@ export class AdduserComponent implements OnInit {
     this.chatService.searchNewContactInputText = val;
   }
 
-  get newContactsList() : User[]{
+  get newContactsList() : Contact[]{
     return this.chatService.newContactsList;
   }
-  set newContactsList(val : User[]){
+  set newContactsList(val : Contact[]){
     this.chatService.newContactsList = val;
   }
 
   constructor(private chatService : ChatService, private constants:Constants) { }
 
   triggerNewContactSearch(){
-      this.chatService.triggerNewContactSearch();
+      this.chatService.sendNewContactSearch();
   }
 
   ngOnInit() {
@@ -37,5 +37,9 @@ export class AdduserComponent implements OnInit {
   change(event:any) {
     console.log(event.target.files);
     }
+
+  createRoom(contact:Contact){
+    this.chatService.sendCreateRoom(contact);
+  }
 
 }

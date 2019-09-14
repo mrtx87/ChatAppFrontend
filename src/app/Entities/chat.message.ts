@@ -3,7 +3,6 @@ export class ChatMessage {
 	roomId: string;
 
 	fromId: string;
-	toId: string;
 	body: string;
 	createdAt: Date;
 }

@@ -16,7 +16,7 @@
                 <div class="new-contact-text-container">
                     {{contact?.name}}
                 </div>
-                <div class="create-room-icon-container">
+                <div class="create-room-icon-container" (click)="createRoom(contact)">
                     <img src="assets/plus.svg" class="create-room-icon">
                 </div>
             </div>

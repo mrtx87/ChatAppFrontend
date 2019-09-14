@@ -1,7 +1,5 @@
-export class User {
-    id: string;
-    name: string;
+import { Contact } from './contact';
+
+export class User extends Contact{
     key: string;
-    info: string;
-    iconUrl: string;
 }

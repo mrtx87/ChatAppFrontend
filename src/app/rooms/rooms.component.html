@@ -1,3 +1,15 @@
 <div style="display:flex; flex-direction:column;">
-    <div *ngFor="let chatroom of availableRooms"> <img style="border-radius: 20px; width:40px;" src="{{chatroom.iconUrl}}"> {{chatroom.name}}</div>
+    
+    <!-- <div *ngFor="let chatRoom of availableRooms"> <img style="border-radius: 20px; width:40px;" src="{{chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/default-user-icon.svg'}}"> {{chatRoom.title}}</div>
+     -->
+    <div class="rooms-container">
+        <div *ngFor="let chatRoom of availableRooms" class="rooms-row">
+            <div>
+                <img style="border-radius: 20px; width:40px;" src="{{chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/default-user-icon.svg'}}">
+            </div>
+            <div class="room-text-container">
+                {{chatRoom?.title}}
+            </div>
+        </div>
+    </div>
 </div>
