@@ -12,7 +12,6 @@ import { TransferMessage } from './Entities/transfer.message';
 })
 export class ChatService {
 
-
   // LOGIN AND REGISTRATION PROPERTIES
   private registerUsername_: string;
   private registerPassword_: string;
@@ -22,6 +21,9 @@ export class ChatService {
   private loginPassword_: string = "123";
   private searchNewContactInputText_: string;
   private newContactsList_: Contact[];
+
+  //FORMS AND PAGE INPUTS
+  private chatInputText_ : string;
 
 
   public appComponent: AppComponent;
@@ -37,11 +39,23 @@ export class ChatService {
 
   //DEBUG MOCKS
 
-  private availableRooms_: ChatRoom[] = [] //MOCK
+  private availableRooms_: ChatRoom[] = []; 
+  private contacts_: Contact[] = [];
 
+  get chatInputText(): string {
+    return this.chatInputText_;
+  }
+  set chatInputText(val: string) {
+    this.chatInputText_ = val;
+  }
 
+  get contacts(): Contact[] {
+    return this.contacts_;
+  }
+  set contacts(val: Contact[]) {
+    this.contacts_ = val;
+  }
 
-  
   get newContactsList(): Contact[] {
     return this.newContactsList_;
   }
@@ -112,17 +126,6 @@ export class ChatService {
   set registerPasswordRepeat(val: string) {
     this.registerPasswordRepeat_ = val;
   }
-
-
-  private updateAvailableRooms(chatRooms: ChatRoom[]){
-
-    if (!this.availableRooms) {
-      this.availableRooms = [];
-    }
-    chatRooms.forEach(chatRoom => this.availableRooms.push(chatRoom));
-    this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
-  }
-
   
   sendNewContactSearch() {
     this.http.get(this.constants.BASE_URL + "/userId/1337/users/" + this.searchNewContactInputText).subscribe(response => {
@@ -159,10 +162,35 @@ export class ChatService {
 
   init() {
     this.sendRequestRoomList(this.localUser);
+    this.sendRequestContactsList(this.localUser);
+  }
+
+  private updateAvailableRooms(chatRooms: ChatRoom[]){
+    if (!this.availableRooms) {
+      this.availableRooms = [];
+    }
+    chatRooms.forEach(chatRoom => this.availableRooms.push(chatRoom));
+    this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+  }
+
+  private updateContacts(contacts: Contact[]){
+    if (!this.availableRooms) {
+      this.availableRooms = [];
+    }
+    contacts.forEach(contact => this.contacts.push(contact));
+    this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+  }
+
+
+  sendRequestContactsList(localUser: User) {
+    this.http.get(this.constants.BASE_URL + "/userId/"+localUser.id+"/contacts")
+    .subscribe(response => {
+      this.updateContacts(<Contact[]> response);
+    })
   }
 
   sendRequestRoomList(localUser: Contact) {
-    this.http.get(this.constants.BASE_URL + "/userId/"+this.localUser.id+"/rooms")
+    this.http.get(this.constants.BASE_URL + "/userId/"+localUser.id+"/rooms")
     .subscribe(response => {
       this.updateAvailableRooms(<ChatRoom[]> response);
     })
@@ -172,8 +200,6 @@ export class ChatService {
   /**
    * Post Get kapseln
    */
-
-
   sendCreateRoom(contact: Contact, title?: string) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
@@ -187,6 +213,10 @@ export class ChatService {
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]> [response]);
       });
+  }
+
+  sendChatMessage() {
+    throw new Error("Method not implemented.");
   }
 
   constructor(private http: HttpClient, private constants: Constants) { }

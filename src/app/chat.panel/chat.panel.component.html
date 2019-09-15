@@ -20,7 +20,7 @@
     <app-displaychat></app-displaychat>
     <div class="senden-container">
         <img src="assets/happiness.svg">
-        <input>
+        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText">
         <img src="assets/paper-plane.svg">
     </div>
 </div>

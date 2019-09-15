@@ -8,10 +8,21 @@ import { ChatService } from '../chat.service';
 })
 export class ChatPanelComponent implements OnInit {
 
+  get chatInputText(): string {
+    return this.chatService.chatInputText;
+  }
+  set chatInputText(val: string) {
+    this.chatService.chatInputText = val;
+  }
+
   constructor(private chatService : ChatService) { }
 
   ngOnInit() {
 
+  }
+
+  triggerSendChatMessage() {
+    this.chatService.sendChatMessage();
   }
 
 }
