@@ -33,7 +33,7 @@
             <label>Passwort</label>
             <input type="password" [(ngModel)]="registerPassword">
             <label>wiederhole Passwort</label>
-            <input type="password" [(ngModel)]="registerPasswordRepeat">
+            <input type="password" [(ngModel)]="registerPasswordRepeat" (keyup.enter)="requestRegistration()">
             <div [hidden]="registrationValid" style="color:red; font-size:11px;"> passwörter stimmen nicht überein
             </div>
 
