@@ -6,11 +6,19 @@ import { AppComponent } from './app.component';
 import { Contact } from './Entities/contact';
 import { User } from './Entities/user';
 import { TransferMessage } from './Entities/transfer.message';
+import * as SockJS from "sockjs-client";
+import * as Stomp from "stompjs";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
+
+  ws: SockJS;
+  private stompClient;
 
   // LOGIN AND REGISTRATION PROPERTIES
   private registerUsername_: string;
@@ -31,7 +39,8 @@ export class ChatService {
     this.appComponent = appComponent;
   }
 
-
+  //DISPLAY PARAMETERS
+  private displayedChatRoom_: ChatRoom;
 
   //LOCAL USER PROPERTIES
   private localUser_: User;
@@ -41,6 +50,13 @@ export class ChatService {
 
   private availableRooms_: ChatRoom[] = []; 
   private contacts_: Contact[] = [];
+
+  get displayedChatRoom(): ChatRoom{
+    return this.displayedChatRoom_;
+  }
+  set displayedChatRoom(val: ChatRoom){
+    this.displayedChatRoom_ = val;
+  }
 
   get chatInputText(): string {
     return this.chatInputText_;
@@ -126,6 +142,22 @@ export class ChatService {
   set registerPasswordRepeat(val: string) {
     this.registerPasswordRepeat_ = val;
   }
+
+  connect(){
+    this.ws = new SockJS("http://localhost:8080/socket");
+    this.stompClient = Stomp.over(this.ws);
+    let that = this;
+
+    this.stompClient.connect({}, function () {
+      that.stompClient.subscribe("/client/" + that.localUser.id, messageFromServer =>
+        that.handleServerResponse(messageFromServer)
+      );
+    });
+  }
+
+  handleServerResponse(transferMessage: TransferMessage){
+
+  }
   
   sendNewContactSearch() {
     this.http.get(this.constants.BASE_URL + "/userId/1337/users/" + this.searchNewContactInputText).subscribe(response => {
@@ -161,8 +193,9 @@ export class ChatService {
   }
 
   init() {
+    this.connect();
     this.sendRequestRoomList(this.localUser);
-    this.sendRequestContactsList(this.localUser);
+    //this.sendRequestContactsList(this.localUser);
   }
 
   private updateAvailableRooms(chatRooms: ChatRoom[]){
