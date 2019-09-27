@@ -9,6 +9,7 @@ import { TransferMessage } from './Entities/transfer.message';
 import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ChatMessage } from './Entities/chat.message';
 
 
 
@@ -46,10 +47,19 @@ export class ChatService {
   private localUser_: User;
   private isLoggedIn_: boolean = false;
 
+  private chatMessagesByRoom_: Map<string, ChatMessage[]> = new Map<string, ChatMessage[]>();
+
   //DEBUG MOCKS
 
   private availableRooms_: ChatRoom[] = []; 
   private contacts_: Contact[] = [];
+
+  get chatMessagesByRoom(): Map<string, ChatMessage[]>{
+    return this.chatMessagesByRoom_;
+  }
+  set chatMessagesByRoom(val: Map<string, ChatMessage[]>){
+    this.chatMessagesByRoom_ = val;
+  }
 
   get displayedChatRoom(): ChatRoom{
     return this.displayedChatRoom_;
@@ -160,7 +170,7 @@ export class ChatService {
   }
   
   sendNewContactSearch() {
-    this.http.get(this.constants.BASE_URL + "/userId/1337/users/" + this.searchNewContactInputText).subscribe(response => {
+    this.http.get(this.constants.BASE_URL + "/userId/"+this.localUser.id+"/users/" + this.searchNewContactInputText).subscribe(response => {
       this.newContactsList = <Contact[]>response;
     })
   }
@@ -204,6 +214,15 @@ export class ChatService {
     }
     chatRooms.forEach(chatRoom => this.availableRooms.push(chatRoom));
     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+
+    chatRooms.forEach(chatRoom => this.sendRequestChatMessages(chatRoom.id));
+  }
+
+  private sendRequestChatMessages(roomId: string){
+    this.http.get(this.constants.BASE_URL + "/roomId/"+roomId).subscribe(response => {
+      // TODO
+      this.chatMessagesByRoom.set(roomId, <ChatMessage[]> response);
+    })
   }
 
   private updateContacts(contacts: Contact[]){
@@ -245,6 +264,8 @@ export class ChatService {
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]> [response]);
+
+        this.displayedChatRoom = <ChatRoom> response;
       });
   }
 
