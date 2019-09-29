@@ -10,5 +10,6 @@ export class TransferMessage {
     chatRoom: ChatRoom;
     chatMessage: ChatMessage;
     contactsList: Contact[];
+    unseenChatMessageIds: string[];
 
 }

@@ -5,9 +5,13 @@ export class ChatRoom {
 
     id: string;
     title: string;
-    chatMessages: ChatMessage[];
     userIds: string[];
     iconUrl: string;
 
+
+    //ONLY FRONTEND
+    unseenChatMessageIds: string[];
+    unseenChatMessagesCount: string = '2';
+    
 
 }

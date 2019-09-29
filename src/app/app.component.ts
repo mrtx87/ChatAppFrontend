@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ChatService } from './chat.service';
 import { Constants } from './constants';
+import { User } from './Entities/user';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,18 @@ export class AppComponent {
 
   public currentDisplayedLeftPanel : string;
 
+  get localUser(): User {
+    return this.chatService.localUser;
+  }
+  set localUser(val: User) {
+    this.chatService.localUser = val;
+  }
 
+  @HostListener("window:beforeunload", ["$event"])
+  beforeunloadHandler($event: any) {
+    this.chatService.sendDisconnectMessage(this.localUser);
+    this.chatService.localCloseConnection();
+  }
   
   constructor(private chatService : ChatService, private constants : Constants) {
     chatService.registerAppComponent(this);

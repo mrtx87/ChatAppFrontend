@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { ChatRoom } from '../Entities/chat.room';
 import { ChatMessage } from '../Entities/chat.message';
+import { User } from '../Entities/user';
 
 @Component({
   selector: 'app-displaychat',
@@ -15,6 +16,14 @@ export class DisplaychatComponent implements OnInit {
   }
   set displayedChatRoom(val: ChatRoom) {
     this.chatService.displayedChatRoom = val;
+  }
+
+    
+  get localUser(): User {
+    return this.chatService.localUser;
+  }
+  set localUser(val: User) {
+    this.chatService.localUser = val;
   }
 
   get currentDisplayMessages(): ChatMessage[] {

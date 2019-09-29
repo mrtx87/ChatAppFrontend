@@ -5,4 +5,6 @@ export class ChatMessage {
 	fromId: string;
 	body: string;
 	createdAt: Date;
+	
+	seen: boolean;
 }

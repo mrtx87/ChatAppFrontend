@@ -3,6 +3,7 @@ import { ChatService } from '../chat.service';
 import { Driver } from 'selenium-webdriver/opera';
 import { Constants } from '../constants';
 import { Contact } from '../Entities/contact';
+import { User } from '../Entities/user';
 
 @Component({
   selector: 'app-adduser',
@@ -23,6 +24,13 @@ export class AdduserComponent implements OnInit {
   }
   set newContactsList(val : Contact[]){
     this.chatService.newContactsList = val;
+  }
+
+  get localUser(): User {
+    return this.chatService.localUser;
+  }
+  set localUser(val: User) {
+    this.chatService.localUser = val;
   }
 
   constructor(private chatService : ChatService, private constants:Constants) { }
