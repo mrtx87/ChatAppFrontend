@@ -3,9 +3,10 @@
         <app-left-panel *ngIf="constants.DEFAULT_PANEL === currentDisplayedLeftPanel" class="left-panel-container"></app-left-panel>
         
         <app-adduser  *ngIf="constants.ADD_USER_PANEL === currentDisplayedLeftPanel" class="adduser-container">
-                {{currentDisplayedLeftPanel}}
         </app-adduser>
         
+        <app-contacts  *ngIf="constants.DISPLAY_CONTACTS_PANEL === currentDisplayedLeftPanel" class="adduser-container">
+            </app-contacts>
         
         
         

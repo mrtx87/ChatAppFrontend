@@ -1,0 +1,32 @@
+.contacts-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.contacts-row{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    padding: 0px 5px;
+}
+
+.contact-text-container{
+    display: flex;
+    align-items: center;
+    width: 80%;
+    height: 55px;
+    margin-left: 5px;
+    border-bottom: 1px solid #F1F1F1;
+}
+
+.contacts-row:hover{
+    background-color: #F1F1F1;
+}
+
+.contacts-row:hover .create-contact-icon-container{
+    display: flex;
+}

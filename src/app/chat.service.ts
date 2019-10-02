@@ -10,6 +10,8 @@ import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ChatMessage } from './Entities/chat.message';
+import * as moment from 'moment';
+
 
 
 
@@ -233,7 +235,8 @@ export class ChatService {
 
   init() {
     this.connect();
-    this.sendRequestRoomList(this.localUser);
+    this.sendRequestContacts();
+    this.sendRequestRoomList();
     //this.sendRequestContactsList(this.localUser);
   }
 
@@ -249,15 +252,78 @@ export class ChatService {
 
   private sendRequestChatMessages(roomId: string) {
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId).subscribe(response => {
-      // TODO
-      this.chatMessagesByRoom.set(roomId, <ChatMessage[]>response);
-      this.availableRooms.get(roomId).unseenChatMessageIds = this.countUnseenMessages(roomId);
+      this.processRequestedChatMessages(roomId, <ChatMessage[]> response);
     })
   }
 
-  private countUnseenMessages(roomId: string): string[] {
+  ///data/userId/{userId}/contacts
+  private sendRequestContacts(){
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/contacts").subscribe(response => {
+      this.contacts = <Contact[]> response;
+    })
+  }
+
+  private processRequestedChatMessages(roomId: string, responseChatMessages: ChatMessage[]) {
+    if (!this.chatMessagesByRoom.has(roomId)) {
+      this.chatMessagesByRoom.set(roomId, []);
+    }
+    let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
+    this.availableRooms.get(roomId).unseenChatMessageIds = this.countUnseenMessages(responseChatMessages);
+
+    if(chatMessages.length == 0){
+      let initialDateMessage = new ChatMessage();
+      initialDateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
+      initialDateMessage.createdAt = responseChatMessages[0].createdAt;
+      chatMessages.push(initialDateMessage);
+    }
+    for(let message of responseChatMessages){
+      if(this.areDatesDifferent(message.createdAt, chatMessages[chatMessages.length-1].createdAt)){
+        let dateMessage = new ChatMessage();
+        dateMessage.seen = true;
+        dateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
+        dateMessage.createdAt = message.createdAt;
+        chatMessages.push(dateMessage);
+      }
+      chatMessages.push(message);
+    }
+  }
+  
+  private areDatesDifferent(previous: string, next: string): boolean {
+
+    let previousDate = moment(previous);
+    let nextDate = moment(next);
+
+// console.log("before: ")
+// console.log(before.dayOfYear());
+// console.log("after: ");
+// console.log(after.dayOfYear());
+// console.log("before < after");
+// console.log(before.dayOfYear() < after.dayOfYear());
+
+
+
+    if (nextDate.dayOfYear() != previousDate.dayOfYear() || nextDate.year() != previousDate.year()) {
+      return true;
+    }
+    return false;
+  }
+
+  private parseDatum(dateString: string){
+    let day: number = parseInt(dateString.substring(8, 10));
+    let month: number = parseInt(dateString.substring(5, 7));
+    let year: number = parseInt(dateString.substring(0, 4));
+
+    let date = new Datum(
+      parseInt(dateString.substring(8, 10)),
+      parseInt(dateString.substring(5, 7)),
+      parseInt(dateString.substring(0, 4))
+      );
+    return date;
+  }
+
+  private countUnseenMessages(chatMessages: ChatMessage[]): string[] {
     let unseenMessageIds: string[] = [];
-    for (let chatMessage of this.chatMessagesByRoom.get(roomId)) {
+    for (let chatMessage of chatMessages) {
       if (!chatMessage.seen) {
         unseenMessageIds.push(chatMessage.id);
       }
@@ -281,23 +347,23 @@ export class ChatService {
       })
   }
 
-  sendRequestRoomList(localUser: Contact) {
-    this.http.get(this.constants.BASE_URL + "/userId/" + localUser.id + "/rooms")
+  sendRequestRoomList() {
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>response);
       })
   }
 
-  sendUpdateSeenMessages(unseenChatMessageIds: string[]) {
+  sendUpdateUnseenMessages(unseenChatMessageIds: string[]) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
     transferMessage.unseenChatMessageIds = unseenChatMessageIds;
-    transferMessage.from = <Contact> this.localUser;
+    transferMessage.from = <Contact>this.localUser;
     this.http
       .post(this.constants.BASE_URL + "/update-unseen-messages", transferMessage, { headers })
       .subscribe(response => {
-          console.log()
+        console.log()
       });
   }
 
@@ -330,4 +396,17 @@ export class ChatService {
   }
 
   constructor(private http: HttpClient, private constants: Constants) { }
+}
+
+class Datum {
+  day: number;
+  month: number;
+  year: number;
+
+  constructor(day: number, month: number, year: number) {
+    this.day = day;
+    this.month = month;
+    this.year = year;
+  }
+
 }

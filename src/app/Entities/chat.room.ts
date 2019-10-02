@@ -11,7 +11,6 @@ export class ChatRoom {
 
     //ONLY FRONTEND
     unseenChatMessageIds: string[];
-    unseenChatMessagesCount: string = '2';
     
 
 }

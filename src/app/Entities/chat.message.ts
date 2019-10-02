@@ -4,7 +4,7 @@ export class ChatMessage {
 
 	fromId: string;
 	body: string;
-	createdAt: Date;
+	createdAt: string;
 	
 	seen: boolean;
 }

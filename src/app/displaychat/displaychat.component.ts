@@ -3,6 +3,8 @@ import { ChatService } from '../chat.service';
 import { ChatRoom } from '../Entities/chat.room';
 import { ChatMessage } from '../Entities/chat.message';
 import { User } from '../Entities/user';
+import { TouchSequence } from 'selenium-webdriver';
+import { Constants } from '../constants';
 
 @Component({
   selector: 'app-displaychat',
@@ -18,7 +20,7 @@ export class DisplaychatComponent implements OnInit {
     this.chatService.displayedChatRoom = val;
   }
 
-    
+
   get localUser(): User {
     return this.chatService.localUser;
   }
@@ -33,9 +35,14 @@ export class DisplaychatComponent implements OnInit {
     return [];
   }
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private constants: Constants) { }
 
   ngOnInit() {
   }
 
+
+
+
 }
+
+
