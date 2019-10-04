@@ -1,15 +1,20 @@
-<div style="width:100vw; height:100vh; display:flex; align-content: center; align-items: center; background-color: var(--main-background);">
+<div
+    style="width:100vw; height:100vh; display:flex; align-content: center; align-items: center; background-color: var(--main-background);">
     <div class="container">
-        <app-left-panel *ngIf="constants.DEFAULT_PANEL === currentDisplayedLeftPanel" class="left-panel-container"></app-left-panel>
-        
-        <app-adduser  *ngIf="constants.ADD_USER_PANEL === currentDisplayedLeftPanel" class="adduser-container">
+        <app-left-panel *ngIf="constants.DEFAULT_PANEL === currentDisplayedLeftPanel" class="left-panel-container">
+        </app-left-panel>
+
+        <app-adduser *ngIf="constants.ADD_USER_PANEL === currentDisplayedLeftPanel" class="adduser-container">
         </app-adduser>
-        
-        <app-contacts  *ngIf="constants.DISPLAY_CONTACTS_PANEL === currentDisplayedLeftPanel" class="adduser-container">
-            </app-contacts>
-        
-        
-        
+
+        <app-contacts *ngIf="constants.DISPLAY_CONTACTS_PANEL === currentDisplayedLeftPanel" class="adduser-container">
+        </app-contacts>
+
+        <app-addgroupchat *ngIf="constants.GROUP_CHAT === currentDisplayedLeftPanel"
+            class="adduser-container">
+
+        </app-addgroupchat>
+
         <app-chat-panel class="chat-panel-container"></app-chat-panel>
         <footer class="footer-container">
             <div>Home</div>

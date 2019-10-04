@@ -11,6 +11,7 @@ import * as Stomp from "stompjs";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ChatMessage } from './Entities/chat.message';
 import * as moment from 'moment';
+import { DataStore } from './data.store';
 
 
 
@@ -23,15 +24,6 @@ export class ChatService {
   ws: SockJS;
   private stompClient;
 
-  // LOGIN AND REGISTRATION PROPERTIES
-  private registerUsername_: string;
-  private registerPassword_: string;
-  private registerPasswordRepeat_: string
-
-  private loginUsername_: string = "default";
-  private loginPassword_: string = "123";
-  private searchNewContactInputText_: string;
-  private newContactsList_: Contact[];
 
   //FORMS AND PAGE INPUTS
   private chatInputText_: string;
@@ -45,22 +37,16 @@ export class ChatService {
   //DISPLAY PARAMETERS
   private displayedChatRoom_: ChatRoom;
 
-  //LOCAL USER PROPERTIES
-  private localUser_: User;
-  private isLoggedIn_: boolean = false;
 
-  private chatMessagesByRoom_: Map<string, ChatMessage[]> = new Map<string, ChatMessage[]>();
+
 
   //DEBUG MOCKS
 
-  private availableRooms_: Map<string, ChatRoom> = new Map<string, ChatRoom>();
-  private contacts_: Contact[] = [];
-
   get chatMessagesByRoom(): Map<string, ChatMessage[]> {
-    return this.chatMessagesByRoom_;
+    return this.store.chatMessagesByRoom;
   }
   set chatMessagesByRoom(val: Map<string, ChatMessage[]>) {
-    this.chatMessagesByRoom_ = val;
+    this.chatMessagesByRoom = val;
   }
 
   get displayedChatRoom(): ChatRoom {
@@ -78,81 +64,80 @@ export class ChatService {
   }
 
   get contacts(): Contact[] {
-    return this.contacts_;
+    return this.store.contacts;
   }
   set contacts(val: Contact[]) {
-    this.contacts_ = val;
+    this.store.contacts = val;
   }
 
   get newContactsList(): Contact[] {
-    return this.newContactsList_;
+    return this.store.newContactsList;
   }
   set newContactsList(val: Contact[]) {
-    this.newContactsList_ = val;
+    this.store.newContactsList = val;
   }
 
   get searchNewContactInputText(): string {
-    return this.searchNewContactInputText_;
+    return this.store.searchNewContactInputText;
   }
   set searchNewContactInputText(val: string) {
-    this.searchNewContactInputText_ = val;
+    this.store.searchNewContactInputText = val;
   }
 
   get localUser(): User {
-    return this.localUser_;
+    return this.store.localUser;
   }
   set localUser(val: User) {
-    this.localUser_ = val;
+    this.store.localUser = val;
   }
 
   get loginUsername(): string {
-    return this.loginUsername_;
+    return this.store.loginUsername;
   }
   set loginUsername(val: string) {
-    this.loginUsername_ = val;
+    this.store.loginUsername = val;
   }
 
   get loginPassword(): string {
-    return this.loginPassword_;
+    return this.store.loginPassword;
   }
   set loginPassword(val: string) {
-    this.loginPassword_ = val;
+    this.store.loginPassword = val;
   }
 
   get isLoggedIn(): boolean {
-    return this.isLoggedIn_;
+    return this.store.isLoggedIn;
   }
   set isLoggedIn(val: boolean) {
-    this.isLoggedIn_ = val;
+    this.store.isLoggedIn = val;
   }
-
 
   get availableRooms(): Map<string, ChatRoom> {
-    return this.availableRooms_;
+    return this.store.availableRooms;
   }
   set availableRooms(val: Map<string, ChatRoom>) {
-    this.availableRooms_ = val;
+    this.store.availableRooms = val;
   }
 
   get registerUsername(): string {
-    return this.registerUsername_;
+    return this.store.registerUsername;
   }
   set registerUsername(val: string) {
-    this.registerUsername_ = val;
+    this.store.registerUsername = val;
   }
 
   get registerPassword(): string {
-    return this.registerPassword_;
+    return this.store.registerPassword;
   }
   set registerPassword(val: string) {
-    this.registerPassword_ = val;
+    this.store.registerPassword = val;
   }
 
   get registerPasswordRepeat(): string {
-    return this.registerPasswordRepeat_;
+    return this.store.registerPasswordRepeat;
   }
   set registerPasswordRepeat(val: string) {
-    this.registerPasswordRepeat_ = val;
+    this.store.registerPasswordRepeat = val;
   }
 
   connect() {
@@ -171,15 +156,13 @@ export class ChatService {
   handleServerResponse(transferMessage: TransferMessage) {
     switch (transferMessage.function) {
 
-      case 'chat-message': {
-        this.chatMessagesByRoom.get(transferMessage.chatMessage.roomId).push(transferMessage.chatMessage);
+      case this.constants.TM_TYPE_CHAT_MESSAGE: {
+        this.processRequestedChatMessages(transferMessage.chatMessage.roomId, [transferMessage.chatMessage])
       } break;
-
     }
-
   }
 
-  localCloseConnection() {
+  closeLocalWebsocketConnection() {
     this.stompClient.disconnect();
     this.ws.close();
   }
@@ -228,6 +211,7 @@ export class ChatService {
         if (receivedUser.id && receivedUser.name) {
           this.isLoggedIn = true;
           this.localUser = receivedUser;
+          this.addEntryToDATA(<Contact> this.localUser);
           this.init();
         }
       });
@@ -237,47 +221,107 @@ export class ChatService {
     this.connect();
     this.sendRequestContacts();
     this.sendRequestRoomList();
-    //this.sendRequestContactsList(this.localUser);
   }
 
   private updateAvailableRooms(chatRooms: ChatRoom[]) {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
-    chatRooms.forEach(chatRoom => this.availableRooms.set(chatRoom.id, chatRoom));
+    chatRooms.forEach(chatRoom => {
+      this.availableRooms.set(chatRoom.id, chatRoom);
+    });
     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+    //get all chat messages per room from backend
+    this.sendRequestAllChatMessagesForRooms(chatRooms);
+    this.addMapToDATA(this.availableRooms);
+  }
 
+  /**
+ * gets all chat messages for all received rooms
+ * @param roomId 
+ */
+  private sendRequestAllChatMessagesForRooms(chatRooms: ChatRoom[]) {
     chatRooms.forEach(chatRoom => this.sendRequestChatMessages(chatRoom.id));
   }
 
+  private addEntryToDATA(entry: any) {
+    this.store.addEntryToDATA(entry);
+  }
+
+  private addListOfEntriesToDATA(entries: any[]) {
+    this.store.addListOfEntriesToDATA(entries);
+  }
+
+  private addMapToDATA(dataMap: Map<string, any>) {
+    this.store.addMapToDATA(dataMap);
+  }
+
+  /**
+   * gets all chat messages for a single room from backend
+   * @param roomId 
+   */
   private sendRequestChatMessages(roomId: string) {
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId).subscribe(response => {
-      this.processRequestedChatMessages(roomId, <ChatMessage[]> response);
+      this.processRequestedChatMessages(roomId, <ChatMessage[]>response);
     })
   }
 
-  ///data/userId/{userId}/contacts
-  private sendRequestContacts(){
+  /**
+  * gets all contacts for the logged in user from backend
+  * 
+  */
+  private sendRequestContacts() {
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/contacts").subscribe(response => {
-      this.contacts = <Contact[]> response;
+      this.updateContacts(<Contact[]>response);
     })
   }
 
+  /**
+  * gets all chatrooms for the logged in user from backend
+  * 
+  */
+  sendRequestRoomList() {
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
+      .subscribe(response => {
+        this.updateAvailableRooms(<ChatRoom[]>response);
+      })
+  }
+
+  /**
+   * processes the received chatmessages in a way that they can be displayed correclty
+   * e.g. insert Date Messages for a correct displaying of Dates in the chatroom
+   * @param roomId 
+   * @param responseChatMessages 
+   */
   private processRequestedChatMessages(roomId: string, responseChatMessages: ChatMessage[]) {
+    //create ChatMessages Entry for a room in Map if it's not already existing
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-    let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
-    this.availableRooms.get(roomId).unseenChatMessageIds = this.countUnseenMessages(responseChatMessages);
+    //count and set list of unseen messages ids in room
+    this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
+    
+    //save responseChatMessages in DATA Store
+    this.addListOfEntriesToDATA(responseChatMessages);
+    
+    //if chatmessages are associated with the currently displayed room then we updates the seen state instantly
+    if (this.displayedChatRoom && roomId === this.displayedChatRoom.id) {
+      this.sendUpdateUnseenMessages(this.availableRooms.get(roomId).unseenChatMessageIds);
+      this.availableRooms.get(roomId).unseenChatMessageIds = [];
+    }
 
-    if(chatMessages.length == 0){
+    //if there are no chatMessages for given roomId we generate the inital date message
+    let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
+    if (chatMessages.length == 0) {
       let initialDateMessage = new ChatMessage();
       initialDateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
       initialDateMessage.createdAt = responseChatMessages[0].createdAt;
       chatMessages.push(initialDateMessage);
     }
-    for(let message of responseChatMessages){
-      if(this.areDatesDifferent(message.createdAt, chatMessages[chatMessages.length-1].createdAt)){
+
+    //process received chatmessages and insert date message if needed 
+    for (let message of responseChatMessages) {
+      if (this.areDaysDifferent(message.createdAt, chatMessages[chatMessages.length - 1].createdAt)) {
         let dateMessage = new ChatMessage();
         dateMessage.seen = true;
         dateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
@@ -287,41 +331,26 @@ export class ChatService {
       chatMessages.push(message);
     }
   }
-  
-  private areDatesDifferent(previous: string, next: string): boolean {
 
+  /**
+   * determines if two given dates as strings have different days 
+   * @param previous 
+   * @param next 
+   */
+  private areDaysDifferent(previous: string, next: string): boolean {
     let previousDate = moment(previous);
     let nextDate = moment(next);
-
-// console.log("before: ")
-// console.log(before.dayOfYear());
-// console.log("after: ");
-// console.log(after.dayOfYear());
-// console.log("before < after");
-// console.log(before.dayOfYear() < after.dayOfYear());
-
-
-
     if (nextDate.dayOfYear() != previousDate.dayOfYear() || nextDate.year() != previousDate.year()) {
       return true;
     }
     return false;
   }
 
-  private parseDatum(dateString: string){
-    let day: number = parseInt(dateString.substring(8, 10));
-    let month: number = parseInt(dateString.substring(5, 7));
-    let year: number = parseInt(dateString.substring(0, 4));
-
-    let date = new Datum(
-      parseInt(dateString.substring(8, 10)),
-      parseInt(dateString.substring(5, 7)),
-      parseInt(dateString.substring(0, 4))
-      );
-    return date;
-  }
-
-  private countUnseenMessages(chatMessages: ChatMessage[]): string[] {
+  /**
+   * 
+   * @param chatMessages determines which messages are unseen an returns them
+   */
+  private getUnseenMessagesIds(chatMessages: ChatMessage[]): string[] {
     let unseenMessageIds: string[] = [];
     for (let chatMessage of chatMessages) {
       if (!chatMessage.seen) {
@@ -331,29 +360,24 @@ export class ChatService {
     return unseenMessageIds;
   }
 
+  /**
+   * updates the local contacts and sorts them alphabetically
+   * @param contacts 
+   */
   private updateContacts(contacts: Contact[]) {
-    if (!this.contacts) {
-      this.contacts = [];
-    }
-    contacts.forEach(contact => this.contacts.push(contact));
-    this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+    this.contacts = [];
+    contacts
+      .sort((c1, c2) => (c1.name > c2.name) ? 1 : -1)
+      .forEach(contact => { 
+        this.contacts.push(contact);
+        this.addEntryToDATA(contact);
+      });
   }
 
-
-  sendRequestContactsList(localUser: User) {
-    this.http.get(this.constants.BASE_URL + "/userId/" + localUser.id + "/contacts")
-      .subscribe(response => {
-        this.updateContacts(<Contact[]>response);
-      })
-  }
-
-  sendRequestRoomList() {
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
-      .subscribe(response => {
-        this.updateAvailableRooms(<ChatRoom[]>response);
-      })
-  }
-
+  /**
+   * updates the state of the unseen message of a single room in the backend
+   * @param unseenChatMessageIds
+   */
   sendUpdateUnseenMessages(unseenChatMessageIds: string[]) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
@@ -368,7 +392,9 @@ export class ChatService {
   }
 
   /**
-   * Post Get kapseln
+   * send a request to create a new room with an unkown contact
+   * @param contact s
+   * @param title 
    */
   sendCreateRoom(contact: Contact, title?: string) {
     const headers = new HttpHeaders()
@@ -382,11 +408,16 @@ export class ChatService {
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>[response]);
-
+        this.sendRequestContacts();
         this.displayedChatRoom = <ChatRoom>response;
       });
   }
 
+  /**
+   * sends the currently typed message
+   * @param chatRoom 
+   * @param chatMessage 
+   */
   sendOutgoingChatMessage(chatRoom: ChatRoom, chatMessage: ChatMessage) {
     this.stompClient.send(
       "/app/send/chat-message",
@@ -395,18 +426,5 @@ export class ChatService {
     );
   }
 
-  constructor(private http: HttpClient, private constants: Constants) { }
-}
-
-class Datum {
-  day: number;
-  month: number;
-  year: number;
-
-  constructor(day: number, month: number, year: number) {
-    this.day = day;
-    this.month = month;
-    this.year = year;
-  }
-
+  constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }
 }

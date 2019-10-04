@@ -9,10 +9,13 @@ export class Constants{
     public WS_BASE_URL : string = "/app/send";
     public DISPLAY_CONTACTS_PANEL : string = "displaycontacts-panel";
     public ADD_USER_PANEL : string = "adduser-panel";
+    public GROUP_CHAT : string = "group-chat";
+
 
     public DEFAULT_PANEL : string = "default-panel";
 
     public CHAT_MESSAGE_DATE_TYPE : string = "DATE";
     public CHAT_MESSAGE_SYSTEM_TYPE: string = "System";
 
+    public TM_TYPE_CHAT_MESSAGE: string = 'chat-message'
 }

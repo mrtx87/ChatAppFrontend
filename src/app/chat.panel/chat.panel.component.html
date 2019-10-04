@@ -2,10 +2,14 @@
     <div class="chat-panel-header">
         <div style="width:70%; margin-left: 10px;">
             <div style="display:flex;">
-                <div><img style="width:50px; border-radius: 25px;" src="assets/testicon.png"></div>
+                <div><img style="width:50px; border-radius: 25px;" src="{{displayedChatRoom?.iconUrl}}"></div>
                 <div style="display:flex; flex-direction: column; padding: 8px;">
-                    <div> Raumname</div>
-                    <div> Mockuser1, Mockuser2, Mockuser3</div>
+                    <div style="font-weight: bolder;"> {{values.resolveChatRoomName(displayedChatRoom)}}</div>
+                    <div style="display: flex;"> 
+                        <span *ngFor="let id of displayedChatRoom?.userIds" style="margin-right: 4px;">
+                            {{ values.resolveContact(id)?.name }},
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import { Driver } from 'selenium-webdriver/opera';
 import { Constants } from '../constants';
 import { Contact } from '../Entities/contact';
 import { User } from '../Entities/user';
+import { DataStore } from '../data.store';
 
 @Component({
   selector: 'app-adduser',
@@ -33,7 +34,7 @@ export class AdduserComponent implements OnInit {
     this.chatService.localUser = val;
   }
 
-  constructor(private chatService : ChatService, private constants:Constants) { }
+  constructor(private chatService : ChatService, private constants:Constants, private store : DataStore) { }
 
   triggerNewContactSearch(){
       this.chatService.sendNewContactSearch();

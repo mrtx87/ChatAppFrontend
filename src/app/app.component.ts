@@ -22,7 +22,7 @@ export class AppComponent {
   @HostListener("window:beforeunload", ["$event"])
   beforeunloadHandler($event: any) {
     this.chatService.sendDisconnectMessage(this.localUser);
-    this.chatService.localCloseConnection();
+    this.chatService.closeLocalWebsocketConnection();
   }
   
   constructor(private chatService : ChatService, private constants : Constants) {

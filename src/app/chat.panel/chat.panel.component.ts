@@ -3,6 +3,9 @@ import { ChatService } from '../chat.service';
 import { ChatMessage } from '../Entities/chat.message';
 import { User } from '../Entities/user';
 import { ChatRoom } from '../Entities/chat.room';
+import { Constants } from '../constants';
+import { DataStore } from '../data.store';
+import { ValueResolver } from '../value.resolver';
 
 @Component({
   selector: 'app-chat-panel',
@@ -32,7 +35,7 @@ export class ChatPanelComponent implements OnInit {
     this.chatService.displayedChatRoom = val;
   }
 
-  constructor(private chatService : ChatService) { }
+  constructor(private chatService : ChatService, private values: ValueResolver, private store : DataStore, private constants : Constants) { }
 
   ngOnInit() {
 

@@ -5,6 +5,7 @@ import { ChatMessage } from '../Entities/chat.message';
 import { User } from '../Entities/user';
 import { TouchSequence } from 'selenium-webdriver';
 import { Constants } from '../constants';
+import { DataStore } from '../data.store';
 
 @Component({
   selector: 'app-displaychat',
@@ -35,7 +36,7 @@ export class DisplaychatComponent implements OnInit {
     return [];
   }
 
-  constructor(private chatService: ChatService, private constants: Constants) { }
+  constructor(private chatService: ChatService, private constants: Constants, private store : DataStore) { }
 
   ngOnInit() {
   }

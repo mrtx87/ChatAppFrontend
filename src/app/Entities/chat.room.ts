@@ -8,7 +8,6 @@ export class ChatRoom {
     userIds: string[];
     iconUrl: string;
 
-
     //ONLY FRONTEND
     unseenChatMessageIds: string[];
     

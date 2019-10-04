@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { Contact } from '../Entities/contact';
+import { Constants } from '../constants';
+import { DataStore } from '../data.store';
+import { ValueResolver } from '../value.resolver';
 
 @Component({
   selector: 'app-contacts',
@@ -9,14 +12,18 @@ import { Contact } from '../Entities/contact';
 })
 export class ContactsComponent implements OnInit {
 
+
+  query: string = "";
+
   get contacts(): Contact[] {
-    return this.chatService.contacts;
+    return this.store.contacts.filter(contact => contact.name.includes(this.query));
   }
   set contacts(val: Contact[]) {
-    this.chatService.contacts = val;
+    this.store.contacts = val;
   }
 
-  constructor(private chatService: ChatService) { }
+
+  constructor(private chatService: ChatService, private values : ValueResolver, private constants: Constants, private store : DataStore) { }
 
   ngOnInit() {
   }

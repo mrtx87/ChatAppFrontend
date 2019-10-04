@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
+import { DataStore } from '../data.store';
 
 @Component({
   selector: 'app-loginregister',
@@ -14,52 +15,51 @@ export class LoginregisterComponent implements OnInit {
 
 
   get loginUsername(): string {
-    return this.chatService.loginUsername;
+    return this.store.loginUsername;
   }
   set loginUsername(val: string) {
-    this.chatService.loginUsername = val;
+    this.store.loginUsername = val;
   }
 
   get loginPassword(): string {
-    return this.chatService.loginPassword;
+    return this.store.loginPassword;
   }
   set loginPassword(val: string) {
-    this.chatService.loginPassword = val;
+    this.store.loginPassword = val;
   }
-
 
   get isLoggedIn(): boolean {
-    return this.chatService.isLoggedIn;
+    return this.store.isLoggedIn;
   }
   set isLoggedIn(val: boolean) {
-    this.chatService.isLoggedIn = val;
+    this.store.isLoggedIn = val;
   }
 
   get registerUsername(): string {
-    return this.chatService.registerUsername;
+    return this.store.registerUsername;
   }
   set registerUsername(val: string) {
-    this.chatService.registerUsername = val;
+    this.store.registerUsername = val;
   }
 
   get registerPassword(): string {
-    return this.chatService.registerPassword;
+    return this.store.registerPassword;
   }
   set registerPassword(val: string) {
-    this.chatService.registerPassword = val;
+    this.store.registerPassword = val;
   }
 
   get registerPasswordRepeat(): string {
-    return this.chatService.registerPasswordRepeat;
+    return this.store.registerPasswordRepeat;
   }
   set registerPasswordRepeat(val: string) {
-    this.chatService.registerPasswordRepeat = val;
+    this.store.registerPasswordRepeat = val;
   }
 
-
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private store: DataStore) { }
 
   ngOnInit() {
+    
   }
 
   requestRegistration() {
