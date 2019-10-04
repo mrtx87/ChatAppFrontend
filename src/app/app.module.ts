@@ -15,6 +15,8 @@ import { AdduserComponent } from './adduser/adduser.component';
 import { AddgroupchatComponent } from './addgroupchat/addgroupchat.component';
 import { SearchresultComponent } from './searchresult/searchresult.component';
 import { GroupProfileComponent } from './group-profile/group-profile.component';
+import { ChatRoomNamePipe } from './chat-room-name.pipe';
+import { ContactNamePipe } from './contact-name.pipe';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { GroupProfileComponent } from './group-profile/group-profile.component';
     AdduserComponent,
     AddgroupchatComponent,
     SearchresultComponent,
-    GroupProfileComponent
+    GroupProfileComponent,
+    ChatRoomNamePipe,
+    ContactNamePipe
   ],
   imports: [
     BrowserModule,

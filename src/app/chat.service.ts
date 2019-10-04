@@ -195,6 +195,12 @@ export class ChatService {
       this.newContactsList = <Contact[]>response;
     })
   }
+  
+  sendResolveContactId(contactId: string) {
+    this.http.get(this.constants.BASE_URL + "/contactId/" + contactId).subscribe(response => {
+      this.store.addEntryToDATA(<Contact>response);
+    })
+  }
 
   sendRequestRegistration() {
     const headers = new HttpHeaders()

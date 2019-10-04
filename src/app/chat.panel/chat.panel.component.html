@@ -4,10 +4,10 @@
             <div style="display:flex;">
                 <div><img style="width:50px; border-radius: 25px;" src="{{displayedChatRoom?.iconUrl}}"></div>
                 <div style="display:flex; flex-direction: column; padding: 8px;">
-                    <div style="font-weight: bolder;"> {{values.resolveChatRoomName(displayedChatRoom)}}</div>
+                    <div style="font-weight: bolder;"> {{displayedChatRoom | chatRoomName}}</div>
                     <div style="display: flex;"> 
                         <span *ngFor="let id of displayedChatRoom?.userIds" style="margin-right: 4px;">
-                            {{ values.resolveContact(id)?.name }},
+                            {{ id | contactName}},
                         </span>
                     </div>
                 </div>
