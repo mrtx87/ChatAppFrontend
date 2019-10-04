@@ -16,7 +16,7 @@ export class ContactsComponent implements OnInit {
   query: string = "";
 
   get contacts(): Contact[] {
-    return this.store.contacts.filter(contact => contact.name.includes(this.query));
+    return this.store.contacts.filter(contact => contact.name.toLowerCase().includes(this.query));
   }
   set contacts(val: Contact[]) {
     this.store.contacts = val;
