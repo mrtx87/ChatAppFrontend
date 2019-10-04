@@ -10,8 +10,6 @@ import { User } from './Entities/user';
 })
 export class DataStore {
 
-
-
     private DATA_ : Map<string, any> = new Map<string, any>();
     private TEMPDATA_ : Map<string, any> = new Map<string, any>();
 
@@ -155,7 +153,7 @@ export class DataStore {
     }
 
     addEntryWithouthKeyToTEMPDATA(key: string, entry : any) {
-        this.TEMPDATA.set(entry.id, entry);
+        this.TEMPDATA.set(key, entry);
     }
 
     addListOfEntriesToTEMPDATA(entries : any[]) {

@@ -12,6 +12,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ChatMessage } from './Entities/chat.message';
 import * as moment from 'moment';
 import { DataStore } from './data.store';
+import { GroupProfileComponent } from './group-profile/group-profile.component';
 
 
 
@@ -30,8 +31,14 @@ export class ChatService {
 
 
   public appComponent: AppComponent;
+  public groupProfileComponent: GroupProfileComponent;
+
   public registerAppComponent(appComponent: AppComponent) {
     this.appComponent = appComponent;
+  }
+
+  public registerGroupProfileComponent(groupProfileComponent: GroupProfileComponent) {
+    this.groupProfileComponent = groupProfileComponent;
   }
 
   //DISPLAY PARAMETERS
@@ -396,7 +403,7 @@ export class ChatService {
    * @param contact 
    * @param title 
    */
-  sendCreateRoom(contact: Contact, title?: string) {
+  sendCreateRoomAndContact(contact: Contact, title?: string) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
@@ -404,6 +411,26 @@ export class ChatService {
     chatRoomStub.title = title ? title : contact.name;
     chatRoomStub.userIds = [this.localUser.id, contact.id];
     transferMessage.chatRoom = chatRoomStub;
+    this.http
+      .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
+      .subscribe(response => {
+        this.updateAvailableRooms(<ChatRoom[]>[response]);
+        this.sendRequestContacts();
+        this.displayedChatRoom = <ChatRoom>response;
+      });
+  }
+
+  /**
+   * send a request to create a new room with an unkown contact
+   * @param contact 
+   * @param title 
+   */
+  sendCreateGroupRoom(from: Contact, chatroom: ChatRoom) {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    let transferMessage: TransferMessage = new TransferMessage();
+    transferMessage.from = from;
+    transferMessage.chatRoom = chatroom;
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
@@ -424,6 +451,12 @@ export class ChatService {
       {},
       JSON.stringify({ from: <Contact>this.localUser, chatRoom: chatRoom, chatMessage: chatMessage })
     );
+  }
+
+  initDisplayChatRoomProfileComponent() {
+    if(this.groupProfileComponent) {
+      this.groupProfileComponent.init();
+    }
   }
 
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }

@@ -22,4 +22,6 @@ export class Constants{
     public TM_TYPE_CHAT_MESSAGE: string = 'chat-message';
 
     public CREATING_ROOM_CONTACTS_ID: string = "creating-room-contacts";
+    public DISPLAYED_ROOM_ID: string = "displayed-room-id";
+
 }

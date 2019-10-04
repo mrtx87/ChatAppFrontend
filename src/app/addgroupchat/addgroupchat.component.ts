@@ -32,17 +32,24 @@ export class AddgroupchatComponent implements OnInit {
 
 
   addToCreatingRoom(contact: Contact) {
-    if(this.creatingRoomContacts) {
-      this.creatingRoomContacts.push(contact);
+    if (this.creatingRoomContacts) {
+      if (!this.creatingRoomContacts.includes(contact)) {
+        this.creatingRoomContacts.push(contact);
+      }
     }
   }
   ToRoomProfileCreation() {
+    this.store.addEntryWithouthKeyToTEMPDATA(this.constants.CREATING_ROOM_CONTACTS_ID, this.creatingRoomContacts);
+    this.chatService.initDisplayChatRoomProfileComponent();
     this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.GROUP_CHAT_PROFILE;
-    this.store.addEntryWithouthKeyToTEMPDATA(this.constants.CREATING_ROOM_CONTACTS_ID, this.creatingRoomContacts)
   }
 
   removeFromCreatingRoomContacts(contact: Contact) {
     this.creatingRoomContacts = this.creatingRoomContacts.filter(c => c.id !== contact.id);
+  }
+
+  isValid() : boolean{
+    return this.creatingRoomContacts && this.creatingRoomContacts.length > 0;
   }
 
 }
