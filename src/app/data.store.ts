@@ -10,9 +10,8 @@ import { User } from './Entities/user';
 })
 export class DataStore {
 
-
-
-    DATA : Map<string, any> = new Map<string, any>();
+    private DATA_ : Map<string, any> = new Map<string, any>();
+    private TEMPDATA_ : Map<string, any> = new Map<string, any>();
 
     // LOGIN AND REGISTRATION PROPERTIES
     private registerUsername_: string;
@@ -24,8 +23,6 @@ export class DataStore {
     private searchNewContactInputText_: string;
     private newContactsList_: Contact[];
 
-
-
     //LOCAL USER PROPERTIES
     private localUser_: User;
     private isLoggedIn_: boolean = false;
@@ -34,6 +31,18 @@ export class DataStore {
     private availableRooms_: Map<string, ChatRoom> = new Map<string, ChatRoom>();
     private contacts_: Contact[] = [];
 
+    get DATA(): Map<string, any> {
+        return this.DATA_;
+    }
+    set DATA(val: Map<string, any>) {
+        this.DATA_ = val;
+    }
+    get TEMPDATA(): Map<string, any> {
+        return this.TEMPDATA_;
+    }
+    set TEMPDATA(val: Map<string, any>) {
+        this.TEMPDATA_ = val;
+    }
 
     get registerUsername(): string {
         return this.registerUsername_;
@@ -133,6 +142,26 @@ export class DataStore {
 
     lookUpInDATA(id: string): any {
         return this.DATA.get(id);
+    }
+
+    addMapToTEMPDATA(dataMap : Map<string,any>) {
+        dataMap.forEach((value, key) => this.TEMPDATA.set(value, key));
+    }
+
+    addEntryToTEMPDATA(entry : any) {
+        this.TEMPDATA.set(entry.id, entry);
+    }
+
+    addEntryWithouthKeyToTEMPDATA(key: string, entry : any) {
+        this.TEMPDATA.set(key, entry);
+    }
+
+    addListOfEntriesToTEMPDATA(entries : any[]) {
+        entries.forEach(entry => this.addEntryToTEMPDATA(entry));
+    }
+
+    lookUpInTEMPDATA(id: string): any {
+        return this.TEMPDATA.get(id);
     }
 
 }

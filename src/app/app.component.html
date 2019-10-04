@@ -10,10 +10,11 @@
         <app-contacts *ngIf="constants.DISPLAY_CONTACTS_PANEL === currentDisplayedLeftPanel" class="adduser-container">
         </app-contacts>
 
-        <app-addgroupchat *ngIf="constants.GROUP_CHAT === currentDisplayedLeftPanel"
-            class="adduser-container">
-
+        <app-addgroupchat *ngIf="constants.GROUP_CHAT === currentDisplayedLeftPanel" class="adduser-container">
         </app-addgroupchat>
+
+        <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedLeftPanel" class="adduser-container">
+        </app-group-profile>
 
         <app-chat-panel class="chat-panel-container"></app-chat-panel>
         <footer class="footer-container">

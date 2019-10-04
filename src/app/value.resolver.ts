@@ -12,6 +12,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ChatMessage } from './Entities/chat.message';
 import * as moment from 'moment';
 import { DataStore } from './data.store';
+import { ChatService } from './chat.service';
 
 
 
@@ -139,17 +140,25 @@ export class ValueResolver {
     return null;
   }
 
-  private getNotLocalUserId(userIds: string[]): string {
-    for (let id of userIds) {
-      if (this.isNotLocalUser(id)) {
-        return id;
+  resolveOneToOneRoomByContact(contact: Contact){
+    this.availableRooms.forEach(room => {
+      if(room.userIds.length == 2 && room.userIds.includes(contact.id) && room.userIds.includes(this.localUser.id)){
+        this.chatService.displayedChatRoom = room;
+        this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
       }
-    }
+    });
+  }
+
+  private getNotLocalUserId(userIds: string[]): string {
+      if (this.isNotLocalUser(userIds[0])) {
+        return userIds[0];
+      }
+      return userIds[1];
   }
 
   private isNotLocalUser(id: string): boolean {
     return this.localUser.id != id;
   }
 
-  constructor(private constants: Constants, private store: DataStore) { }
+  constructor(private constants: Constants, private store: DataStore, private chatService: ChatService) { }
 }

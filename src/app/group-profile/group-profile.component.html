@@ -1,0 +1,13 @@
+<div>
+    <h3> BACKARROW  Neue Gruppe</h3>
+
+    <h4> GruppenBild Platzhalter</h4>
+
+    <label> Gruppentitel</label>
+    <input (change)="updateChatroomTitle()" [(ngModel)]="roomTitleText" placeholder="Gruppentitel"> 
+    <label>ausgewählte Mitglieder:</label>
+    <div *ngIf="currentChatRoom" style="display:flex;"> <span *ngFor="let id of currentChatRoom.userIds"> {{ id }}</span></div>
+    <img *ngIf="isValid()" style ="height:50px;" src="assets/success.svg" placeholder="Gruppentitel" (click)="sendCreateNewGroupRoom()"> 
+
+
+</div>
