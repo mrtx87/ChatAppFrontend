@@ -38,6 +38,36 @@
     opacity: 1;
 }
 
+.room-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 50px;
+    right: 25px;
+    height: 200px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26), 0 2px 10px 0 rgba(0,0,0,.16);
+    border-radius: 3px;
+    background-color: white;
+}
+
+.super-room-menu {
+    color: #444;
+    padding-left: 24px;
+    padding-right: 23px;
+    padding-top: 13px;
+}
+
+.room-row {
+    width: 200px;
+    height: 40px;
+    cursor:pointer;
+}
+
+.room-row:hover {
+    background-color: rgb(235, 235, 235);
+}
+
 .menu-item-container {
+    position: relative;
     padding: 10px;
 }

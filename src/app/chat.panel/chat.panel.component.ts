@@ -14,6 +14,8 @@ import { ValueResolver } from '../value.resolver';
 })
 export class ChatPanelComponent implements OnInit {
 
+  displayRoomMenu: boolean = false;
+
   get chatInputText(): string {
     return this.chatService.chatInputText;
   }
