@@ -13,20 +13,7 @@ import { DataStore } from '../data.store';
 })
 export class AddgroupchatComponent implements OnInit {
 
-  constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) { }
-
-  ngOnInit() {
-  }
-
   creatingRoomContacts: Contact[] = [];
-
-  addToCreatingRoom(contact: Contact) {
-    if(this.creatingRoomContacts) {
-      this.creatingRoomContacts.push(contact);
-    }
-  }
-
-  
   query: string = "";
 
   get contacts(): Contact[] {
@@ -34,6 +21,28 @@ export class AddgroupchatComponent implements OnInit {
   }
   set contacts(val: Contact[]) {
     this.chatService.contacts = val;
+  }
+
+  constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) {
+
+  }
+
+  ngOnInit() {
+  }
+
+
+  addToCreatingRoom(contact: Contact) {
+    if(this.creatingRoomContacts) {
+      this.creatingRoomContacts.push(contact);
+    }
+  }
+  ToRoomProfileCreation() {
+    this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.GROUP_CHAT_PROFILE;
+    this.store.addEntryWithouthKeyToTEMPDATA(this.constants.CREATING_ROOM_CONTACTS_ID, this.creatingRoomContacts)
+  }
+
+  removeFromCreatingRoomContacts(contact: Contact) {
+    this.creatingRoomContacts = this.creatingRoomContacts.filter(c => c.id !== contact.id);
   }
 
 }

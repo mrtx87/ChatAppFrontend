@@ -14,6 +14,7 @@ import { LoginregisterComponent } from './loginregister/loginregister.component'
 import { AdduserComponent } from './adduser/adduser.component';
 import { AddgroupchatComponent } from './addgroupchat/addgroupchat.component';
 import { SearchresultComponent } from './searchresult/searchresult.component';
+import { GroupProfileComponent } from './group-profile/group-profile.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { SearchresultComponent } from './searchresult/searchresult.component';
     LoginregisterComponent,
     AdduserComponent,
     AddgroupchatComponent,
-    SearchresultComponent
+    SearchresultComponent,
+    GroupProfileComponent
   ],
   imports: [
     BrowserModule,

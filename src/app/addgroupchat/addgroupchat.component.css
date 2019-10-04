@@ -3,6 +3,7 @@
     flex-direction: column;
     width: 100%;
     overflow: auto;
+    height: 61.5vh;
 }
 
 .contacts-row{
@@ -65,6 +66,12 @@
     height: 75px;
     padding: 0px 5px;
     justify-content: space-between
+}
+
+.next-step-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-contact-inputfield{

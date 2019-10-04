@@ -232,8 +232,8 @@ export class ChatService {
     });
     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     //get all chat messages per room from backend
-    this.sendRequestAllChatMessagesForRooms(chatRooms);
     this.addMapToDATA(this.availableRooms);
+    this.sendRequestAllChatMessagesForRooms(chatRooms);
   }
 
   /**
@@ -347,8 +347,8 @@ export class ChatService {
   }
 
   /**
-   * 
-   * @param chatMessages determines which messages are unseen an returns them
+   * determines which messages are unseen an returns them
+   * @param chatMessages 
    */
   private getUnseenMessagesIds(chatMessages: ChatMessage[]): string[] {
     let unseenMessageIds: string[] = [];
@@ -393,7 +393,7 @@ export class ChatService {
 
   /**
    * send a request to create a new room with an unkown contact
-   * @param contact s
+   * @param contact 
    * @param title 
    */
   sendCreateRoom(contact: Contact, title?: string) {

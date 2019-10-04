@@ -140,11 +140,10 @@ export class ValueResolver {
   }
 
   private getNotLocalUserId(userIds: string[]): string {
-    for (let id of userIds) {
-      if (this.isNotLocalUser(id)) {
-        return id;
+      if (this.isNotLocalUser(userIds[0])) {
+        return userIds[0];
       }
-    }
+      return userIds[1];
   }
 
   private isNotLocalUser(id: string): boolean {
