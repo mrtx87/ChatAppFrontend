@@ -15,12 +15,8 @@ export class LeftPanelComponent implements OnInit {
 
   uploadImage: string;
 
-  get localUser(): User {
-    return this.chatService.localUser;
-  }
-  set localUser(val: User) {
-    this.chatService.localUser = val;
-  }
+  displayUserMenu: boolean = false;
+ 
 
   constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) { }
 
@@ -28,11 +24,18 @@ export class LeftPanelComponent implements OnInit {
 
   }
 
+  get localUser(): User {
+    return this.store.localUser;
+  }
+  set localUser(val: User) {
+    this.store.localUser = val;
+  }
+
   get availableRooms(): Map<string, ChatRoom> {
-    return this.chatService.availableRooms;
+    return this.store.availableRooms;
   }
   set availableRooms(val: Map<string, ChatRoom>) {
-    this.chatService.availableRooms = val;
+    this.store.availableRooms = val;
   }
 
   get displayedChatRoom(): ChatRoom {
