@@ -17,7 +17,7 @@
             <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
             </div>
             <div class="menu-item-container"> <img class="menu-img" src="assets/burger.svg">
-                <div [hidden]="!displayRoomMenu" class="room-menu">
+                <div *ngIf="displayRoomMenu" class="room-menu">
                     <div class="room-row super-room-menu">
                         Gruppeninfo
                     </div>
