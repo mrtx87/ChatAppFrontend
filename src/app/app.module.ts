@@ -17,6 +17,7 @@ import { SearchresultComponent } from './searchresult/searchresult.component';
 import { GroupProfileComponent } from './group-profile/group-profile.component';
 import { ChatRoomNamePipe } from './chat-room-name.pipe';
 import { ContactNamePipe } from './contact-name.pipe';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ContactNamePipe } from './contact-name.pipe';
     SearchresultComponent,
     GroupProfileComponent,
     ChatRoomNamePipe,
-    ContactNamePipe
+    ContactNamePipe,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

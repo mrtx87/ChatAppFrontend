@@ -10,6 +10,11 @@ import { User } from './Entities/user';
 })
 export class AppComponent {
 
+  @HostListener("window:click", ["$event"])
+  mouseEvent(event: MouseEvent) {
+    //@TODO Menüs schließen bei klick
+  }
+
   public currentDisplayedLeftPanel : string;
 
   get localUser(): User {

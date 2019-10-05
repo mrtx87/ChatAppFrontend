@@ -3,7 +3,8 @@ import { ChatRoom } from './Entities/chat.room';
 import { ValueResolver } from './value.resolver';
 
 @Pipe({
-  name: 'chatRoomName'
+  name: 'chatRoomName',
+  pure: false
 })
 export class ChatRoomNamePipe implements PipeTransform {
 
@@ -11,5 +12,5 @@ export class ChatRoomNamePipe implements PipeTransform {
     return this.values.resolveChatRoomName(chatRoom);
   }
 
-  constructor(private values: ValueResolver){}
+  constructor(private values: ValueResolver) { }
 }

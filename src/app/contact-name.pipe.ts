@@ -5,7 +5,9 @@ import { ChatService } from './chat.service';
 import { DataStore } from './data.store';
 
 @Pipe({
-  name: 'contactName'
+  name: 'contactName',
+  pure: false
+
 })
 export class ContactNamePipe implements PipeTransform {
 
