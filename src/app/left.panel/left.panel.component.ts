@@ -16,7 +16,7 @@ export class LeftPanelComponent implements OnInit {
   uploadImage: string;
 
   displayUserMenu: boolean = false;
- 
+  displayProfile: boolean = false;
 
   constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) { }
 
