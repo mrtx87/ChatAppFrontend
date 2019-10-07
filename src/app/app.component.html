@@ -16,6 +16,8 @@
         <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedLeftPanel" class="adduser-container">
         </app-group-profile>
 
+        <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedLeftPanel" class="adduser-container"></app-profile>
+
         <app-chat-panel class="chat-panel-container"></app-chat-panel>
         <footer class="footer-container">
             <div>Home</div>
@@ -27,4 +29,4 @@
     </div>
 </div>
 
-<app-loginregister></app-loginregister>
+<app-loginregister> </app-loginregister>

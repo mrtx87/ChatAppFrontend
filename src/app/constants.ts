@@ -11,6 +11,7 @@ export class Constants{
     public ADD_USER_PANEL : string = "adduser-panel";
     public GROUP_CHAT : string = "group-chat";
     public GROUP_CHAT_PROFILE : string = "group-chat-profile";
+    public USER_PROFILE : string = "user-profile";
 
 
 

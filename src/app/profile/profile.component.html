@@ -1,1 +1,51 @@
-<p>profile works!</p>
+<div class="profile">
+    <div class="return-2-user-panel" >
+        <div class="return-button-2-panel">
+            <!--<div class="r2upa">
+                <img src="assets/left-arrow.svg">
+            </div>!-->
+            <div class="r2upa">
+               <img (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.DEFAULT_PANEL" src="assets/left-arrow.svg">
+            </div>
+            <div class="r2bp">
+                Profil
+            </div>
+        </div>
+    </div>
+    <div class="profile-container">
+        <div class="profile-pic-container">
+            <div class="pp"> 
+                <!--<img *ngIf="localUser" class="img-test" src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">!-->
+                <img src="assets/test-image.jpg" class="img-test">
+            </div>
+            
+        </div>
+        <div class="edit-name-container">
+            <div class="profile-name">
+                <span>
+                    Dein Name
+                </span>
+            </div>
+            <div class="edit-profile-name">
+                <input [(ngModel)]="name" type="text" placeholder="edit name">
+            </div>
+        </div>
+        <div class="disclaimer-text">
+            Das ist nicht dein Benutzername oder PIN-CODE. Dieser Name ist für deine WhatsApp Kontakte sichtbar.
+        </div>
+        <div class="edit-name-container">
+            <div class="profile-name">
+                <span>
+                    Info
+                </span>
+            </div>
+            <div class="edit-profile-name">
+                <input  [(ngModel)]="info" type="text" placeholder="edit info">
+            </div>
+        </div>
+        <div class="success-container">
+            <img *ngIf="valid()" class="success-img" src="assets/success.svg">
+        </div>
+
+    </div>
+</div>
