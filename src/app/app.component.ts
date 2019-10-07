@@ -2,6 +2,8 @@ import { Component, HostListener } from '@angular/core';
 import { ChatService } from './chat.service';
 import { Constants } from './constants';
 import { User } from './Entities/user';
+import { DataStore } from './data.store';
+import { ValueResolver } from './value.resolver';
 
 @Component({
   selector: 'app-root',
@@ -15,13 +17,13 @@ export class AppComponent {
     //@TODO Menüs schließen bei klick
   }
 
-  public currentDisplayedLeftPanel : string;
+  public currentDisplayedLeftPanel: string;
 
   get localUser(): User {
-    return this.chatService.localUser;
+    return this.store.localUser;
   }
   set localUser(val: User) {
-    this.chatService.localUser = val;
+    this.store.localUser = val;
   }
 
   @HostListener("window:beforeunload", ["$event"])
@@ -29,8 +31,10 @@ export class AppComponent {
     this.chatService.sendDisconnectMessage(this.localUser);
     this.chatService.closeLocalWebsocketConnection();
   }
-  
-  constructor(private chatService : ChatService, private constants : Constants) {
+
+  constructor(private chatService: ChatService, private store: DataStore,
+    private constants: Constants, private values: ValueResolver) {
+
     chatService.registerAppComponent(this);
     this.currentDisplayedLeftPanel = constants.DEFAULT_PANEL;
   }
