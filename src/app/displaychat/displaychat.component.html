@@ -1,16 +1,22 @@
 <div style="display:flex; flex-direction:column; width:100%; height:74vh; background-color: white; overflow: auto;">
+
+    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+    <button (click)="fileInput.click()">Select File</button>
+    <img style="width:100px;" [src]="imgsrc" >
     <!-- {{chatService.appComponent.currentDisplayedLeftPanel}} -->
     <ng-template ngFor let-m [ngForOf]="currentDisplayMessages">
 
         <!-- Date MESSAGE CONTAINER -->
-        <div style="width:100%; display:flex; justify-content: center; margin-top:15px;" *ngIf="m.fromId === constants.CHAT_MESSAGE_DATE_TYPE">
+        <div style="width:100%; display:flex; justify-content: center; margin-top:15px;"
+            *ngIf="m.fromId === constants.CHAT_MESSAGE_DATE_TYPE">
             <div style="background-color: #e1f5feeb; padding: 5px 9px; border-radius:5px;">
-                    {{ m?.createdAt | date: 'dd.MM.yyyy'}}
+                {{ m?.createdAt | date: 'dd.MM.yyyy'}}
             </div>
         </div>
 
         <!-- SYSTEM MESSAGE CONTAINER -->
-        <div style="width:100%; display:flex; justify-content: center; margin-top:15px;" *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_TYPE">
+        <div style="width:100%; display:flex; justify-content: center; margin-top:15px;"
+            *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_TYPE">
             <div style="background-color: #fff5c4f2; padding: 5px 9px; border-radius:5px; "> {{ m?.body }}
                 {{ m?.createdAt | date: "hh:mm" }}</div>
         </div>

@@ -17,7 +17,7 @@ export class AddgroupchatComponent implements OnInit {
   query: string = "";
 
   get contacts(): Contact[] {
-    return this.chatService.contacts.filter(contact => contact.name.includes(this.query));
+    return this.chatService.contacts.filter(contact => contact.name.includes(this.query) && !this.creatingRoomContacts.includes(contact));
   }
   set contacts(val: Contact[]) {
     this.chatService.contacts = val;
@@ -39,7 +39,7 @@ export class AddgroupchatComponent implements OnInit {
     }
   }
   ToRoomProfileCreation() {
-    this.store.addEntryWithouthKeyToTEMPDATA(this.constants.CREATING_ROOM_CONTACTS_ID, this.creatingRoomContacts);
+    this.store.addEntryWithouthIdToTEMPDATA(this.constants.CREATING_ROOM_CONTACTS_ID, this.creatingRoomContacts);
     this.chatService.initDisplayChatRoomProfileComponent();
     this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.GROUP_CHAT_PROFILE;
   }

@@ -109,13 +109,12 @@ export class ValueResolver {
 
   resolveChatRoomName(chatRoom: ChatRoom): string {
     if (chatRoom) {
-      if (chatRoom.userIds) {
+      if (chatRoom.userIds && chatRoom.userIds.length == 2) {
         //1on1 room
-        if (chatRoom.userIds.length == 2) {
-          let userId = this.getNotLocalUserId(chatRoom.userIds);
-          let contact : Contact = this.resolveContact(userId);
-          return contact ? contact.name : 'unknown name';
-        }
+        let userId = this.getNotLocalUserId(chatRoom.userIds);
+        let contact: Contact = this.resolveContactId(userId);
+        return contact ? contact.name : 'unknown name';
+
       }
       return chatRoom.title;
     }
@@ -132,7 +131,7 @@ export class ValueResolver {
     return "";
   }
 
-  resolveContact(userId: string): Contact {
+  resolveContactId(userId: string): Contact {
     let lookedUpcontact: Contact = this.store.lookUpInDATA(userId);
     if (lookedUpcontact) {
       return lookedUpcontact;
@@ -140,9 +139,9 @@ export class ValueResolver {
     return null;
   }
 
-  resolveOneToOneRoomByContact(contact: Contact){
+  resolveOneToOneRoomByContact(contact: Contact) {
     this.availableRooms.forEach(room => {
-      if(room.userIds.length == 2 && room.userIds.includes(contact.id) && room.userIds.includes(this.localUser.id)){
+      if (room.userIds.length == 2 && room.userIds.includes(contact.id) && room.userIds.includes(this.localUser.id)) {
         this.chatService.displayedChatRoom = room;
         this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
       }
@@ -150,10 +149,10 @@ export class ValueResolver {
   }
 
   private getNotLocalUserId(userIds: string[]): string {
-      if (this.isNotLocalUser(userIds[0])) {
-        return userIds[0];
-      }
-      return userIds[1];
+    if (this.isNotLocalUser(userIds[0])) {
+      return userIds[0];
+    }
+    return userIds[1];
   }
 
   private isNotLocalUser(id: string): boolean {

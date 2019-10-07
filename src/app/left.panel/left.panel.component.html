@@ -51,10 +51,10 @@
             <img *ngIf="localUser" class="user-app-logo-img"
                 src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">
         </div>
-        <div class="user-name">
+        <label class="user-name">
             {{localUser?.name}}
-        </div>
-        <div class="user-list">
+        </label>
+        <div class="new-user-logo">
             <img class="user-list-img" src="assets/comment.svg"
                 (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.DISPLAY_CONTACTS_PANEL">
         </div>
@@ -64,19 +64,13 @@
 
         </div>
         <div class="user-app-burger">
-            <img class="user-app-burger-img" src="assets/threepoints.svg">
+            <img class="user-app-burger-img" src="assets/threepoints.svg" (click)="displayUserMenu=!displayUserMenu">
             <div *ngIf="displayUserMenu" class="user-menu">
                 <div class="menu-row super-user-menu">
                     Neue Gruppe
                 </div>
                 <div class="menu-row super-user-menu">
                     Profil
-                </div>
-                <div class="menu-row super-user-menu">
-                    Archivieren
-                </div>
-                <div class="menu-row super-user-menu">
-                    Mit Stern markieren
                 </div>
                 <div class="menu-row super-user-menu">
                     Einstellung
@@ -99,11 +93,15 @@
     <div class="rooms-container">
         <div *ngFor="let chatRoom of availableRooms | keyvalue" class="rooms-row"
             (click)="toggleDisplayedRoom(chatRoom.value)">
-            <div>
-                <img style="border-radius: 20px; width:40px;"
+            <div style="position: relative;">
+                <img style="border-radius: 20px; width:55px;"
                     src="{{chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/default-user-icon.svg'}}">
+                <div [hidden]="!chatRoom.value.unseenChatMessageIds || chatRoom.value.unseenChatMessageIds == 0"
+                    style="border-radius:50%; background-color: red; color:white; font-weight: bolder; left:2px; bottom:2px; padding:2px 5px; position:absolute;">
+                    {{chatRoom.value.unseenChatMessageIds?.length}}
+                </div>
             </div>
-            <div style="display:flex; flex-direction: column; align-items: center; justify-content: center; width:100%;">
+            <div style="display:flex; flex-direction: column; width:90%;">
                 <div class="room-title-container">
                     {{values.resolveChatRoomName(chatRoom.value)}}
                 </div>

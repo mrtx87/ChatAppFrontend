@@ -60,6 +60,14 @@ export class LeftPanelComponent implements OnInit {
   toggleDisplayedRoom(chatRoom: ChatRoom) {
     this.displayedChatRoom = chatRoom;
 
+    if (chatRoom.userIds.length > 2) {
+      chatRoom.userIds.forEach(contactId => {
+        if(!this.store.lookUpInDATA(contactId)){
+          this.chatService.sendResolveContactId(contactId);
+        }
+      });
+    }
+
     if (chatRoom.unseenChatMessageIds && chatRoom.unseenChatMessageIds.length > 0) {
       this.chatService.sendUpdateUnseenMessages(chatRoom.unseenChatMessageIds);
       chatRoom.unseenChatMessageIds = null;

@@ -129,7 +129,7 @@ export class DataStore {
     }
 
     addMapToDATA(dataMap : Map<string,any>) {
-        dataMap.forEach((value, key) => this.DATA.set(value, key));
+        dataMap.forEach((value, key) => this.DATA.set(key, value));
     }
 
     addEntryToDATA(entry : any) {
@@ -145,14 +145,14 @@ export class DataStore {
     }
 
     addMapToTEMPDATA(dataMap : Map<string,any>) {
-        dataMap.forEach((value, key) => this.TEMPDATA.set(value, key));
+        dataMap.forEach((value, key) => this.TEMPDATA.set(key, value));
     }
 
     addEntryToTEMPDATA(entry : any) {
         this.TEMPDATA.set(entry.id, entry);
     }
 
-    addEntryWithouthKeyToTEMPDATA(key: string, entry : any) {
+    addEntryWithouthIdToTEMPDATA(key: string, entry : any) {
         this.TEMPDATA.set(key, entry);
     }
 

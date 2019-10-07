@@ -13,6 +13,16 @@ import { ChatMessage } from './Entities/chat.message';
 import * as moment from 'moment';
 import { DataStore } from './data.store';
 import { GroupProfileComponent } from './group-profile/group-profile.component';
+import { AddgroupchatComponent as AddGroupChatComponent } from './addgroupchat/addgroupchat.component';
+import { AdduserComponent } from './adduser/adduser.component';
+import { ChatPanelComponent } from './chat.panel/chat.panel.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { DisplaychatComponent } from './displaychat/displaychat.component';
+import { LeftPanelComponent } from './left.panel/left.panel.component';
+import { LoginregisterComponent } from './loginregister/loginregister.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SearchresultComponent } from './searchresult/searchresult.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 
@@ -29,9 +39,22 @@ export class ChatService {
   //FORMS AND PAGE INPUTS
   private chatInputText_: string;
 
+ //DISPLAY PARAMETERS
+ private displayedChatRoom_: ChatRoom;
 
+  // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
   public groupProfileComponent: GroupProfileComponent;
+  public addGroupChatComponent: AddGroupChatComponent;
+  public adduserComponent: AdduserComponent;
+  public chatPanelComponent: ChatPanelComponent;
+  public contactsComponent: ContactsComponent;
+  public displayChatComponent: DisplaychatComponent;
+  public lefPanelComponent: LeftPanelComponent;
+  public loginRegisterComponent: LoginregisterComponent;
+  public profileComponent: ProfileComponent;
+  public searchResultComponent: SearchresultComponent
+  public settingsComponent: SettingsComponent
 
   public registerAppComponent(appComponent: AppComponent) {
     this.appComponent = appComponent;
@@ -41,13 +64,45 @@ export class ChatService {
     this.groupProfileComponent = groupProfileComponent;
   }
 
-  //DISPLAY PARAMETERS
-  private displayedChatRoom_: ChatRoom;
+  public registerAddgroupchatComponent(addGroupChatComponent: AddGroupChatComponent) {
+    this.addGroupChatComponent = addGroupChatComponent;
+  }
 
+  public registerAdduserComponent(adduserComponent: AdduserComponent) {
+    this.adduserComponent = adduserComponent;
+  }
 
+  public registerChatPanelComponent(chatPanelComponent: ChatPanelComponent) {
+    this.chatPanelComponent = chatPanelComponent;
+  }
 
+  public registerLeftPanelComponent(lefPanelComponent: LeftPanelComponent) {
+    this.lefPanelComponent = lefPanelComponent;
+  }
 
-  //DEBUG MOCKS
+  public registerLoginRegisterComponent(loginRegisterComponent: LoginregisterComponent) {
+    this.loginRegisterComponent = loginRegisterComponent;
+  }
+
+  public registerProfileComponent(profileComponent: ProfileComponent) {
+    this.profileComponent = profileComponent;
+  }
+
+  public registerContactsComponent(contactsComponent: ContactsComponent) {
+    this.contactsComponent = contactsComponent;
+  }
+
+  public registerDisplayChatComponent(displayChatComponent: DisplaychatComponent) {
+    this.displayChatComponent = displayChatComponent;
+  }
+
+  public registerSearchResultComponent(searchResultComponent: SearchresultComponent) {
+    this.searchResultComponent = searchResultComponent;
+  }
+
+  public registerSettingsComponent(settingsComponent: SettingsComponent) {
+    this.settingsComponent = settingsComponent;
+  }
 
   get chatMessagesByRoom(): Map<string, ChatMessage[]> {
     return this.store.chatMessagesByRoom;
@@ -196,6 +251,12 @@ export class ChatService {
     })
   }
 
+  sendResolveContactId(contactId: string) {
+    this.http.get(this.constants.BASE_URL + "/contactId/" + contactId).subscribe(response => {
+      this.store.addEntryToDATA(<Contact>response);
+    })
+  }
+
   sendRequestRegistration() {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
@@ -218,7 +279,7 @@ export class ChatService {
         if (receivedUser.id && receivedUser.name) {
           this.isLoggedIn = true;
           this.localUser = receivedUser;
-          this.addEntryToDATA(<Contact> this.localUser);
+          this.addEntryToDATA(<Contact>this.localUser);
           this.init();
         }
       });
@@ -307,10 +368,10 @@ export class ChatService {
     }
     //count and set list of unseen messages ids in room
     this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
-    
+
     //save responseChatMessages in DATA Store
     this.addListOfEntriesToDATA(responseChatMessages);
-    
+
     //if chatmessages are associated with the currently displayed room then we updates the seen state instantly
     if (this.displayedChatRoom && roomId === this.displayedChatRoom.id) {
       this.sendUpdateUnseenMessages(this.availableRooms.get(roomId).unseenChatMessageIds);
@@ -375,7 +436,7 @@ export class ChatService {
     this.contacts = [];
     contacts
       .sort((c1, c2) => (c1.name > c2.name) ? 1 : -1)
-      .forEach(contact => { 
+      .forEach(contact => {
         this.contacts.push(contact);
         this.addEntryToDATA(contact);
       });
@@ -454,7 +515,7 @@ export class ChatService {
   }
 
   initDisplayChatRoomProfileComponent() {
-    if(this.groupProfileComponent) {
+    if (this.groupProfileComponent) {
       this.groupProfileComponent.init();
     }
   }

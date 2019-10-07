@@ -4,20 +4,20 @@
             <div style="display:flex;">
                 <div><img style="width:50px; border-radius: 25px;" src="{{displayedChatRoom?.iconUrl}}"></div>
                 <div style="display:flex; flex-direction: column; padding: 8px;">
-                    <div style="font-weight: bolder;"> {{values.resolveChatRoomName(displayedChatRoom)}}</div>
+                    <div style="font-weight: bolder;"> {{displayedChatRoom | chatRoomName}}</div>
                     <div style="display: flex;"> 
                         <span *ngFor="let id of displayedChatRoom?.userIds" style="margin-right: 4px;">
-                            {{ values.resolveContact(id)?.name }},
+                            {{ id | contactName}},
                         </span>
                     </div>
                 </div>
             </div>
         </div>
         <div style="width:30%; display:flex; align-items:center; justify-content: flex-end;">
-            <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
+            <div class="menu-item-container"> <img  class="magnifier-img" src="assets/magnifier-glass.svg">
             </div>
-            <div class="menu-item-container"> <img class="menu-img" src="assets/burger.svg">
-                <div [hidden]="!displayRoomMenu" class="room-menu">
+            <div class="menu-item-container" > <img (click)="displayRoomMenu=!displayRoomMenu" class="menu-img" src="assets/burger.svg">
+                <div id="room-menu" *ngIf="displayRoomMenu" class="room-menu">
                     <div class="room-row super-room-menu">
                         Gruppeninfo
                     </div>
@@ -39,9 +39,9 @@
 
     </div>
     <app-displaychat></app-displaychat>
-    <div class="senden-container">
-        <img src="assets/happiness.svg">
-        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText">
-        <img src="assets/paper-plane.svg">
+    <div class="senden-container" >
+        <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
+        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom">
+        <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
     </div>
 </div>
