@@ -44,8 +44,6 @@ export class DisplaychatComponent implements OnInit {
   onFileChanged(event) {
     const file = event.target.files[0]
 
-    // Create an image
-    this.img = document.createElement("img");
     // Create a file reader
     let reader = new FileReader();
     let that = this;
@@ -56,7 +54,6 @@ export class DisplaychatComponent implements OnInit {
     }
     // Load files into file reader
     reader.readAsDataURL(file);
-
   }
 
   downscaleImage(dataUrl, size, imageType, imageArguments) {
