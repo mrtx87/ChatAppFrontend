@@ -5,6 +5,7 @@ import { Constants } from '../constants';
 import { ChatRoom } from '../Entities/chat.room';
 import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-left-panel',
@@ -31,11 +32,19 @@ export class LeftPanelComponent implements OnInit {
     this.store.localUser = val;
   }
 
-  get availableRooms(): Map<string, ChatRoom> {
-    return this.store.availableRooms;
-  }
-  set availableRooms(val: Map<string, ChatRoom>) {
-    this.store.availableRooms = val;
+  get availableRooms():  ChatRoom[] {
+    let rooms = this.store.availableRooms;
+    let availableRooms =  [];
+    rooms.forEach(room => availableRooms.push(room));
+    // availableRooms.sort((a,b) => {
+    //   if(a.ChatRoom.unseenChatMessageIds){
+
+    //   }
+
+    //   let dateA = new Date(this.values.resolveLatestChatMessageDate(a)).getTime();
+    //   let dateB = new Date(this.values.resolveLatestChatMessageDate(b)).getTime();
+    //   return dateB - dateA;})
+    return availableRooms;
   }
 
   get displayedChatRoom(): ChatRoom {

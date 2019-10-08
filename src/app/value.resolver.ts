@@ -140,7 +140,7 @@ export class ValueResolver {
   resolveLatestChatMessageBody(chatRoom: ChatRoom): string {
     if (chatRoom) {
       let chatMessage: ChatMessage = this.resolveLatestChatMessage(chatRoom);
-      return chatMessage ? chatMessage.body : "";;
+      return chatMessage ? chatMessage.body : "";
     }
     return "";
   }
