@@ -32,18 +32,19 @@ export class LeftPanelComponent implements OnInit {
     this.store.localUser = val;
   }
 
-  get availableRooms():  ChatRoom[] {
+  get availableRooms(): ChatRoom[] {
     let rooms = this.store.availableRooms;
-    let availableRooms =  [];
+    let availableRooms = [];
     rooms.forEach(room => availableRooms.push(room));
-    // availableRooms.sort((a,b) => {
-    //   if(a.ChatRoom.unseenChatMessageIds){
-
-    //   }
-
-    //   let dateA = new Date(this.values.resolveLatestChatMessageDate(a)).getTime();
-    //   let dateB = new Date(this.values.resolveLatestChatMessageDate(b)).getTime();
-    //   return dateB - dateA;})
+    availableRooms.sort((a: ChatRoom, b: ChatRoom) => {
+      if (a.unseenChatMessageIds && a.unseenChatMessageIds.length && (!b.unseenChatMessageIds || b.unseenChatMessageIds.length == 0)) {
+        return -1;
+      } else {
+        let dateA = new Date(this.values.resolveLatestChatMessageDate(a)).getTime();
+        let dateB = new Date(this.values.resolveLatestChatMessageDate(b)).getTime();
+        return dateB - dateA;
+      }
+    })
     return availableRooms;
   }
 
@@ -71,7 +72,7 @@ export class LeftPanelComponent implements OnInit {
 
     if (chatRoom.userIds.length > 2) {
       chatRoom.userIds.forEach(contactId => {
-        if(!this.store.lookUpInDATA(contactId)){
+        if (!this.store.lookUpInDATA(contactId)) {
           this.chatService.sendResolveContactId(contactId);
         }
       });
