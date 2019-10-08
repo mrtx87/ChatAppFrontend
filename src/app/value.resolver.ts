@@ -121,12 +121,25 @@ export class ValueResolver {
     return "";
   }
 
+  resolveLatestChatMessageDate(chatRoom: ChatRoom): string {
+    if (chatRoom) {
+      this.resolveLatestChatMessage(chatRoom).createdAt;
+    }
+
+    return "";
+  }
+
+
+  private resolveLatestChatMessage(chatRoom: ChatRoom): ChatMessage {
+    const chatMessages: ChatMessage[] = this.store.chatMessagesByRoom.get(chatRoom.id);
+    if (chatMessages) {
+      return chatMessages[chatMessages.length - 1];
+    }
+  }
+
   resolveLatestChatMessageBody(chatRoom: ChatRoom): string {
     if (chatRoom) {
-      const chatMessages: ChatMessage[] = this.store.chatMessagesByRoom.get(chatRoom.id);
-      if (chatMessages) {
-        return chatMessages[chatMessages.length - 1].body;
-      }
+      this.resolveLatestChatMessage(chatRoom).body;
     }
     return "";
   }
