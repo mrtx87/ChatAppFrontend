@@ -55,12 +55,18 @@
                 </div>
             </div>
             <div style="display:flex; flex-direction: column; width:90%;">
+                <div class="room-wrapper">
                 <div class="room-title-container">
                     {{chatRoom.value | chatRoomName}}
                 </div>
+                <span>
+                        test datum
+                    </span>
+                 </div>
                 <div class="room-last-message-container">
                     {{chatRoom.value | lastestChatMessageBody}}
                 </div>
+                
             </div>
 
         </div>
