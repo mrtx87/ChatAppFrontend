@@ -133,6 +133,7 @@
 }
 
 .room-title-container {
+    width: 65%;
     font-weight: bold;
     margin-left: 5px;
 }
@@ -150,4 +151,12 @@
 
 .rooms-row:hover .create-room-icon-container {
     display: flex;
+}
+
+.room-wrapper{
+    display: flex;
+}
+
+.room-wrapper span {
+    color: var(--light-grey);
 }

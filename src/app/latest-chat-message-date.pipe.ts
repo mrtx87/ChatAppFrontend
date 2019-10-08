@@ -5,7 +5,8 @@ import { ChatService } from './chat.service';
 import { ValueResolver } from './value.resolver';
 
 @Pipe({
-  name: 'latestChatMessageDate'
+  name: 'latestChatMessageDate',
+  pure: false
 })
 export class LatestChatMessageDatePipe implements PipeTransform {
 
