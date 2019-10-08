@@ -5,13 +5,14 @@ import { ChatService } from './chat.service';
 import { ValueResolver } from './value.resolver';
 
 @Pipe({
-  name: 'latestChatMessageDate'
+  name: 'latestChatMessageDate',
+  pure: false
 })
 export class LatestChatMessageDatePipe implements PipeTransform {
 
   transform(chatRoom: ChatRoom): string {
     return this.values.resolveLatestChatMessageDate(chatRoom);
-    //TODO GORANS LOGIK FÜR DATUM IN HEUTE, GESTERN, MONTAG, DIENSTAG bis zum ender einer zurückliegenen woche 
+    //TODO GORANS LOGIK FÜR DATUM IN HEUTE, GESTERN, MONTAG, DIENSTAG bis zum ender einer zurückliegenden woche 
   }
 
   constructor(private store: DataStore, private chatService: ChatService, private values: ValueResolver) { }
