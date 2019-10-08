@@ -56,10 +56,10 @@
             </div>
             <div style="display:flex; flex-direction: column; width:90%;">
                 <div class="room-title-container">
-                    {{values.resolveChatRoomName(chatRoom.value)}}
+                    {{chatRoom.value | chatRoomName}}
                 </div>
                 <div class="room-last-message-container">
-                    {{values.resolveLatestChatMessageBody(chatRoom.value)}}
+                    {{chatRoom.value | lastestChatMessageBody}}
                 </div>
             </div>
 
