@@ -97,7 +97,7 @@ export class GroupProfileComponent implements OnInit {
 
 
   isValid() {
-    return this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds;
+    return this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
   }
 
   sendCreateNewGroupRoom() {

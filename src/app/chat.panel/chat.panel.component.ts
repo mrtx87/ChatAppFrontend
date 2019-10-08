@@ -37,19 +37,21 @@ export class ChatPanelComponent implements OnInit {
     this.chatService.displayedChatRoom = val;
   }
 
-  constructor(private chatService : ChatService, private values: ValueResolver, private store : DataStore, private constants : Constants) { }
+  constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants) { }
 
   ngOnInit() {
 
   }
 
   triggerSendChatMessage() {
-    const chatMessage : ChatMessage = new ChatMessage();
-    chatMessage.body = this.chatInputText;
-    chatMessage.fromId = this.localUser.id;
-    chatMessage.roomId = this.displayedChatRoom.id;
-    this.chatService.sendOutgoingChatMessage(this.displayedChatRoom, chatMessage);
-    this.chatInputText = "";
+    if (this.chatInputText && this.chatInputText.length >= 1) {
+      const chatMessage: ChatMessage = new ChatMessage();
+      chatMessage.body = this.chatInputText;
+      chatMessage.fromId = this.localUser.id;
+      chatMessage.roomId = this.displayedChatRoom.id;
+      this.chatService.sendOutgoingChatMessage(this.displayedChatRoom, chatMessage);
+      this.chatInputText = "";
+    }
   }
 
 }
