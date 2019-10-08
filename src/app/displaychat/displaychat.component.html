@@ -1,4 +1,4 @@
-<div style="display:flex; flex-direction:column; width:100%; height:74vh; background-color: white; overflow: auto;">
+<div style="position: relative;display:flex; flex-direction:column; width:100%; height:74vh; background-color: white; overflow: auto;">
 
     <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
     <button (click)="fileInput.click()">Select File</button>
@@ -24,17 +24,18 @@
         <!-- INCOMING MESSAGE CONTAINER -->
         <div style="width:100%; display:flex; justify-content: flex-start; margin-top:15px;"
             *ngIf="m.fromId !== localUser.id && m.fromId !== constants.CHAT_MESSAGE_SYSTEM_TYPE && m.fromId !== constants.CHAT_MESSAGE_DATE_TYPE">
-            <div style="background-color: #F1F1F1; padding: 5px 9px; border-radius:5px; "> {{ m?.body }}
-                {{ m?.createdAt | date: "hh:mm" }}</div>
+            <div class="chat-bubble left">
+                {{ m?.body}}
+                <span>{{ m?.createdAt | date: "hh:mm" }}</span></div>
 
         </div>
 
         <!-- OUTGOING MESSAGE CONTAINER -->
         <div style="width:100%; display:flex; justify-content: flex-end; margin-top:15px;"
             *ngIf="m.fromId === localUser.id">
-            <div style="background-color: #dcf8c6; padding: 5px 9px; border-radius:5px; ">
+            <div class="chat-bubble right">
                 {{ m?.body}}
-                {{ m?.createdAt | date: "hh:mm" }}</div><img src="assets/tail.png">
+                <span>{{ m?.createdAt | date: "hh:mm" }}</span></div>
 
         </div>
 
