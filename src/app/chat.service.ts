@@ -285,6 +285,21 @@ export class ChatService {
       });
   }
 
+  sendUpdateUserProfile() {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    this.http
+      .post(this.constants.BASE_URL + "/update/userId/" + this.localUser.id, { from: <Contact> this.localUser}, { headers })
+      .subscribe(response => {
+        let contact = <Contact> response;
+        this.localUser.iconUrl = contact.iconUrl ? contact.iconUrl : this.localUser.iconUrl;
+        this.localUser.info = contact.info ? contact.info : this.localUser.info;
+        this.localUser.name = contact.name ? contact.name : this.localUser.name;
+
+      });
+  }
+
+
   init() {
     this.connect();
     this.sendRequestContacts();

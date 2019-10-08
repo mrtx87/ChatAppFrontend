@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="success-container">
-            <img *ngIf="valid()" class="success-img" src="assets/success.svg">
+            <img (click)="updateUserProfile()" *ngIf="valid()" class="success-img" src="assets/success.svg">
         </div>
 
     </div>

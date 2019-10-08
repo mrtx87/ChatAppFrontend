@@ -59,5 +59,8 @@ export class ProfileComponent implements OnInit {
     }, 200); 
   }
 
+  updateUserProfile() {
+    this.chatService.sendUpdateUserProfile();
+  }
 
 }
