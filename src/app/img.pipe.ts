@@ -7,8 +7,7 @@ import { ChatRoom } from './Entities/chat.room';
 })
 export class ImgPipe implements PipeTransform {
 
-  transform(chatRoom: ChatRoom): string {
-
+  transform(chatRoom: any): string {
     return chatRoom && chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/picture.svg';
   }
 
