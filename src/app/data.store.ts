@@ -164,4 +164,8 @@ export class DataStore {
         return this.TEMPDATA.get(id);
     }
 
+    deleteFromTEMPDATA(id: string): any {
+        return this.TEMPDATA.get(id);
+    }
+
 }

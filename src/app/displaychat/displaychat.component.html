@@ -1,7 +1,5 @@
 <div style="display:flex; flex-direction:column; width:100%; height:74vh; background-color: white; overflow: auto;">
 
-    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
-    <button (click)="fileInput.click()">Select File</button>
     <img style="width:100px;" [src]="imgsrc" >
     <!-- {{chatService.appComponent.currentDisplayedLeftPanel}} -->
     <ng-template ngFor let-m [ngForOf]="currentDisplayMessages">
