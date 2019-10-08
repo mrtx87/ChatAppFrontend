@@ -39,7 +39,9 @@ export class LeftPanelComponent implements OnInit {
     availableRooms.sort((a: ChatRoom, b: ChatRoom) => {
       if (a.unseenChatMessageIds && a.unseenChatMessageIds.length && (!b.unseenChatMessageIds || b.unseenChatMessageIds.length == 0)) {
         return -1;
-      } else {
+      } else if(b.unseenChatMessageIds && b.unseenChatMessageIds.length && (!a.unseenChatMessageIds || a.unseenChatMessageIds.length == 0)){
+        return 1;
+      }else{
         let dateA = new Date(this.values.resolveLatestChatMessageDate(a)).getTime();
         let dateB = new Date(this.values.resolveLatestChatMessageDate(b)).getTime();
         return dateB - dateA;
