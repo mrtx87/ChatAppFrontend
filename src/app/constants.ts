@@ -15,6 +15,8 @@ export class Constants{
     
 
     public NEW_GROUP_IMAGE: string = "new-group-image";
+    public NEW_LOCAL_USER_IMAGE: string = "new-local-user-image";
+
 
 
     public DEFAULT_PANEL : string = "default-panel";

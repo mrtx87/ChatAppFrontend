@@ -16,7 +16,9 @@
         <div class="profile-pic-container">
             <div class="pp"> 
                 <!--<img *ngIf="localUser" class="img-test" src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">!-->
-                <img src="assets/test-image.jpg" class="img-test">
+                <img (click)="fileInput.click()"
+                    src="{{localUser?.iconUrl}}" class="img-test">
+                <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
             </div>
             
         </div>
