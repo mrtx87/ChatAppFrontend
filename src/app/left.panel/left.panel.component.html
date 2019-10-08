@@ -44,22 +44,22 @@
         <input class="search-contact-inputfield" type="text" placeholder="search chats">
     </div>
     <div class="rooms-container">
-        <div *ngFor="let chatRoom of availableRooms | keyvalue" class="rooms-row"  
-            (click)="toggleDisplayedRoom(chatRoom.value)"> <!-- {{values.resolveLatestChatMessageBody(chatRoom.value)}} -->
+        <div *ngFor="let chatRoom of availableRooms" class="rooms-row"  
+            (click)="toggleDisplayedRoom(chatRoom)"> <!-- {{values.resolveLatestChatMessageBody(chatRoom)}} -->
             <div style="position: relative;">
                 <img style="border-radius: 20px; width:55px;"
                     src="{{chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/default-user-icon.svg'}}">
-                <div [hidden]="!chatRoom.value.unseenChatMessageIds || chatRoom.value.unseenChatMessageIds == 0"
+                <div [hidden]="!chatRoom.unseenChatMessageIds || chatRoom.unseenChatMessageIds == 0"
                     style="border-radius:50%; background-color: red; color:white; font-weight: bolder; left:2px; bottom:2px; padding:2px 5px; position:absolute;">
-                    {{chatRoom.value.unseenChatMessageIds?.length}}
+                    {{chatRoom.unseenChatMessageIds?.length}}
                 </div>
             </div>
             <div style="display:flex; flex-direction: column; width:90%;">
                 <div class="room-title-container">
-                    {{chatRoom.value | chatRoomName}}
+                    {{chatRoom | chatRoomName}}
                 </div>
                 <div class="room-last-message-container">
-                    {{chatRoom.value | lastestChatMessageBody}}
+                    {{chatRoom | latestChatMessageDate}}
                 </div>
             </div>
 

@@ -368,7 +368,7 @@ export class ChatService {
     }
     //count and set list of unseen messages ids in room
     this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
-
+    
     //save responseChatMessages in DATA Store
     this.addListOfEntriesToDATA(responseChatMessages);
 
