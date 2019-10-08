@@ -7,7 +7,7 @@
         <div class="row-item">
             <div class="preview"
                 *ngFor="let selected_contact of creatingRoomContacts">
-                <div class="profilimage"></div>
+                <div class="profilimage"><img style="height:25px;" src="{{selected_contact.iconUrl}}"></div>
                 <span>{{selected_contact.name}} </span>
                 <div (click)="removeFromCreatingRoomContacts(selected_contact)" class="remove"></div>
             </div>
