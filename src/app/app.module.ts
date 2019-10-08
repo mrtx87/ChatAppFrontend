@@ -18,6 +18,9 @@ import { GroupProfileComponent } from './group-profile/group-profile.component';
 import { ChatRoomNamePipe } from './chat-room-name.pipe';
 import { ContactNamePipe } from './contact-name.pipe';
 import { SettingsComponent } from './settings/settings.component';
+import { LastestChatMessageBodyPipe } from './lastest-chat-message-body.pipe';
+import { LatestChatMessageDatePipe } from './latest-chat-message-date.pipe';
+import { ImgPipe } from './img.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { SettingsComponent } from './settings/settings.component';
     GroupProfileComponent,
     ChatRoomNamePipe,
     ContactNamePipe,
-    SettingsComponent
+    SettingsComponent,
+    LastestChatMessageBodyPipe,
+    LatestChatMessageDatePipe,
+    ImgPipe
   ],
   imports: [
     BrowserModule,

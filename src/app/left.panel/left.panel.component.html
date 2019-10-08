@@ -48,7 +48,7 @@
             (click)="toggleDisplayedRoom(chatRoom.value)"> <!-- {{values.resolveLatestChatMessageBody(chatRoom.value)}} -->
             <div style="position: relative;">
                 <img style="border-radius: 20px; width:55px;"
-                    src="{{chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/default-user-icon.svg'}}">
+                    src="{{chatRoom.value | img}}">
                 <div [hidden]="!chatRoom.value.unseenChatMessageIds || chatRoom.value.unseenChatMessageIds == 0"
                     style="border-radius:50%; background-color: red; color:white; font-weight: bolder; left:2px; bottom:2px; padding:2px 5px; position:absolute;">
                     {{chatRoom.value.unseenChatMessageIds?.length}}
@@ -56,10 +56,10 @@
             </div>
             <div style="display:flex; flex-direction: column; width:90%;">
                 <div class="room-title-container">
-                    {{values.resolveChatRoomName(chatRoom.value)}}
+                    {{chatRoom.value | chatRoomName}}
                 </div>
                 <div class="room-last-message-container">
-                    {{values.resolveLatestChatMessageBody(chatRoom.value)}}
+                    {{chatRoom.value | lastestChatMessageBody}}
                 </div>
             </div>
 

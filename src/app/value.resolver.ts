@@ -123,8 +123,8 @@ export class ValueResolver {
 
   resolveLatestChatMessageDate(chatRoom: ChatRoom): string {
     if (chatRoom) {
-      this.resolveLatestChatMessage(chatRoom).createdAt;
-    }
+      let chatMessage: ChatMessage = this.resolveLatestChatMessage(chatRoom);
+      return chatMessage ? chatMessage.createdAt : "";;    }
 
     return "";
   }
@@ -139,7 +139,8 @@ export class ValueResolver {
 
   resolveLatestChatMessageBody(chatRoom: ChatRoom): string {
     if (chatRoom) {
-      this.resolveLatestChatMessage(chatRoom).body;
+      let chatMessage: ChatMessage = this.resolveLatestChatMessage(chatRoom);
+      return chatMessage ? chatMessage.body : "";;
     }
     return "";
   }

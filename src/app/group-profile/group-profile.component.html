@@ -1,13 +1,63 @@
-<div>
-    <h3> BACKARROW  Neue Gruppe</h3>
+<div class="profile">
+    <div class="return-2-user-panel">
+        <div class="return-button-2-panel">
+            <!--<div class="r2upa">
+                <img src="assets/left-arrow.svg">
+            </div>!-->
+            <div class="r2upa">
+                <img (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.GROUP_CHAT"
+                    src="assets/left-arrow.svg">
+            </div>
+            <div class="r2bp">
+                Profil
+            </div>
+        </div>
+    </div>
+    <div class="profile-container">
+        <div class="profile-pic-container">
+            <div class="pp">
+                <!--<img *ngIf="localUser" class="img-test" src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">!-->
+                <img (click)="fileInput.click()"
+                    src="{{currentChatRoom | img}}" class="img-test">
+                <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+            </div>
 
-    <h4> GruppenBild Platzhalter</h4>
-
-    <label> Gruppentitel</label>
-    <input (change)="updateChatroomTitle()" [(ngModel)]="roomTitleText" placeholder="Gruppentitel"> 
-    <label>ausgewählte Mitglieder:</label>
-    <div *ngIf="currentChatRoom" style="display:flex;"> <span *ngFor="let id of currentChatRoom.userIds"> {{ id }}</span></div>
-    <img *ngIf="isValid()" style ="height:50px;" src="assets/success.svg" placeholder="Gruppentitel" (click)="sendCreateNewGroupRoom()"> 
-
-
+        </div>
+        <div class="edit-name-container">
+            <div class="profile-name">
+                <span>
+                    Gruppenname
+                </span>
+            </div>
+            <div class="edit-profile-name">
+                <input type="text" (change)="updateChatroomTitle()" [(ngModel)]="roomTitleText"
+                    placeholder="Gruppentitel">
+            </div>
+        </div>
+        <div class="edit-name-container">
+            <div class="profile-name">
+                <span>
+                    Thema
+                </span>
+            </div>
+            <div class="edit-profile-name">
+                <input [(ngModel)]="info" type="text" placeholder="edit info">
+            </div>
+        </div>
+        <div class="edit-name-container">
+            <div class="profile-name">
+                <span>
+                    Gruppenmitglieder
+                </span>
+            </div>
+            <div *ngIf="currentChatRoom" class="edit-profile-name">
+                <span *ngFor="let id of currentChatRoom.userIds">
+                    {{ id | contactName}}, </span>
+            </div>
+        </div>
+        <div class="success-container">
+            <img *ngIf="isValid()" style="height:50px;" src="assets/success.svg"
+                (click)="sendCreateNewGroupRoom()">
+        </div>
+    </div>
 </div>

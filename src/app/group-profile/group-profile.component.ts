@@ -6,6 +6,7 @@ import { Constants } from '../constants';
 import { ChatRoom } from '../Entities/chat.room';
 import { Contact } from '../Entities/contact';
 import { User } from '../Entities/user';
+import { ImageService } from '../image.service';
 
 @Component({
   selector: 'app-group-profile',
@@ -23,6 +24,24 @@ export class GroupProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.init();
+    
+  }
+
+  imageListener: any;
+  startImageListener() {
+    let that = this;
+    if(this.imageListener) {
+      clearInterval(this.imageListener);
+      this.imageListener = null;
+    }
+    that.imageListener = setInterval(function() {
+      if(that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE) && that.currentChatRoom) {
+        that.currentChatRoom.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE);
+        that.store.deleteFromTEMPDATA(that.constants.NEW_GROUP_IMAGE);
+        clearInterval(that.imageListener)
+        that.imageListener = null;
+      }
+    }, 200); 
   }
 
 
@@ -33,9 +52,11 @@ export class GroupProfileComponent implements OnInit {
 
   }
 
-  constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
+  constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants,private imageService: ImageService) {
     chatService.registerGroupProfileComponent(this);
   }
+
+  
 
   resolveCreatingChatRoom(): ChatRoom {
     let creatingRoomContacts: Contact[] = this.store.lookUpInTEMPDATA(this.constants.CREATING_ROOM_CONTACTS_ID);
@@ -68,6 +89,12 @@ export class GroupProfileComponent implements OnInit {
       this.currentChatRoom = this.resolveDisplayedChatRoom();
     }
   }
+
+  onFileChanged(event) {
+    this.imageService.onFileChanged(event);
+    this.startImageListener();
+  }
+
 
   isValid() {
     return this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds;
