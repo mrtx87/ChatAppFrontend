@@ -406,7 +406,7 @@ export class ChatService {
    * @param next 
    */
   private areDaysDifferent(previous: string, next: string): boolean {
-    let previousDate = moment(previous);
+    let previousDate: moment.Moment = moment(previous);
     let nextDate = moment(next);
     if (nextDate.dayOfYear() != previousDate.dayOfYear() || nextDate.year() != previousDate.year()) {
       return true;
