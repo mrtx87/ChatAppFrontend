@@ -91,7 +91,7 @@ export class GroupProfileComponent implements OnInit {
   }
 
   onFileChanged(event) {
-    this.imageService.onFileChanged(event);
+    this.imageService.onFileChanged(event, this.constants.NEW_GROUP_IMAGE);
     this.startImageListener();
   }
 

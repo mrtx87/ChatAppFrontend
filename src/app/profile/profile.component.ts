@@ -4,6 +4,7 @@ import { DataStore } from '../data.store';
 import { Constants } from '../constants';
 import { ValueResolver } from '../value.resolver';
 import { User } from '../Entities/user';
+import { ImageService } from '../image.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,7 @@ export class ProfileComponent implements OnInit {
   }
 
   constructor(private chatService: ChatService, private store: DataStore,
-              private constants: Constants, private values: ValueResolver) { }
+              private constants: Constants, private values: ValueResolver,private imageService: ImageService) { }
 
   ngOnInit() {
     this.name = this.localUser.name;
@@ -36,5 +37,30 @@ export class ProfileComponent implements OnInit {
       }
   }
 
+  onFileChanged(event) {
+    this.imageService.onFileChanged(event, this.constants.NEW_LOCAL_USER_IMAGE);
+    this.startImageListener();
+  }
+
+  imageListener: any;
+  startImageListener() {
+    let that = this;
+    if(this.imageListener) {
+      clearInterval(this.imageListener);
+      this.imageListener = null;
+    }
+    that.imageListener = setInterval(function() {
+      if(that.store.lookUpInTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE) && that.localUser) {
+        that.localUser.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE);
+        that.store.deleteFromTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE);
+        clearInterval(that.imageListener)
+        that.imageListener = null;
+      }
+    }, 200); 
+  }
+
+  updateUserProfile() {
+    this.chatService.sendUpdateUserProfile();
+  }
 
 }

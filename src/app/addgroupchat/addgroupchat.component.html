@@ -3,12 +3,13 @@
         <img src="assets/back-arrow_light.svg" class="return-icon">
         <div style="font-size:30px; color:white;">add user to group</div>
     </div>
-    <div style="display:flex; flex-direction:column; align-items: center;">
+    <div class="added-user">
         <div class="row-item">
-            <div style=" display:flex; border: 1px solid black; padding: 5px;"
+            <div class="preview"
                 *ngFor="let selected_contact of creatingRoomContacts">
-                {{selected_contact.name}} <div (click)="removeFromCreatingRoomContacts(selected_contact)"
-                    style="margin-left:5px; padding: 3px; border: 1px solid black;"> X</div>
+                <div class="profilimage"><img style="height:25px;" src="{{selected_contact.iconUrl}}"></div>
+                <span>{{selected_contact.name}} </span>
+                <div (click)="removeFromCreatingRoomContacts(selected_contact)" class="remove"></div>
             </div>
         </div>
         <div class="search-contact-container">

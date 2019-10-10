@@ -14,7 +14,7 @@ export class ImageService {
 
 
   imgsrc;
-  onFileChanged(event) {
+  onFileChanged(event, key: string) {
     const file = event.target.files[0]
 
     // Create a file reader
@@ -23,13 +23,13 @@ export class ImageService {
     // Set the image once loaded into file reader
     reader.onload = function (e) {
       let res : any = e.target;
-      that.downscaleImage(res.result, 100, "image/jpeg", 0.7);
+      that.downscaleImage(res.result, 100, "image/jpeg", 0.7, key);
     }
     // Load files into file reader
     reader.readAsDataURL(file);
   }
 
-  downscaleImage(dataUrl, size, imageType, imageArguments) {
+  downscaleImage(dataUrl, size, imageType, imageArguments, key: string) {
     let image, canvas, ctx, newDataUrl;
 
     // Provide default values
@@ -49,7 +49,7 @@ export class ImageService {
         ctx = canvas.getContext("2d");
         ctx.drawImage(image, 0, 0, size, size);
         newDataUrl = canvas.toDataURL(imageType, imageArguments);
-        that.store.addEntryWithouthIdToTEMPDATA(that.constants.NEW_GROUP_IMAGE, newDataUrl);
+        that.store.addEntryWithouthIdToTEMPDATA(key, newDataUrl);
     }
   }
 
