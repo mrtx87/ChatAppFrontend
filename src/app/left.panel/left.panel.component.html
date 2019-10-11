@@ -41,7 +41,7 @@
         style="display: none;" /> -->
 
     <div class="search-contact-container">
-        <input class="search-contact-inputfield" type="text" placeholder="search chats">
+        <input [(ngModel)]="searchChatInputText" class="search-contact-inputfield" type="text" placeholder="search chats">
     </div>
     <div class="rooms-container">
         <div *ngFor="let chatRoom of availableRooms" class="rooms-row"  

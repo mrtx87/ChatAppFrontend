@@ -14,6 +14,8 @@ import * as moment from 'moment';
 })
 export class LeftPanelComponent implements OnInit {
 
+
+  searchChatInputText: string = "";
   uploadImage: string;
 
   displayUserMenu: boolean = false;
@@ -47,7 +49,7 @@ export class LeftPanelComponent implements OnInit {
         return dateB - dateA;
       }
     })
-    return availableRooms;
+    return availableRooms.filter(room => this.values.resolveChatRoomName(room).includes(this.searchChatInputText));
   }
 
   get displayedChatRoom(): ChatRoom {
