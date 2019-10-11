@@ -49,7 +49,7 @@ export class LeftPanelComponent implements OnInit {
         return dateB - dateA;
       }
     })
-    return availableRooms.filter(room => this.values.resolveChatRoomName(room).includes(this.searchChatInputText));
+    return availableRooms.filter(room => this.values.resolveChatRoomName(room).toLowerCase().includes(this.searchChatInputText.toLowerCase()));
   }
 
   get displayedChatRoom(): ChatRoom {
