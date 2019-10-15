@@ -149,9 +149,14 @@
     background-color: #F1F1F1;
 }
 
+.rooms-row-selected {
+    background-color: #F1F1F1;
+}
+
 .rooms-row:hover .create-room-icon-container {
     display: flex;
 }
+
 
 .room-wrapper{
     display: flex;
