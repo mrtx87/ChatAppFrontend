@@ -13,7 +13,7 @@
     position: relative;
     width: 100%;
     height: 15vh;
-    background-color: #00BFA5;
+    background-color: var(--main-green);;
     padding-left: 23px;
     padding-right: 20px;
 }
@@ -86,6 +86,28 @@
 
 .edit-profile-name {
     padding-top: 10px;
+}
+
+.edit-profile-name input {
+    width: 100%;
+    border: 0;
+}
+
+.edit-profile-name input:focus {
+    outline: none;
+}
+
+.edit-profile-name::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background:  var(--main-green);
+    transition: width .3s;
+}
+
+.edit-profile-name:focus-within::after {
+    width: 100%;
 }
 
 .disclaimer-text {
