@@ -21,17 +21,17 @@ export class AdduserComponent implements OnInit {
   }
 
   get newContactsList() : Contact[]{
-    return this.chatService.newContactsList;
+    return this.store.newContactsList;
   }
   set newContactsList(val : Contact[]){
-    this.chatService.newContactsList = val;
+    this.store.newContactsList = val;
   }
 
   get localUser(): User {
-    return this.chatService.localUser;
+    return this.store.localUser;
   }
   set localUser(val: User) {
-    this.chatService.localUser = val;
+    this.store.localUser = val;
   }
 
   constructor(private chatService : ChatService, private constants:Constants, private store : DataStore) { }
