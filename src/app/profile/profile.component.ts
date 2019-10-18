@@ -60,6 +60,8 @@ export class ProfileComponent implements OnInit {
   }
 
   updateUserProfile() {
+    this.localUser.name = this.name;
+    this.localUser.info = this.info;
     this.chatService.sendUpdateUserProfile();
   }
 
