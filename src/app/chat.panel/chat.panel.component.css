@@ -47,6 +47,7 @@
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.26), 0 2px 10px 0 rgba(0,0,0,.16);
     border-radius: 3px;
     background-color: white;
+    z-index: 1;
 }
 
 .sub-room-menu {
@@ -55,7 +56,6 @@
     padding-left: 24px;
     padding-right: 23px;
     padding-top: 13px;
-    z-index: 1;
 }
 
 .room-row {

@@ -15,7 +15,7 @@
             <img class="new-user-logo-img" src="assets/new-user.svg"
                 (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.ADD_USER_PANEL">
         </div>
-        <div class="user-app-burger">
+        <div class="user-app-burger" tabindex="-1" (focusout)='displayUserMenu=!displayUserMenu'>
             <img class="user-app-burger-img" src="assets/threepoints.svg" (click)="displayUserMenu=!displayUserMenu">
             <div *ngIf="displayUserMenu" class="user-menu">
                 <div class="menu-row super-user-menu">

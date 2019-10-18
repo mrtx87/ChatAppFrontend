@@ -14,6 +14,7 @@ import { ValueResolver } from '../value.resolver';
 })
 export class ChatPanelComponent implements OnInit {
 
+
   displayRoomMenu: boolean = false;
 
   get chatInputText(): string {
@@ -52,6 +53,11 @@ export class ChatPanelComponent implements OnInit {
       this.chatService.sendOutgoingChatMessage(this.displayedChatRoom, chatMessage);
       this.chatInputText = "";
     }
+  }
+  
+  menuSelect(){
+    console.log(this)
+    this.displayRoomMenu = !this.displayRoomMenu
   }
 
 }
