@@ -29,7 +29,11 @@
                 </span>
             </div>
             <div class="edit-profile-name">
-                <input [(ngModel)]="name" type="text" placeholder="edit name">
+                <label>
+                    <input class="checkbox" type="checkbox">
+                    <input class="textinput" [(ngModel)]="name" type="text" placeholder="edit name">
+                    <span></span>
+                </label>
             </div>
         </div>
         <div class="disclaimer-text">

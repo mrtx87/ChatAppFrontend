@@ -88,16 +88,27 @@
     padding-top: 10px;
 }
 
-.edit-profile-name input {
+.edit-profile-name label {
+    position: relative;
+    width: 100%;
+}
+
+.edit-profile-name .textinput {
     width: 100%;
     border: 0;
+    background: none;
 }
 
 .edit-profile-name input:focus {
     outline: none;
 }
 
-.edit-profile-name::after {
+.edit-profile-name .checkbox {
+    position: absolute;
+    right: 0;
+}
+
+.edit-profile-name span::after {
     content: '';
     display: block;
     width: 0;
@@ -106,9 +117,13 @@
     transition: width .3s;
 }
 
-.edit-profile-name:focus-within::after {
+.edit-profile-name .checkbox:checked + .textinput + span::after {
     width: 100%;
 }
+
+
+
+
 
 .disclaimer-text {
     height: 6vh;
