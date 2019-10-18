@@ -535,5 +535,25 @@ export class ChatService {
     }
   }
 
+ removeContact(chatRoom: ChatRoom){
+   let otherUser = this.getOtherUser(chatRoom.userIds);
+   if(!otherUser){
+     console.log("Ya rly want to remove "+ this.store.lookUpInDATA(otherUser).name +", huh?");
+   }else{
+     console.log("Don't remove anything as there was no other user. (Which is strange. You should investigate this.");
+   }
+ }
+
+ private getOtherUser(userIds: string[]): string{
+   if(userIds.length == 2){
+     if(userIds[0] == this.localUser.id){
+       return userIds[1];
+     }else{
+       return userIds[0];
+     }
+   }
+   return null;
+ }
+
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }
 }
