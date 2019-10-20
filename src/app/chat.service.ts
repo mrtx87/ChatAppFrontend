@@ -515,6 +515,29 @@ export class ChatService {
         this.displayedChatRoom = <ChatRoom>response;
       });
   }
+/**
+ * Requests removal of a contact together with its room.
+ * @param from caller
+ * @param chatroom room to remove
+ * @param toRemove contact to remove
+ */
+  sendRemoveContact(from: Contact, chatroom: ChatRoom, toRemove: Contact){
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    let transferMessage: TransferMessage = new TransferMessage();
+    transferMessage.chatRoom = chatroom;
+    transferMessage.from = from;
+    this.http
+      .post(this.constants.BASE_URL + "/remove-contact", transferMessage, { headers })
+      .subscribe(response => {
+
+
+        
+        // this.updateAvailableRooms(<ChatRoom[]>[response]);
+        // this.sendRequestContacts();
+        // this.displayedChatRoom = <ChatRoom>response;
+      });
+  }
 
   /**
    * sends the currently typed message
@@ -528,6 +551,8 @@ export class ChatService {
       JSON.stringify({ from: <Contact>this.localUser, chatRoom: chatRoom, chatMessage: chatMessage })
     );
   }
+
+
 
   initDisplayChatRoomProfileComponent() {
     if (this.groupProfileComponent) {
