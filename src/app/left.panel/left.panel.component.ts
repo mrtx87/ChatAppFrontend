@@ -23,9 +23,7 @@ export class LeftPanelComponent implements OnInit {
 
   constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   get localUser(): User {
     return this.store.localUser;
@@ -87,25 +85,4 @@ export class LeftPanelComponent implements OnInit {
       chatRoom.unseenChatMessageIds = null;
     }
   }
-  
-  removeContact(chatRoom: ChatRoom){
-    let otherUser = this.getOtherUser(chatRoom.userIds);
-    if(otherUser!=="" || otherUser != null){
-      console.log("Ya rly want to remove "+ this.store.lookUpInDATA(otherUser).name +", huh? Well, guess we'll have to work on that.");
-    }else{
-      console.log("Don't remove anything as there was no other user. (Which is strange. You should investigate this.");
-    }
-  }
- 
-  private getOtherUser(userIds: string[]): string{
-    if(userIds.length == 2){
-      if(userIds[0] == this.localUser.id){
-        return userIds[1];
-      }else{
-        return userIds[0];
-      }
-    }
-    return null;
-  }
-
 }
