@@ -13,7 +13,6 @@ import { ChatRoom } from '../Entities/chat.room';
 })
 export class ContactsComponent implements OnInit {
 
-
   query: string = "";
 
   get contacts(): Contact[] {
@@ -30,7 +29,8 @@ export class ContactsComponent implements OnInit {
 
   removeContact(contact: Contact){
     if(contact){
-      console.log("Ya rly want to remove "+ contact.name +", huh? Well, guess we'll have to work on that.");
+      console.log("Ya rly want to remove "+ contact.name +", huh? Well, let's try it.");
+      this.chatService.sendRemoveContact(contact);
     }else{
       console.log("Don't remove anything as there was no other user. (Which is strange. You should investigate this.");
     }

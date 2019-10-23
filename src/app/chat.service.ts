@@ -39,8 +39,8 @@ export class ChatService {
   //FORMS AND PAGE INPUTS
   private chatInputText_: string;
 
- //DISPLAY PARAMETERS
- private displayedChatRoom_: ChatRoom;
+  //DISPLAY PARAMETERS
+  private displayedChatRoom_: ChatRoom;
 
   // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
@@ -289,9 +289,9 @@ export class ChatService {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     this.http
-      .post(this.constants.BASE_URL + "/update/userId/" + this.localUser.id, { from: <Contact> this.localUser}, { headers })
+      .post(this.constants.BASE_URL + "/update/userId/" + this.localUser.id, { from: <Contact>this.localUser }, { headers })
       .subscribe(response => {
-        let contact = <Contact> response;
+        let contact = <Contact>response;
         this.localUser.iconUrl = contact.iconUrl ? contact.iconUrl : this.localUser.iconUrl;
         this.localUser.info = contact.info ? contact.info : this.localUser.info;
         this.localUser.name = contact.name ? contact.name : this.localUser.name;
@@ -383,7 +383,7 @@ export class ChatService {
     }
     //count and set list of unseen messages ids in room
     this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
-    
+
     //save responseChatMessages in DATA Store
     this.addListOfEntriesToDATA(responseChatMessages);
 
@@ -515,28 +515,30 @@ export class ChatService {
         this.displayedChatRoom = <ChatRoom>response;
       });
   }
-/**
- * Requests removal of a contact together with its room.
- * @param from caller
- * @param chatroom room to remove
- * @param toRemove contact to remove
- */
-  sendRemoveContact(from: Contact, chatroom: ChatRoom, toRemove: Contact){
+  /**
+   * Requests removal of a contact together with its room.
+   * @param toRemove contact to remove
+   */
+  sendRemoveContact(toRemove: Contact) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
-    transferMessage.chatRoom = chatroom;
-    transferMessage.from = from;
+    transferMessage.from = this.localUser;
+    transferMessage.chatRoom = this.determineChatRoomOfDialogue(this.localUser, toRemove);
     this.http
       .post(this.constants.BASE_URL + "/remove-contact", transferMessage, { headers })
       .subscribe(response => {
-
-
-        
+        this.updateContacts(<Contact[]> response);
+        console.log(response);
         // this.updateAvailableRooms(<ChatRoom[]>[response]);
         // this.sendRequestContacts();
         // this.displayedChatRoom = <ChatRoom>response;
       });
+  }
+
+  private determineChatRoomOfDialogue(user1: Contact, user2: Contact): ChatRoom{
+    // take user with lower count of chatRooms -> less rooms to check
+    return null;
   }
 
   /**
@@ -551,8 +553,6 @@ export class ChatService {
       JSON.stringify({ from: <Contact>this.localUser, chatRoom: chatRoom, chatMessage: chatMessage })
     );
   }
-
-
 
   initDisplayChatRoomProfileComponent() {
     if (this.groupProfileComponent) {
