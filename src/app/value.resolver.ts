@@ -153,7 +153,7 @@ export class ValueResolver {
     return null;
   }
 
-  resolveOneToOneRoomByContact(contact: Contact) {
+  resolveDialogRoomByContact(contact: Contact) {
     this.availableRooms.forEach(room => {
       if (room.userIds.length == 2 && room.userIds.includes(contact.id) && room.userIds.includes(this.localUser.id)) {
         this.chatService.displayedChatRoom = room;
