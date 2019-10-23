@@ -153,13 +153,19 @@ export class ValueResolver {
     return null;
   }
 
-  resolveDialogRoomByContact(contact: Contact) {
+  /**
+   * Determines dialog chat room by local user and given contact. Returns desired chat room
+   * @param contact: Contact 
+   * @returns chatRoom: ChatRoom
+   */
+  resolveDialogRoomByContact(contact: Contact): ChatRoom {
+    let chatRoom: ChatRoom = null;
     this.availableRooms.forEach(room => {
       if (room.userIds.length == 2 && room.userIds.includes(contact.id) && room.userIds.includes(this.localUser.id)) {
-        this.chatService.displayedChatRoom = room;
-        this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+        chatRoom = room;
       }
     });
+    return chatRoom;
   }
 
   private getNotLocalUserId(userIds: string[]): string {

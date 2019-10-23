@@ -20,7 +20,7 @@
 
         <div class="contacts-container">
             <div *ngFor="let contact of contacts" class="contacts-row">
-                <div (click)="values.resolveDialogRoomByContact(contact)" style="display: flex; flex-direction: row;">
+                <div (click)="setDisplayedChatRoomByContact(contact)" style="display: flex; flex-direction: row;">
                     <div>
                         <img style="border-radius: 20px; width:40px;"
                             src="{{contact.iconUrl ? contact.iconUrl : 'assets/default-user-icon.svg'}}">
