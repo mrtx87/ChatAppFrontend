@@ -25,7 +25,7 @@ export class ContactsComponent implements OnInit {
   removeContact(contact: Contact){
     if(contact){
       console.log("Ya rly want to remove "+ contact.name +", huh? Well, let's try it.");
-      this.chatService.sendRemoveContact(contact);
+      // this.chatService.sendRemoveContact(contact);
     }else{
       console.log("Don't remove anything as there was no other user. (Which is strange. You should investigate this.");
     }
@@ -45,4 +45,8 @@ export class ContactsComponent implements OnInit {
 
   constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) {}
   
+
+  myTestEvent():void {
+    console.log("myTestEvent");
+  }
 }
