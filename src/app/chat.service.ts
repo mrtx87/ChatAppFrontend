@@ -531,10 +531,7 @@ export class ChatService {
       .post(this.constants.BASE_URL + "/remove-contact", transferMessage, { headers })
       .subscribe(response => {
         this.updateContacts(<Contact[]> response);
-        console.log(response);
-        // this.updateAvailableRooms(<ChatRoom[]>[response]);
         // this.sendRequestContacts();
-        // this.displayedChatRoom = <ChatRoom>response;
       });
   }
 
