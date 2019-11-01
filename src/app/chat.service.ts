@@ -23,6 +23,7 @@ import { LoginregisterComponent } from './loginregister/loginregister.component'
 import { ProfileComponent } from './profile/profile.component';
 import { SearchresultComponent } from './searchresult/searchresult.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ValueResolver } from './value.resolver';
 
 
 
@@ -517,14 +518,15 @@ export class ChatService {
   }
   /**
    * Requests removal of a contact together with its room.
-   * @param toRemove contact to remove
+   * @param contactToRemove contact to remove
    */
-  sendRemoveContact(toRemove: Contact) {
+  sendRemoveContact(conatactToRemove: Contact, chatRoom: ChatRoom) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
     transferMessage.from = this.localUser;
-    transferMessage.chatRoom = this.determineChatRoomOfDialogue(this.localUser, toRemove);
+    transferMessage.chatRoom = chatRoom;
+    console.log("transferPart");
     this.http
       .post(this.constants.BASE_URL + "/remove-contact", transferMessage, { headers })
       .subscribe(response => {
@@ -534,11 +536,6 @@ export class ChatService {
         // this.sendRequestContacts();
         // this.displayedChatRoom = <ChatRoom>response;
       });
-  }
-
-  private determineChatRoomOfDialogue(user1: Contact, user2: Contact): ChatRoom{
-    // take user with lower count of chatRooms -> less rooms to check
-    return null;
   }
 
   /**
