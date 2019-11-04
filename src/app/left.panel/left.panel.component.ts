@@ -21,6 +21,8 @@ export class LeftPanelComponent implements OnInit {
   displayUserMenu: boolean = false;
   displayProfile: boolean = false;
 
+  isFocused: boolean = false;
+
   constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) { }
 
   ngOnInit() {
@@ -61,9 +63,9 @@ export class LeftPanelComponent implements OnInit {
 
   /*
   encodeImageFileAsURL() {
-    
+
     var reader = new FileReader();
-    this.uploadImage 
+    this.uploadImage
     let file : File = new File();
     reader.onloadend = function() {
       console.log('RESULT', reader.result)
@@ -88,5 +90,12 @@ export class LeftPanelComponent implements OnInit {
     }
   }
 
+  isClicked() {
+    this.isFocused = true;
+  }
+
+  focusOut() {
+    this.isFocused = false;
+  }
 
 }

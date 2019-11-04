@@ -39,11 +39,17 @@
     <input [(ngModel)]="uploadImage" (change)="encodeImageFileAsURL()" id="file-input" type="file" name="name"
         style="display: none;" /> -->
 
-    <div class="search-contact-container">
-        <input [(ngModel)]="searchChatInputText" class="search-contact-inputfield" type="text" placeholder="search chats">
+    <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
+
+
+        <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="searchChatInputText" class="search-contact-inputfield" type="text" placeholder="search chats">
+        <div class="icons">
+          <span class="magni"></span>
+          <span (click)="focusOut()" class="blue-arrow"></span>
+        </div>
     </div>
     <div class="rooms-container">
-        <div *ngFor="let chatRoom of availableRooms" class="rooms-row {{this.displayedChatRoom == chatRoom ? 'rooms-row-selected' : ''}}"  
+        <div *ngFor="let chatRoom of availableRooms" class="rooms-row {{this.displayedChatRoom == chatRoom ? 'rooms-row-selected' : ''}}"
             (click)="toggleDisplayedRoom(chatRoom)"> <!-- {{values.resolveLatestChatMessageBody(chatRoom.value)}} -->
             <div style="position: relative;">
                 <img style="border-radius: 20px; width:55px;"
@@ -65,7 +71,7 @@
                 <div class="room-last-message-container">
                     {{chatRoom | lastestChatMessageBody}}
                 </div>
-                
+
             </div>
 
         </div>
