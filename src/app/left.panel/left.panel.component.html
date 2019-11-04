@@ -52,7 +52,7 @@
         <div *ngFor="let chatRoom of availableRooms" class="rooms-row {{this.displayedChatRoom == chatRoom ? 'rooms-row-selected' : ''}}"
             (click)="toggleDisplayedRoom(chatRoom)"> <!-- {{values.resolveLatestChatMessageBody(chatRoom.value)}} -->
             <div style="position: relative;">
-                <img style="border-radius: 20px; width:55px;"
+                <img class="profil-image"
                     src="{{chatRoom | img}}">
                 <div [hidden]="!chatRoom.unseenChatMessageIds || chatRoom.unseenChatMessageIds == 0"
                     style="border-radius:50%; background-color: red; color:white; font-weight: bolder; left:2px; bottom:2px; padding:2px 5px; position:absolute;">

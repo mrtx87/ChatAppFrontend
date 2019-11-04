@@ -1,8 +1,6 @@
 .senden-container {
     width: 100%;
-    height: 8vh;
     display: flex;
-    padding: 10px;
     justify-content: space-evenly;
 }
 
@@ -18,8 +16,8 @@
 
 .chat-panel-header {
     width: 100%;
-    min-height: 75px;
-    height: 75px;
+    min-height: 65px;
+    height: 65px;
     display: flex;
     align-items: center;
 }
