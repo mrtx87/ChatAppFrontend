@@ -210,8 +210,9 @@ export class ChatService {
 
     this.stompClient.connect({}, function () {
       that.sendOwnOnlineStatus();
-      that.stompClient.subscribe("/client/" + that.localUser.id, messageFromServer =>
-        that.handleServerResponse(JSON.parse(messageFromServer.body))
+      that.stompClient.subscribe("/client/" + that.localUser.id, function(messageFromServer) {
+        that.handleServerResponse(JSON.parse(messageFromServer.body));
+      }
       );
     });
   }
@@ -221,6 +222,10 @@ export class ChatService {
 
       case this.constants.TM_TYPE_CHAT_MESSAGE: {
         this.processRequestedChatMessages(transferMessage.chatMessage.roomId, [transferMessage.chatMessage])
+      } break;
+      case this.constants.TM_TYPE_UPDATE_ROOMS_AND_CONTACTS: {
+        this.sendRequestRoomList();
+        this.sendRequestContacts();
       } break;
     }
   }
@@ -364,7 +369,7 @@ export class ChatService {
   * gets all chatrooms for the logged in user from backend
   * 
   */
-  sendRequestRoomList() {
+  private sendRequestRoomList() {
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>response);
@@ -526,12 +531,11 @@ export class ChatService {
     let transferMessage: TransferMessage = new TransferMessage();
     transferMessage.from = this.localUser;
     transferMessage.chatRoom = chatRoom;
-    console.log("transferPart");
     this.http
       .post(this.constants.BASE_URL + "/remove-contact", transferMessage, { headers })
       .subscribe(response => {
-        this.updateContacts(<Contact[]> response);
-        // this.sendRequestContacts();
+        this.sendRequestContacts();
+        this.sendRequestRoomList();
       });
   }
 

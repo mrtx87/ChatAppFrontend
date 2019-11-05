@@ -24,7 +24,9 @@ export class Constants{
     public CHAT_MESSAGE_DATE_TYPE : string = "DATE";
     public CHAT_MESSAGE_SYSTEM_TYPE: string = "System";
 
+    // TransferMessage Types
     public TM_TYPE_CHAT_MESSAGE: string = 'chat-message';
+    public TM_TYPE_UPDATE_ROOMS_AND_CONTACTS: string = 'update-rooms-and-contacts';
 
     public CREATING_ROOM_CONTACTS_ID: string = "creating-room-contacts";
     public DISPLAYED_ROOM_ID: string = "displayed-room-id";
