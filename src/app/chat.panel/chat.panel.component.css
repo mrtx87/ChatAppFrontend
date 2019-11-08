@@ -1,25 +1,40 @@
+.wrapper {
+  display:flex;
+  height: 100%;
+  flex-direction:column;
+  background-color: #F1F1F1;
+}
+
+
 .senden-container {
     width: 100%;
-    height: 8vh;
     display: flex;
-    padding: 10px;
     justify-content: space-evenly;
+    padding: 15px 0;
 }
 
 .senden-container img {
     width: 3vh;
+    margin: 0 20px;
+    opacity: 0.5;
 }
 
 .senden-container input {
     width: 90%;
     border-radius: 25px;
     border: none;
+    padding: 0 15px;
+    min-height: 38px;
+}
+
+.senden-container input:focus {
+  outline: none;
 }
 
 .chat-panel-header {
     width: 100%;
-    min-height: 75px;
-    height: 75px;
+    min-height: 65px;
+    height: 65px;
     display: flex;
     align-items: center;
 }
