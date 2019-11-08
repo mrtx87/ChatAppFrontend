@@ -1,11 +1,11 @@
-<div style="display:flex; flex-direction:column; background-color: #F1F1F1;">
+<div class="wrapper">
     <div class="chat-panel-header">
         <div style="width:70%; margin-left: 10px;">
             <div style="display:flex;">
                 <div><img style="width:50px; border-radius: 25px;" src="{{displayedChatRoom?.iconUrl}}"></div>
                 <div style="display:flex; flex-direction: column; padding: 8px;">
                     <div style="font-weight: bolder;"> {{displayedChatRoom | chatRoomName}}</div>
-                    <div style="display: flex;"> 
+                    <div style="display: flex;">
                         <span *ngFor="let id of displayedChatRoom?.userIds" style="margin-right: 4px;">
                             {{ id | contactName}},
                         </span>
@@ -42,7 +42,7 @@
     <app-displaychat></app-displaychat>
     <div class="senden-container" >
         <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
-        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom">
+        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom" placeholder="Write a message">
         <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
     </div>
 </div>
