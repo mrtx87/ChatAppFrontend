@@ -203,7 +203,7 @@ export class ChatService {
   }
 
   connect() {
-    this.ws = new SockJS("http://localhost:8080/socket");
+    this.ws = new SockJS(this.constants.BASEURI +"/socket");
     this.stompClient = Stomp.over(this.ws);
     let that = this;
 

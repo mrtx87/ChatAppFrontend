@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
   })
 export class Constants{
-    public BASE_URL : string = "http://localhost:8080/data";
+    public BASEURI : string =  "http://chatapplicationsection9.herokuapp.com"; //"http://localhost:8080";
+    public BASE_URL : string = "http://chatapplicationsection9.herokuapp.com/data";  //"http://localhost:8080/data";
 
     public WS_BASE_URL : string = "/app/send";
     public DISPLAY_CONTACTS_PANEL : string = "displaycontacts-panel";
