@@ -382,8 +382,15 @@ export class ChatService {
       this.chatMessagesByRoom.set(roomId, []);
     }
     //count and set list of unseen messages ids in room
-    this.updateUnseenMessagesIds(roomId, responseChatMessages);
-
+    let incomingMessages = (responseChatMessages.filter(cm => cm.fromId != this.localUser.id));
+    if (incomingMessages && incomingMessages.length > 0) {
+      this.updateUnseenMessagesIds(roomId, responseChatMessages);
+      if(this.displayedChatRoom && roomId == this.displayedChatRoom.id){
+        this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id);
+      }
+    } else {
+      this.scrollIntoView(responseChatMessages[responseChatMessages.length - 1].id);
+    }
     //save responseChatMessages in DATA Store
     this.addListOfEntriesToDATA(responseChatMessages);
 
@@ -443,7 +450,7 @@ export class ChatService {
 
     let unseenMessages: ChatMessage[] = chatMessages.filter(cm => {
       if (!cm.seen) {
-        if(!oldestMessage) {
+        if (!oldestMessage) {
           oldestMessage = cm;
         }
         let current: Date = new Date(cm.createdAt);
@@ -459,7 +466,7 @@ export class ChatService {
     });
 
     if (unseenMessages.length > 0) {
-      
+
       if (!hasAlreadyUnseenMessages) {
         chatRoom.oldestUnseenMessage = oldestMessage;
       }

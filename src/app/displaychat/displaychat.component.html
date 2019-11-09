@@ -27,7 +27,7 @@
         </div>
 
         <!-- OUTGOING MESSAGE CONTAINER -->
-        <div style="width:100%; display:flex; justify-content: flex-end; margin-top:15px;"
+        <div id="{{m?.id}}" style="width:100%; display:flex; justify-content: flex-end; margin-top:15px;"
             *ngIf="m.fromId === localUser.id">
             <div class="chat-bubble right">
                 {{ m?.body}}
