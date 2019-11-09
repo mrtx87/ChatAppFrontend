@@ -6,8 +6,8 @@
                 <div style="display:flex; flex-direction: column; padding: 8px;">
                     <div style="font-weight: bolder;"> {{displayedChatRoom | chatRoomName}}</div>
                     <div style="display: flex;">
-                        <span *ngFor="let id of displayedChatRoom?.userIds" style="margin-right: 4px;">
-                            {{ id | contactName}},
+                        <span *ngFor="let id of displayedChatRoom?.userIds; let i = index" style="margin-right: 4px;">
+                            {{ id | contactName}} {{ (displayedChatRoom && i != displayedChatRoom.userIds.length-1) ? ',' : '' }}
                         </span>
                     </div>
                 </div>
@@ -23,10 +23,7 @@
                         Gruppeninfo
                     </div>
                     <div class="room-row sub-room-menu">
-                        Nachrichten auswählen
-                    </div>
-                    <div class="room-row sub-room-menu">
-                        Stumm
+                        Nachrichten auswählen!
                     </div>
                     <div class="room-row sub-room-menu">
                         Nachrichten leeren

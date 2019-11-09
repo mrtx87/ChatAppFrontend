@@ -41,6 +41,7 @@ export class DisplaychatComponent implements OnInit {
   constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) { }
 
   ngOnInit() {
+
   }
 
 

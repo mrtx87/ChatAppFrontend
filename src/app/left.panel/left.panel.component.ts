@@ -6,6 +6,7 @@ import { ChatRoom } from '../Entities/chat.room';
 import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
 import * as moment from 'moment';
+import { ChatMessage } from '../Entities/chat.message';
 
 @Component({
   selector: 'app-left-panel',
@@ -43,9 +44,9 @@ export class LeftPanelComponent implements OnInit {
     availableRooms.sort((a: ChatRoom, b: ChatRoom) => {
       if (a.unseenChatMessageIds && a.unseenChatMessageIds.length && (!b.unseenChatMessageIds || b.unseenChatMessageIds.length == 0)) {
         return -1;
-      } else if(b.unseenChatMessageIds && b.unseenChatMessageIds.length && (!a.unseenChatMessageIds || a.unseenChatMessageIds.length == 0)){
+      } else if (b.unseenChatMessageIds && b.unseenChatMessageIds.length && (!a.unseenChatMessageIds || a.unseenChatMessageIds.length == 0)) {
         return 1;
-      }else{
+      } else {
         let dateA = new Date(this.values.resolveLatestChatMessageDate(a)).getTime();
         let dateB = new Date(this.values.resolveLatestChatMessageDate(b)).getTime();
         return dateB - dateA;
@@ -87,6 +88,14 @@ export class LeftPanelComponent implements OnInit {
     if (chatRoom.unseenChatMessageIds && chatRoom.unseenChatMessageIds.length > 0) {
       this.chatService.sendUpdateUnseenMessages(chatRoom.unseenChatMessageIds);
       chatRoom.unseenChatMessageIds = null;
+    }
+
+    if (chatRoom.oldestUnseenMessage) {
+      this.chatService.scrollIntoView(chatRoom.oldestUnseenMessage.id);
+      chatRoom.oldestUnseenMessage = null;
+    }else{
+      let chatMessage: ChatMessage = this.store.getChatMessageByRoomIdAndIndex(chatRoom.id, -1);
+      this.chatService.scrollIntoView(chatMessage.id);
     }
   }
 

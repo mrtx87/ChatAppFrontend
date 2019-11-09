@@ -10,8 +10,8 @@ import { User } from './Entities/user';
 })
 export class DataStore {
 
-    private DATA_ : Map<string, any> = new Map<string, any>();
-    private TEMPDATA_ : Map<string, any> = new Map<string, any>();
+    private DATA_: Map<string, any> = new Map<string, any>();
+    private TEMPDATA_: Map<string, any> = new Map<string, any>();
 
     // LOGIN AND REGISTRATION PROPERTIES
     private registerUsername_: string;
@@ -27,7 +27,7 @@ export class DataStore {
     private localUser_: User;
     private isLoggedIn_: boolean = false;
 
-    private chatMessagesByRoom_: Map<string, ChatMessage[]> = new Map<string, ChatMessage[]>();
+    private allChatMessages_: Map<string, ChatMessage[]> = new Map<string, ChatMessage[]>();
     private availableRooms_: Map<string, ChatRoom> = new Map<string, ChatRoom>();
     private contacts_: Contact[] = [];
 
@@ -107,11 +107,11 @@ export class DataStore {
         this.isLoggedIn_ = val;
     }
 
-    get chatMessagesByRoom(): Map<string, ChatMessage[]> {
-        return this.chatMessagesByRoom_;
+    get allChatMessages(): Map<string, ChatMessage[]> {
+        return this.allChatMessages_;
     }
-    set chatMessagesByRoom(val: Map<string, ChatMessage[]>) {
-        this.chatMessagesByRoom_ = val;
+    set allChatMessages(val: Map<string, ChatMessage[]>) {
+        this.allChatMessages_ = val;
     }
 
     get availableRooms(): Map<string, ChatRoom> {
@@ -128,15 +128,15 @@ export class DataStore {
         this.contacts_ = val;
     }
 
-    addMapToDATA(dataMap : Map<string,any>) {
+    addMapToDATA(dataMap: Map<string, any>) {
         dataMap.forEach((value, key) => this.DATA.set(key, value));
     }
 
-    addEntryToDATA(entry : any) {
+    addEntryToDATA(entry: any) {
         this.DATA.set(entry.id, entry);
     }
 
-    addListOfEntriesToDATA(entries : any[]) {
+    addListOfEntriesToDATA(entries: any[]) {
         entries.forEach(entry => this.addEntryToDATA(entry));
     }
 
@@ -144,24 +144,47 @@ export class DataStore {
         return this.DATA.get(id);
     }
 
-    addMapToTEMPDATA(dataMap : Map<string,any>) {
+    addMapToTEMPDATA(dataMap: Map<string, any>) {
         dataMap.forEach((value, key) => this.TEMPDATA.set(key, value));
     }
 
-    addEntryToTEMPDATA(entry : any) {
+    addEntryToTEMPDATA(entry: any) {
         this.TEMPDATA.set(entry.id, entry);
     }
 
-    addEntryWithouthIdToTEMPDATA(key: string, entry : any) {
+    addEntryWithouthIdToTEMPDATA(key: string, entry: any) {
         this.TEMPDATA.set(key, entry);
     }
 
-    addListOfEntriesToTEMPDATA(entries : any[]) {
+    addListOfEntriesToTEMPDATA(entries: any[]) {
         entries.forEach(entry => this.addEntryToTEMPDATA(entry));
     }
 
     lookUpInTEMPDATA(id: string): any {
         return this.TEMPDATA.get(id);
+    }
+
+    /**
+     * returns the chatMessage associated with a given roomId and index.
+     * if the passed value for given parameter "index" is -1 the last chatMessage element in the list will be returned
+     * if the index is invalid null is returned
+     * @param roomId 
+     * @param index 
+     */
+    getChatMessageByRoomIdAndIndex(roomId: string, index: number): ChatMessage {
+        let messages = this.getChatMessages(roomId);
+        if(index == -1){
+            index = messages.length-1;
+        }
+
+        if (messages && messages.length > index) {
+            return messages[index];
+        }
+        return null;
+    }
+
+    getChatMessages(roomId: string) {
+        return this.allChatMessages.get(roomId);
     }
 
     deleteFromTEMPDATA(id: string): any {
