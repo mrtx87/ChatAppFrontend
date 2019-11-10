@@ -245,13 +245,13 @@
   }
 
   .anim {
-    animation: myanimation 0.3s ease-out forwards;
+    animation: myanimation 0.25s ease-out forwards;
   }
   
   @keyframes myanimation {
     0% {
-      left: -100px;
-      opacity: 0;
+      left: -400px;
+      opacity: 1;
     }
     100% {
       opacity: 1;

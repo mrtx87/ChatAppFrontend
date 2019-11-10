@@ -39,9 +39,10 @@ export class AddgroupchatComponent implements OnInit {
     }
   }
   ToRoomProfileCreation() {
-    this.store.addEntryWithouthIdToTEMPDATA(this.constants.CREATING_ROOM_CONTACTS_ID, this.creatingRoomContacts);
-    this.chatService.initDisplayChatRoomProfileComponent();
-    this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.GROUP_CHAT_PROFILE;
+    let room: ChatRoom = new ChatRoom();
+    room.userIds = this.creatingRoomContacts.map(c => c.id);
+    this.chatService.asyncInitRoomProfile(room, false);
+    this.chatService.currentDisplayedLeftPanel = this.constants.GROUP_CHAT_PROFILE;
   }
 
   removeFromCreatingRoomContacts(contact: Contact) {

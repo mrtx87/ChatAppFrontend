@@ -5,11 +5,11 @@
                 <img src="assets/left-arrow.svg">
             </div>!-->
             <div class="r2upa">
-                <img (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.GROUP_CHAT"
+                <img (click)="jumpBack()"
                     src="assets/left-arrow.svg">
             </div>
             <div class="r2bp">
-                Profil
+                Gruppenprofil
             </div>
         </div>
     </div>
@@ -17,7 +17,7 @@
         <div class="profile-pic-container">
             <div class="pp">
                 <!--<img *ngIf="localUser" class="img-test" src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">!-->
-                <img (click)="fileInput.click()"
+                <img (click)="!readOnly ? fileInput.click() : ''"
                     src="{{currentChatRoom | img}}" class="img-test">
                 <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
             </div>

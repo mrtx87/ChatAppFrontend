@@ -50,6 +50,14 @@ export class ChatService {
     return this.appComponent.currentDisplayedLeftPanel;
   }
 
+  set currentDisplayedRightPanel(value: string) {
+    this.chatPanelComponent.currentDisplayedRightPanel = value;
+  }
+
+  get currentDisplayedRightPanel(): string {
+    return this.chatPanelComponent.currentDisplayedRightPanel;
+  }
+
   // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
   public groupProfileComponent: GroupProfileComponent;
@@ -232,6 +240,10 @@ export class ChatService {
         this.processRequestedChatMessages(transferMessage.chatMessage.roomId, [transferMessage.chatMessage])
       } break;
     }
+  }
+
+  getContactById(id: string) {
+    return this.store.contacts && this.store.contacts.length > 0 ?  this.store.contacts.filter(c => c.id === id)[0] : null;
   }
 
   closeLocalWebsocketConnection() {
@@ -529,6 +541,7 @@ export class ChatService {
       .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
     let chatRoomStub = new ChatRoom();
+    chatRoomStub.groupChat = false;
     chatRoomStub.title = title ? title : contact.name;
     chatRoomStub.userIds = [this.localUser.id, contact.id];
     transferMessage.chatRoom = chatRoomStub;
@@ -551,6 +564,7 @@ export class ChatService {
       .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
     transferMessage.from = from;
+    chatroom.groupChat = true;
     transferMessage.chatRoom = chatroom;
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
@@ -586,11 +600,16 @@ export class ChatService {
       }, 50);
   }
 
-  initDisplayChatRoomProfileComponent() {
-    if (this.groupProfileComponent) {
-      this.groupProfileComponent.init();
-    }
+  asyncInitRoomProfile(chatRoom:ChatRoom, readOnly : boolean) {
+    let that = this;
+    let interval = setInterval(function () {
+      if (that.groupProfileComponent) {
+        that.groupProfileComponent.init(chatRoom, readOnly);
+        clearInterval(interval);
+      }
+    }, 5);
   }
+
 
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }
 }

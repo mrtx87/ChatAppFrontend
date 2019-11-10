@@ -15,6 +15,25 @@ import { ImageService } from '../image.service';
 })
 export class GroupProfileComponent implements OnInit {
 
+
+  readOnly: boolean = true;
+
+  set currentDisplayedLeftPanel(value: string) {
+    this.chatService.currentDisplayedLeftPanel = value;
+  }
+
+  get currentDisplayedLeftPanel(): string {
+    return this.chatService.currentDisplayedLeftPanel;
+  }
+
+  get currentDisplayedRightPanel(): string {
+    return this.chatService.currentDisplayedRightPanel;
+  }
+
+  set currentDisplayedRightPanel(value: string) {
+    this.chatService.currentDisplayedRightPanel = value;
+  }
+
   get localUser(): User {
     return this.chatService.localUser;
   }
@@ -23,88 +42,78 @@ export class GroupProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.init();
-    
   }
 
   imageListener: any;
   startImageListener() {
     let that = this;
-    if(this.imageListener) {
+    if (this.imageListener) {
       clearInterval(this.imageListener);
       this.imageListener = null;
     }
-    that.imageListener = setInterval(function() {
-      if(that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE) && that.currentChatRoom) {
+    that.imageListener = setInterval(function () {
+      if (that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE) && that.currentChatRoom) {
         that.currentChatRoom.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE);
         that.store.deleteFromTEMPDATA(that.constants.NEW_GROUP_IMAGE);
         clearInterval(that.imageListener)
         that.imageListener = null;
       }
-    }, 200); 
+    }, 200);
   }
 
 
   currentChatRoom: ChatRoom;
   roomTitleText: string;
-  isInCreateMode: boolean;
+  info: string;
+  iconUrl:string;
   validator: () => {
 
   }
 
-  constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants,private imageService: ImageService) {
+  constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants, private imageService: ImageService) {
     chatService.registerGroupProfileComponent(this);
   }
 
-  
-
-  resolveCreatingChatRoom(): ChatRoom {
-    let creatingRoomContacts: Contact[] = this.store.lookUpInTEMPDATA(this.constants.CREATING_ROOM_CONTACTS_ID);
-    if (creatingRoomContacts) {
-      let chatRoom: ChatRoom = new ChatRoom();
-      chatRoom.userIds = creatingRoomContacts.map(contact => contact.id);
-      //TODO ADD ICON URL IF AVAILABLE
-      return chatRoom;
-    }
-    return null;
-  }
-
   updateChatroomTitle() {
-    if (this.currentChatRoom) {
+    if (this.currentChatRoom && !this.readOnly) {
       this.currentChatRoom.title = this.roomTitleText;
     }
   }
 
-  resolveDisplayedChatRoom(): ChatRoom {
-    return this.store.lookUpInTEMPDATA(this.constants.DISPLAYED_ROOM_ID);
-  }
+  init(chatRoom: ChatRoom, readOnly: boolean) {
+    this.readOnly = readOnly;
+    this.currentChatRoom = chatRoom;
 
-  init() {
-    let chatRoom: ChatRoom = this.resolveCreatingChatRoom();
-    if (chatRoom) {
-      this.isInCreateMode = true;
-      this.currentChatRoom = chatRoom;
-    } else {
-      this.isInCreateMode = false;
-      this.currentChatRoom = this.resolveDisplayedChatRoom();
-    }
+    this.roomTitleText = chatRoom.title;
+    this.info = "MOCK";
+    this.iconUrl = chatRoom.iconUrl;
   }
 
   onFileChanged(event) {
-    this.imageService.onFileChanged(event, this.constants.NEW_GROUP_IMAGE);
-    this.startImageListener();
+    if (!this.readOnly) {
+      this.imageService.onFileChanged(event, this.constants.NEW_GROUP_IMAGE);
+      this.startImageListener();
+    }
   }
 
 
   isValid() {
-    return this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
+    return !this.readOnly && this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
   }
 
   sendCreateNewGroupRoom() {
-    if (this.currentChatRoom) {
+    if (this.currentChatRoom && !this.readOnly) {
       this.currentChatRoom.title = this.roomTitleText;
       this.currentChatRoom.userIds.push(this.localUser.id);
       this.chatService.sendCreateGroupRoom(this.localUser, this.currentChatRoom);
+    }
+  }
+
+  jumpBack() {
+    if (this.readOnly) {
+      this.currentDisplayedRightPanel = "";
+    } else {
+      this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     }
   }
 

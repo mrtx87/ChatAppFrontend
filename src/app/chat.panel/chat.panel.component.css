@@ -3,6 +3,7 @@
   height: 100%;
   flex-direction:column;
   background-color: #F1F1F1;
+  overflow:auto;
 }
 
 
@@ -87,3 +88,26 @@
     position: relative;
     padding: 10px;
 }
+
+.overlay-comp-container{
+    position:absolute;
+    top:0px;
+    bottom:0px;
+    right:0px;
+    width:400px;
+  }
+
+  .anim {
+    animation: myanimation2 0.25s ease-out forwards;
+  }
+  
+  @keyframes myanimation2 {
+    0% {
+      right: -400px;
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      right: 0px;
+    }
+  }

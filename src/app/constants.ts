@@ -29,5 +29,6 @@ export class Constants{
 
     public CREATING_ROOM_CONTACTS_ID: string = "creating-room-contacts";
     public DISPLAYED_ROOM_ID: string = "displayed-room-id";
+    public DISPLAYED_USER_ID: string = "displayed-user-id";
 
 }

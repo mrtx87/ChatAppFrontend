@@ -13,8 +13,15 @@ import { ImageService } from '../image.service';
 })
 export class ProfileComponent implements OnInit {
 
-  name : string = "";
-  info : string = "";
+
+
+
+
+  readOnly: boolean = true;
+
+  name: string = "";
+  info: string = "";
+  iconUrl: string = "";
 
   get localUser(): User {
     return this.store.localUser;
@@ -23,50 +30,87 @@ export class ProfileComponent implements OnInit {
     this.store.localUser = val;
   }
 
-  constructor(private chatService: ChatService, private store: DataStore,
-              private constants: Constants, private values: ValueResolver,private imageService: ImageService) { }
-
-  ngOnInit() {
-    this.name = this.localUser.name;
-    this.info = this.localUser.info;
+  set currentDisplayedLeftPanel(value: string) {
+    this.chatService.currentDisplayedLeftPanel = value;
   }
 
-  valid() : boolean {
-      if(this.name != this.localUser.name || this.info != this.localUser.info) {
-        return true;
-      }
+  get currentDisplayedLeftPanel(): string {
+    return this.chatService.currentDisplayedLeftPanel;
+  }
+
+  get currentDisplayedRightPanel(): string {
+    return this.chatService.currentDisplayedRightPanel;
+  }
+
+  set currentDisplayedRightPanel(value: string) {
+    this.chatService.currentDisplayedRightPanel = value;
+  }
+
+  constructor(private chatService: ChatService, private store: DataStore,
+    private constants: Constants, private values: ValueResolver, private imageService: ImageService) {
+      this.chatService.registerProfileComponent(this);
+     }
+
+
+    
+
+  ngOnInit() {
+
+  }
+
+  init(name: string, info: string, iconUrl:string, readOnly: boolean) {
+    this.readOnly = readOnly;
+    this.name = name;
+    this.info = info;
+    this.iconUrl = iconUrl;
+  }
+
+  valid(): boolean {
+    if (!this.readOnly && this.name != this.localUser.name || this.info != this.localUser.info) {
+      return true;
+    }
   }
 
   onFileChanged(event) {
-    this.imageService.onFileChanged(event, this.constants.NEW_LOCAL_USER_IMAGE);
-    this.startImageListener();
+    if (!this.readOnly) {
+      this.imageService.onFileChanged(event, this.constants.NEW_LOCAL_USER_IMAGE);
+      this.startImageListener();
+    }
   }
 
   imageListener: any;
   startImageListener() {
     let that = this;
-    if(this.imageListener) {
+    if (this.imageListener) {
       clearInterval(this.imageListener);
       this.imageListener = null;
     }
-    that.imageListener = setInterval(function() {
-      if(that.store.lookUpInTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE) && that.localUser) {
-        that.localUser.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE);
+    that.imageListener = setInterval(function () {
+      if (that.store.lookUpInTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE) && that.localUser) {
+        that.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE);
         that.store.deleteFromTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE);
         //UPDATES IMAGE IN BACKEND
-        that.chatService.sendUpdateUserProfile();
+        that.updateUserProfile();
         clearInterval(that.imageListener)
         that.imageListener = null;
       }
-    }, 200); 
+    }, 200);
   }
 
   updateUserProfile() {
-    
-    if(this.localUser.name != this.name || this.localUser.info != this.info) {
+    if (!this.readOnly && this.localUser.name != this.name || this.localUser.info != this.info || this.localUser.iconUrl != this.iconUrl) {
       this.localUser.name = this.name;
       this.localUser.info = this.info;
+      this.localUser.iconUrl = this.iconUrl;
       this.chatService.sendUpdateUserProfile();
+    }
+  }
+
+  jumpBack() {
+    if(this.readOnly) {
+      this.currentDisplayedRightPanel = "";
+    }else{
+      this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     }
   }
 

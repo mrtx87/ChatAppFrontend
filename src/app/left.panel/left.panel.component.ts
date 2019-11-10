@@ -24,10 +24,11 @@ export class LeftPanelComponent implements OnInit {
 
   isFocused: boolean = false;
 
-  constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) { }
+  constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) {
+    chatService.registerLeftPanelComponent(this);
+   }
 
   ngOnInit() {
-
   }
 
   get localUser(): User {
@@ -37,7 +38,7 @@ export class LeftPanelComponent implements OnInit {
     this.store.localUser = val;
   }
 
-  get currentDisplayedLeftPanel() : string {
+  get currentDisplayedLeftPanel(): string {
     return this.chatService.currentDisplayedLeftPanel;
   }
 
@@ -101,7 +102,7 @@ export class LeftPanelComponent implements OnInit {
     if (chatRoom.oldestUnseenMessage) {
       this.chatService.scrollIntoView(chatRoom.oldestUnseenMessage.id);
       chatRoom.oldestUnseenMessage = null;
-    }else{
+    } else {
       let chatMessage: ChatMessage = this.store.getChatMessageByRoomIdAndIndex(chatRoom.id, -1);
       this.chatService.scrollIntoView(chatMessage.id);
     }
@@ -113,6 +114,23 @@ export class LeftPanelComponent implements OnInit {
 
   focusOut() {
     this.isFocused = false;
+  }
+
+  asyncInitProfile() {
+    let that = this;
+    let interval = setInterval(function () {
+      if (that.chatService.profileComponent) {
+        that.chatService.profileComponent.init(that.localUser.name, that.localUser.info, that.localUser.iconUrl, false);
+        clearInterval(interval);
+      }
+    }, 5);
+  }
+
+  initDisplayProfile() {
+    this.currentDisplayedLeftPanel = this.constants.USER_PROFILE;
+    //this.chatService.profileComponent.init(this.localUser.name, this.localUser.info, false);
+
+    this.asyncInitProfile();
   }
 
 }

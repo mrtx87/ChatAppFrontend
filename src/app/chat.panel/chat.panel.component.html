@@ -2,19 +2,22 @@
     <div class="chat-panel-header">
         <div style="width:70%; margin-left: 10px;">
             <div style="display:flex;">
-                <div *ngIf="displayedChatRoom"><img style="width:50px; border-radius: 25px;" src="{{displayedChatRoom?.iconUrl ? displayedChatRoom?.iconUrl : 'assets/picture.svg'}}"></div>
+                <div *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img
+                        style="width:50px; border-radius: 25px;"
+                        src="{{displayedChatRoom?.iconUrl ? displayedChatRoom?.iconUrl : 'assets/picture.svg'}}"></div>
                 <div style="display:flex; flex-direction: column; padding: 8px;">
                     <div style="font-weight: bolder;"> {{displayedChatRoom | chatRoomName}}</div>
                     <div style="display: flex;">
                         <span *ngFor="let id of displayedChatRoom?.userIds; let i = index" style="margin-right: 4px;">
-                            {{ id | contactName}} {{ (displayedChatRoom && i != displayedChatRoom.userIds.length-1) ? ',' : '' }}
+                            {{ id | contactName}}
+                            {{ (displayedChatRoom && i != displayedChatRoom.userIds.length-1) ? ',' : '' }}
                         </span>
                     </div>
                 </div>
             </div>
         </div>
         <div style="width:30%; display:flex; align-items:center; justify-content: flex-end;">
-            <div class="menu-item-container"> <img  class="magnifier-img" src="assets/magnifier-glass.svg">
+            <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
             </div>
             <div class="menu-item-container" tabindex="-1" (focusout)="displayRoomMenu=!displayRoomMenu">
                 <img (click)="displayRoomMenu=!displayRoomMenu" class="menu-img" src="assets/burger.svg">
@@ -37,9 +40,17 @@
 
     </div>
     <app-displaychat></app-displaychat>
-    <div class="senden-container" >
+    <div class="senden-container">
         <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
-        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom" placeholder="Write a message">
+        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom"
+            placeholder="Write a message">
         <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
     </div>
+
+    <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedRightPanel"
+        class="anim overlay-comp-container">
+    </app-group-profile>
+
+    <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedRightPanel"
+        class="anim overlay-comp-container"></app-profile>
 </div>
