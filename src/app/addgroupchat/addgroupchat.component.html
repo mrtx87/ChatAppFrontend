@@ -1,14 +1,14 @@
 <div class="left-panel">
-    <div class="user-panel" (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.DISPLAY_CONTACTS_PANEL">
+    <div class="user-panel"
+        (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.DISPLAY_CONTACTS_PANEL">
         <img src="assets/back-arrow_light.svg" class="return-icon">
         <div style="font-size:30px; color:white;">add user to group</div>
     </div>
     <div class="added-user">
         <div class="row-item">
-            <div class="preview"
-                *ngFor="let selected_contact of creatingRoomContacts">
-                <div class="profilimage"><img style="height:25px;" src="{{selected_contact.iconUrl}}"></div>
-                <span>{{selected_contact.name}} </span>
+            <div class="preview" *ngFor="let selected_contact of creatingRoomContacts">
+                <div class="profilimage"><img style="height:25px; border-radius: 25px;"
+                        src="{{selected_contact.iconUrl}}"></div> <span>{{selected_contact.name}} </span>
                 <div (click)="removeFromCreatingRoomContacts(selected_contact)" class="remove"></div>
             </div>
         </div>
