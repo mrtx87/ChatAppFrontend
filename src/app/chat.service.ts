@@ -42,6 +42,14 @@ export class ChatService {
   //DISPLAY PARAMETERS
   private displayedChatRoom_: ChatRoom;
 
+  set currentDisplayedLeftPanel(value: string) {
+    this.appComponent.currentDisplayedLeftPanel = value;
+  }
+
+  get currentDisplayedLeftPanel(): string {
+    return this.appComponent.currentDisplayedLeftPanel;
+  }
+
   // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
   public groupProfileComponent: GroupProfileComponent;
@@ -316,7 +324,7 @@ export class ChatService {
     chatRooms.forEach(chatRoom => {
       this.availableRooms.set(chatRoom.id, chatRoom);
     });
-    this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+    this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     //get all chat messages per room from backend
     this.addMapToDATA(this.availableRooms);
     this.sendRequestAllChatMessagesForRooms(chatRooms);
@@ -384,13 +392,13 @@ export class ChatService {
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-    
+
     //filter for incoming messages
     let incomingMessages = responseChatMessages.filter(cm => cm.fromId != this.localUser.id);
     if (incomingMessages && incomingMessages.length > 0) {
       //generate list of unseen messages
       this.updateUnseenMessagesIds(roomId, responseChatMessages);
-      if(this.displayedChatRoom && roomId == this.displayedChatRoom.id){
+      if (this.displayedChatRoom && roomId == this.displayedChatRoom.id) {
         this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id);
       }
     } else {
@@ -582,10 +590,6 @@ export class ChatService {
     if (this.groupProfileComponent) {
       this.groupProfileComponent.init();
     }
-  }
-
-  set currentDisplayedLeftPanel(value: string) {
-    this.appComponent.currentDisplayedLeftPanel
   }
 
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }

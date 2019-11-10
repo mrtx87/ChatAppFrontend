@@ -9,11 +9,11 @@
         </label>
         <div class="new-user-logo">
             <img class="user-list-img" src="assets/comment.svg"
-                (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.DISPLAY_CONTACTS_PANEL">
+                (click)="currentDisplayedLeftPanel=constants?.DISPLAY_CONTACTS_PANEL">
         </div>
         <div class="new-user-logo">
             <img class="new-user-logo-img" src="assets/new-user.svg"
-                (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.ADD_USER_PANEL">
+                (click)="currentDisplayedLeftPanel=constants?.ADD_USER_PANEL">
         </div>
         <div class="user-app-burger" tabindex="-1" (focusout)="displayUserMenu=!displayUserMenu">
             <img class="user-app-burger-img" src="assets/threepoints.svg" (click)="displayUserMenu=!displayUserMenu">
