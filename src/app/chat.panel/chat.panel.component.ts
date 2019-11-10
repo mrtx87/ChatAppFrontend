@@ -55,6 +55,9 @@ export class ChatPanelComponent implements OnInit {
   ngOnInit() {
 
   }
+  toggleRoomMenuDisplay() {
+    this.displayedChatRoom ? this.displayRoomMenu = !this.displayRoomMenu : this.displayRoomMenu = false;
+  }
 
   triggerSendChatMessage() {
     if (this.chatInputText && this.chatInputText.length >= 1) {

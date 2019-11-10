@@ -31,7 +31,15 @@ export class AppComponent {
 
   @HostListener("window:click", ["$event"])
   mouseEvent(event: MouseEvent) {
-    //@TODO Menüs schließen bei klick
+    let e: any = event;
+    console.log(e)
+    if (e.srcElement.className != "menu-img" ) {
+      this.chatService.chatPanelComponent.displayRoomMenu = false;
+    }
+
+    if (e.srcElement.className != "user-app-burger-img") {
+      this.chatService.lefPanelComponent.displayUserMenu = false;
+    }
   }
 
   private currentDisplayedLeftPanel_: string;

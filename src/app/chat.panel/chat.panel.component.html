@@ -19,10 +19,10 @@
         <div style="width:30%; display:flex; align-items:center; justify-content: flex-end;">
             <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
             </div>
-            <div class="menu-item-container" tabindex="-1" (focusout)="displayRoomMenu=!displayRoomMenu">
-                <img (click)="displayRoomMenu=!displayRoomMenu" class="menu-img" src="assets/burger.svg">
+            <div id="rightpanel-burger-menu" class="menu-item-container" tabindex="-1">
+                <img (click)="toggleRoomMenuDisplay()" class="menu-img" src="assets/burger.svg">
                 <div id="room-menu" *ngIf="displayRoomMenu" class="room-menu">
-                    <div class="room-row sub-room-menu">
+                    <div (click)="initDisplayProfile()" class="room-row sub-room-menu">
                         Gruppeninfo
                     </div>
                     <div class="room-row sub-room-menu">

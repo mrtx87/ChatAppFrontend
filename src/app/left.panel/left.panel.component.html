@@ -15,13 +15,13 @@
             <img class="new-user-logo-img" src="assets/new-user.svg"
                 (click)="currentDisplayedLeftPanel=constants?.ADD_USER_PANEL">
         </div>
-        <div class="user-app-burger" tabindex="-1" (focusout)="displayUserMenu=!displayUserMenu">
+        <div class="user-app-burger" tabindex="-1">
             <img class="user-app-burger-img" src="assets/threepoints.svg" (click)="displayUserMenu=!displayUserMenu">
-            <div *ngIf="displayUserMenu" class="user-menu">
+            <div id="leftpanel-burger-menu" *ngIf="displayUserMenu" class="user-menu">
                 <div class="menu-row super-user-menu">
                     Neue Gruppe
                 </div>
-                <div class="menu-row super-user-menu">
+                <div (click) ="initDisplayProfile();displayUserMenu=false"  class="menu-row super-user-menu">
                     Profil
                 </div>
                 <div class="menu-row super-user-menu">
