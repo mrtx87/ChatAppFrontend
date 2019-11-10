@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ChatRoom } from './Entities/chat.room';
+import { ValueResolver } from './value.resolver';
 
 @Pipe({
   name: 'img',
@@ -7,8 +8,17 @@ import { ChatRoom } from './Entities/chat.room';
 })
 export class ImgPipe implements PipeTransform {
 
-  transform(chatRoom: any): string {
-    return chatRoom && chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/picture.svg';
+  transform(chatRoom: ChatRoom): string {
+
+    if(chatRoom.groupChat) {
+      return chatRoom && chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/picture.svg';
+    }
+    let iconUrl = this.values.resolveNotLocalUserIconUrl(chatRoom);
+    return iconUrl ? iconUrl : 'assets/picture.svg';
+  }
+
+  constructor(private values: ValueResolver) {
+
   }
 
 }

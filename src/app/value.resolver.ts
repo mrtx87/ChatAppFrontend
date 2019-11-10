@@ -169,6 +169,15 @@ export class ValueResolver {
     });
   }
 
+  resolveNotLocalUserIconUrl(chatRoom: ChatRoom) {
+    let userId = this.getNotLocalUserId(chatRoom.userIds);
+    let icons = this.store.contacts.filter(c => userId === c.id);
+    if(icons.length > 0) {
+      return icons[0].iconUrl;
+    }
+    return null;
+  }
+
   private getNotLocalUserId(userIds: string[]): string {
     if (this.isNotLocalUser(userIds[0])) {
       return userIds[0];
