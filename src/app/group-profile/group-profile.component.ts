@@ -111,7 +111,7 @@ export class GroupProfileComponent implements OnInit {
 
   jumpBack() {
     if (this.readOnly) {
-      this.currentDisplayedRightPanel = "";
+      this.currentDisplayedRightPanel = null;
     } else {
       this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     }

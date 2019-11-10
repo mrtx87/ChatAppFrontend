@@ -32,7 +32,6 @@ export class AppComponent {
   @HostListener("window:click", ["$event"])
   mouseEvent(event: MouseEvent) {
     let e: any = event;
-    console.log(e)
     if (e.srcElement.className != "menu-img" ) {
       this.chatService.chatPanelComponent.displayRoomMenu = false;
     }
