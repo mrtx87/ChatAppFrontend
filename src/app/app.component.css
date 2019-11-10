@@ -37,6 +37,7 @@
   grid-row-start: 1;
   grid-row-end: 2;
   position: relative;
+  overflow: hidden;
 }
 
 .overlay-comp-container{
