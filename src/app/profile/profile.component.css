@@ -9,6 +9,7 @@
     background-color: #F7F7F7;
 }
 
+
 .return-2-user-panel {
     position: relative;
     width: 100%;
@@ -117,9 +118,18 @@
     z-index: 2;
 }
 
+
 .edit-profile-name input[type="checkbox"]:checked + label {
     opacity: 0;
     transition: .1s;
+}
+
+.edit-profile-name input {
+    pointer-events:none;
+}
+
+.edit-profile-name input[type="checkbox"]:checked + label + .submenu + input {
+    pointer-events: all;
 }
 
 .edit-profile-name .submenu {
@@ -179,6 +189,123 @@
 
 
 
+.edit-profile-info input {
+    pointer-events:none;
+}
+
+.edit-profile-info input[type="checkbox"]:checked + label + .submenu + input {
+    pointer-events: all;
+}
+
+.edit-info-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    margin-bottom: 10px;
+    width: 100%;
+    height: 10vh;
+    padding: 14px 25px 10px;
+}
+
+.profile-info {
+    color: #25a596;
+    font-size: 14px;
+    padding-bottom: 10px;
+}
+
+.edit-profile-info {
+    padding-top: 10px;
+    position: relative;
+}
+
+.edit-profile-info input[type="text"] {
+    width: 100%;
+    border: 0;
+    background: none;
+}
+
+.edit-profile-info input:focus {
+    outline: none;
+}
+
+.edit-profile-info input[type="checkbox"] {
+    position: absolute;
+    right: 2px;
+    z-index: 5;
+    display: none;
+}
+
+.edit-profile-info label {
+    width: 20px;
+    height: 20px;
+    right: 2px;
+    top: 7px;
+    position: absolute;
+    background: url('../../assets/edit-pen.svg') ;
+    transition: .1s;
+    z-index: 2;
+}
+
+.edit-profile-info input[type="checkbox"]:checked + label {
+    opacity: 0;
+    transition: .1s;
+}
+
+.edit-profile-info .submenu {
+    width: 64px;
+    height: 20px;
+    right: 0;
+    top: 7px;
+    position: absolute;
+    transition: .2s;
+    z-index: 1;
+    opacity: 0;
+}
+
+.edit-profile-info input[type="checkbox"]:checked + label + .submenu {
+    transition: .2s;
+    opacity: 1;
+}
+
+.edit-profile-info .submenu a {
+    float: left;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: url('../../assets/smiley.svg') no-repeat ;
+    background-size: 18px 18px;
+    margin: 4px 0 0 4px;
+}
+
+.edit-profile-info .submenu span:first-child {
+    float: left;
+    color: var(--light-grey);
+    margin: 3px 2px 0 0;
+}
+
+.edit-profile-info .submenu span:last-child {
+    display: block;
+    float: right;
+    width: 20px;
+    height: 20px;
+    background: url('../../assets/check.svg') ;
+    background-size: 20px 20px;
+    margin: 2px 0;
+}
+
+.edit-profile-info span:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background:  var(--main-green);
+    transition: .5s;
+}
+
+.edit-profile-info input[type="checkbox"]:checked + label + .submenu + input + span:after {
+    width: 100%;
+}
 
 
 .disclaimer-text {
@@ -187,12 +314,6 @@
     padding: 5px 25px 10px 25px;
     font-size: 12px;
     color: grey;
-}
-
-.success-container {
-    padding: 5px;
-    display: flex;
-    justify-content: center;
 }
 
 .success-img {

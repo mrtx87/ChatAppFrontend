@@ -29,8 +29,8 @@
                 </span>
             </div>
             <div class="edit-profile-name">
-                    <input id="checkbox1" type="checkbox">
-                    <label for="checkbox1"></label>
+                    <input tabindex="-1" id="checkbox1" type="checkbox">
+                    <label for="checkbox1" (click)="updateUserProfile()"></label>
                     <div class="submenu"><span>12</span><a class="smiley"></a><span></span></div>
                     <input [(ngModel)]="name" type="text" placeholder="edit name">
                     <span></span>
@@ -40,18 +40,19 @@
         <div class="disclaimer-text">
             Das ist nicht dein Benutzername oder PIN-CODE. Dieser Name ist für deine WhatsApp Kontakte sichtbar.
         </div>
-        <div class="edit-name-container">
-            <div class="profile-name">
+        <div class="edit-info-container">
+            <div class="profile-info">
                 <span>
                     Info
                 </span>
             </div>
-            <div class="edit-profile-name">
-                <input  [(ngModel)]="info" type="text" placeholder="edit info">
+            <div class="edit-profile-info">
+                    <input tabindex="-1" id="checkbox2" type="checkbox">
+                    <label for="checkbox2" (click)="updateUserProfile()"></label>
+                    <div class="submenu"><span>12</span><a class="smiley"></a><span></span></div>
+                    <input  [(ngModel)]="info" type="text" placeholder="edit info">
+                    <span></span>
             </div>
-        </div>
-        <div class="success-container">
-            <img (click)="updateUserProfile()" *ngIf="valid()" class="success-img" src="assets/success.svg">
         </div>
 
     </div>
