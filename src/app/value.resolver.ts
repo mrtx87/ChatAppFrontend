@@ -23,12 +23,12 @@ import { ChatService } from './chat.service';
 export class ValueResolver {
 
 
-
-  get chatMessagesByRoom(): Map<string, ChatMessage[]> {
-    return this.store.chatMessagesByRoom;
+// TODO refactor
+  get allChatMessages(): Map<string, ChatMessage[]> {
+    return this.store.allChatMessages;
   }
-  set chatMessagesByRoom(val: Map<string, ChatMessage[]>) {
-    this.chatMessagesByRoom = val;
+  set allChatMessages(val: Map<string, ChatMessage[]>) {
+    this.allChatMessages = val;
   }
   get contacts(): Contact[] {
     return this.store.contacts;
@@ -131,7 +131,7 @@ export class ValueResolver {
 
 
   private resolveLatestChatMessage(chatRoom: ChatRoom): ChatMessage {
-    const chatMessages: ChatMessage[] = this.store.chatMessagesByRoom.get(chatRoom.id);
+    const chatMessages: ChatMessage[] = this.store.allChatMessages.get(chatRoom.id);
     if (chatMessages) {
       return chatMessages[chatMessages.length - 1];
     }
@@ -145,7 +145,14 @@ export class ValueResolver {
     return "";
   }
 
+  resolveOldestUnseenChatMessage(chatRoom: ChatRoom): ChatMessage {
+    return chatRoom.oldestUnseenMessage;
+  }
+
   resolveContactId(userId: string): Contact {
+    if(this.localUser.id === userId) {
+      return <Contact> this.localUser;
+    }
     let lookedUpcontact: Contact = this.store.lookUpInDATA(userId);
     if (lookedUpcontact) {
       return lookedUpcontact;

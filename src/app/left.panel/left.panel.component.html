@@ -1,6 +1,6 @@
 <div class="left-panel">
     <div class="user-panel">
-        <div (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.USER_PROFILE" class="user-app-logo">
+        <div (click)="currentDisplayedLeftPanel=constants?.USER_PROFILE" class="user-app-logo">
             <img *ngIf="localUser" class="user-app-logo-img"
                 src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">
         </div>
@@ -42,18 +42,20 @@
     <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
 
 
-        <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="searchChatInputText" class="search-contact-inputfield" type="text" placeholder="search chats">
+        <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="searchChatInputText"
+            class="search-contact-inputfield" type="text" placeholder="search chats">
         <div class="icons">
-          <span class="magni"></span>
-          <span (click)="focusOut()" class="blue-arrow"></span>
+            <span class="magni"></span>
+            <span (click)="focusOut()" class="blue-arrow"></span>
         </div>
     </div>
     <div class="rooms-container">
-        <div *ngFor="let chatRoom of availableRooms" class="rooms-row {{this.displayedChatRoom == chatRoom ? 'rooms-row-selected' : ''}}"
-            (click)="toggleDisplayedRoom(chatRoom)"> <!-- {{values.resolveLatestChatMessageBody(chatRoom.value)}} -->
+        <div *ngFor="let chatRoom of availableRooms"
+            class="rooms-row {{this.displayedChatRoom == chatRoom ? 'rooms-row-selected' : ''}}"
+            (click)="toggleDisplayedRoom(chatRoom)">
+            <!-- {{values.resolveLatestChatMessageBody(chatRoom.value)}} -->
             <div style="position: relative;">
-                <img class="profil-image"
-                    src="{{chatRoom | img}}">
+                <img class="profil-image" src="{{chatRoom | img}}">
                 <div [hidden]="!chatRoom.unseenChatMessageIds || chatRoom.unseenChatMessageIds == 0"
                     style="border-radius:50%; background-color: red; color:white; font-weight: bolder; left:2px; bottom:2px; padding:2px 5px; position:absolute;">
                     {{chatRoom.unseenChatMessageIds?.length}}
@@ -61,13 +63,13 @@
             </div>
             <div style="display:flex; flex-direction: column; width:90%;">
                 <div class="room-wrapper">
-                <div class="room-title-container">
-                    {{chatRoom | chatRoomName}}
-                </div>
-                <span>
+                    <div class="room-title-container">
+                        {{chatRoom | chatRoomName}}
+                    </div>
+                    <span>
                         {{chatRoom | latestChatMessageDate}}
                     </span>
-                 </div>
+                </div>
                 <div class="room-last-message-container">
                     {{chatRoom | lastestChatMessageBody}}
                 </div>
@@ -77,4 +79,28 @@
         </div>
 
     </div>
+
+
+    <!-- OTHER COMPONENTS -->
+    <app-adduser *ngIf="constants.ADD_USER_PANEL === currentDisplayedLeftPanel"
+        class="anim overlay-comp-container">
+    </app-adduser>
+
+    <app-contacts *ngIf="constants.DISPLAY_CONTACTS_PANEL === currentDisplayedLeftPanel"
+        class="anim overlay-comp-container">
+    </app-contacts>
+
+    <app-addgroupchat *ngIf="constants.GROUP_CHAT === currentDisplayedLeftPanel"
+        class="anim overlay-comp-container">
+    </app-addgroupchat>
+
+    <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedLeftPanel"
+        class="anim overlay-comp-container">
+    </app-group-profile>
+
+    <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedLeftPanel"
+        class="anim overlay-comp-container"></app-profile>
+
+
+
 </div>

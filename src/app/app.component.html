@@ -1,21 +1,9 @@
 <div class="main-wrapper">
     <div class="container">
-        <app-left-panel *ngIf="constants.DEFAULT_PANEL === currentDisplayedLeftPanel" class="left-panel-container">
+        <app-left-panel  class="anim comp-container">
         </app-left-panel>
 
-        <app-adduser *ngIf="constants.ADD_USER_PANEL === currentDisplayedLeftPanel" class="adduser-container">
-        </app-adduser>
-
-        <app-contacts *ngIf="constants.DISPLAY_CONTACTS_PANEL === currentDisplayedLeftPanel" class="adduser-container">
-        </app-contacts>
-
-        <app-addgroupchat *ngIf="constants.GROUP_CHAT === currentDisplayedLeftPanel" class="adduser-container">
-        </app-addgroupchat>
-
-        <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedLeftPanel" class="adduser-container">
-        </app-group-profile>
-
-        <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedLeftPanel" class="adduser-container"></app-profile>
+        
 
         <app-chat-panel class="chat-panel-container"></app-chat-panel>
 

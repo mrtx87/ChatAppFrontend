@@ -39,8 +39,8 @@ export class ChatService {
   //FORMS AND PAGE INPUTS
   private chatInputText_: string;
 
- //DISPLAY PARAMETERS
- private displayedChatRoom_: ChatRoom;
+  //DISPLAY PARAMETERS
+  private displayedChatRoom_: ChatRoom;
 
   // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
@@ -55,6 +55,8 @@ export class ChatService {
   public profileComponent: ProfileComponent;
   public searchResultComponent: SearchresultComponent
   public settingsComponent: SettingsComponent
+
+
 
   public registerAppComponent(appComponent: AppComponent) {
     this.appComponent = appComponent;
@@ -105,7 +107,7 @@ export class ChatService {
   }
 
   get chatMessagesByRoom(): Map<string, ChatMessage[]> {
-    return this.store.chatMessagesByRoom;
+    return this.store.allChatMessages;
   }
   set chatMessagesByRoom(val: Map<string, ChatMessage[]>) {
     this.chatMessagesByRoom = val;
@@ -203,7 +205,7 @@ export class ChatService {
   }
 
   connect() {
-    this.ws = new SockJS(this.constants.BASEURI +"/socket");
+    this.ws = new SockJS(this.constants.BASEURI + "/socket");
     this.stompClient = Stomp.over(this.ws);
     let that = this;
 
@@ -277,10 +279,11 @@ export class ChatService {
       .subscribe(response => {
         const receivedUser = <User>response;
         if (receivedUser.id && receivedUser.name) {
-          this.isLoggedIn = true;
           this.localUser = receivedUser;
           this.addEntryToDATA(<Contact>this.localUser);
           this.init();
+          this.isLoggedIn = true;
+
         }
       });
   }
@@ -289,9 +292,9 @@ export class ChatService {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     this.http
-      .post(this.constants.BASE_URL + "/update/userId/" + this.localUser.id, { from: <Contact> this.localUser}, { headers })
+      .post(this.constants.BASE_URL + "/update/userId/" + this.localUser.id, { from: <Contact>this.localUser }, { headers })
       .subscribe(response => {
-        let contact = <Contact> response;
+        let contact = <Contact>response;
         this.localUser.iconUrl = contact.iconUrl ? contact.iconUrl : this.localUser.iconUrl;
         this.localUser.info = contact.info ? contact.info : this.localUser.info;
         this.localUser.name = contact.name ? contact.name : this.localUser.name;
@@ -381,9 +384,18 @@ export class ChatService {
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-    //count and set list of unseen messages ids in room
-    this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
     
+    //filter for incoming messages
+    let incomingMessages = responseChatMessages.filter(cm => cm.fromId != this.localUser.id);
+    if (incomingMessages && incomingMessages.length > 0) {
+      //generate list of unseen messages
+      this.updateUnseenMessagesIds(roomId, responseChatMessages);
+      if(this.displayedChatRoom && roomId == this.displayedChatRoom.id){
+        this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id);
+      }
+    } else {
+      this.scrollIntoView(responseChatMessages[responseChatMessages.length - 1].id);
+    }
     //save responseChatMessages in DATA Store
     this.addListOfEntriesToDATA(responseChatMessages);
 
@@ -433,14 +445,37 @@ export class ChatService {
    * determines which messages are unseen an returns them
    * @param chatMessages 
    */
-  private getUnseenMessagesIds(chatMessages: ChatMessage[]): string[] {
-    let unseenMessageIds: string[] = [];
-    for (let chatMessage of chatMessages) {
-      if (!chatMessage.seen) {
-        unseenMessageIds.push(chatMessage.id);
+  private updateUnseenMessagesIds(roomId: string, chatMessages: ChatMessage[]) {
+    let chatRoom: ChatRoom = this.availableRooms.get(roomId);
+    let hasAlreadyUnseenMessages: boolean = chatRoom.unseenChatMessageIds && chatRoom.unseenChatMessageIds.length > 0 ? true : false;
+    if (!hasAlreadyUnseenMessages) {
+      chatRoom.unseenChatMessageIds = [];
+    }
+    let oldestMessage: ChatMessage;
+
+    let unseenMessages: ChatMessage[] = chatMessages.filter(cm => {
+      if (!cm.seen) {
+        if (!oldestMessage) {
+          oldestMessage = cm;
+        }
+        let current: Date = new Date(cm.createdAt);
+        let oldest: Date = new Date(oldestMessage.createdAt);
+        if (oldest > current) {
+          oldestMessage = cm;
+        }
+
+        chatRoom.unseenChatMessageIds.push(cm.id);
+        return true;
+      }
+      return false;
+    });
+
+    if (unseenMessages.length > 0) {
+
+      if (!hasAlreadyUnseenMessages) {
+        chatRoom.oldestUnseenMessage = oldestMessage;
       }
     }
-    return unseenMessageIds;
   }
 
   /**
@@ -470,7 +505,9 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/update-unseen-messages", transferMessage, { headers })
       .subscribe(response => {
-        console.log()
+        /**
+         * currently no response handling
+         */
       });
   }
 
@@ -529,10 +566,26 @@ export class ChatService {
     );
   }
 
+  scrollIntoView(elementId: string, scrollConfig?: any) {
+    let threadId = setInterval(
+      function () {
+        let element: HTMLElement = document.getElementById(elementId);
+        if (element) {
+          //let scrollConfig = { behavior: "smooth"};
+          element.scrollIntoView();
+          clearInterval(threadId);
+        }
+      }, 50);
+  }
+
   initDisplayChatRoomProfileComponent() {
     if (this.groupProfileComponent) {
       this.groupProfileComponent.init();
     }
+  }
+
+  set currentDisplayedLeftPanel(value: string) {
+    this.appComponent.currentDisplayedLeftPanel
   }
 
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }

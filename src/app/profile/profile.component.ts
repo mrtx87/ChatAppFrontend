@@ -53,6 +53,8 @@ export class ProfileComponent implements OnInit {
       if(that.store.lookUpInTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE) && that.localUser) {
         that.localUser.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE);
         that.store.deleteFromTEMPDATA(that.constants.NEW_LOCAL_USER_IMAGE);
+        //UPDATES IMAGE IN BACKEND
+        that.chatService.sendUpdateUserProfile();
         clearInterval(that.imageListener)
         that.imageListener = null;
       }

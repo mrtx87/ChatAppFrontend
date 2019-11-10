@@ -18,7 +18,7 @@
         </div>
 
         <!-- INCOMING MESSAGE CONTAINER -->
-        <div style="width:100%; display:flex; justify-content: flex-start; margin-top:15px;"
+        <div id="{{m?.id}}" style="width:100%; display:flex; justify-content: flex-start; margin-top:15px;"
             *ngIf="m.fromId !== localUser.id && m.fromId !== constants.CHAT_MESSAGE_SYSTEM_TYPE && m.fromId !== constants.CHAT_MESSAGE_DATE_TYPE">
             <div class="chat-bubble left">
                 {{ m?.body}}
@@ -27,7 +27,7 @@
         </div>
 
         <!-- OUTGOING MESSAGE CONTAINER -->
-        <div style="width:100%; display:flex; justify-content: flex-end; margin-top:15px;"
+        <div id="{{m?.id}}" style="width:100%; display:flex; justify-content: flex-end; margin-top:15px;"
             *ngIf="m.fromId === localUser.id">
             <div class="chat-bubble right">
                 {{ m?.body}}
