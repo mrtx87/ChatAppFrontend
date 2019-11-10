@@ -56,6 +56,8 @@ export class ChatService {
   public searchResultComponent: SearchresultComponent
   public settingsComponent: SettingsComponent
 
+
+
   public registerAppComponent(appComponent: AppComponent) {
     this.appComponent = appComponent;
   }
@@ -277,10 +279,11 @@ export class ChatService {
       .subscribe(response => {
         const receivedUser = <User>response;
         if (receivedUser.id && receivedUser.name) {
-          this.isLoggedIn = true;
           this.localUser = receivedUser;
           this.addEntryToDATA(<Contact>this.localUser);
           this.init();
+          this.isLoggedIn = true;
+
         }
       });
   }
@@ -381,9 +384,11 @@ export class ChatService {
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-    //count and set list of unseen messages ids in room
-    let incomingMessages = (responseChatMessages.filter(cm => cm.fromId != this.localUser.id));
+    
+    //filter for incoming messages
+    let incomingMessages = responseChatMessages.filter(cm => cm.fromId != this.localUser.id);
     if (incomingMessages && incomingMessages.length > 0) {
+      //generate list of unseen messages
       this.updateUnseenMessagesIds(roomId, responseChatMessages);
       if(this.displayedChatRoom && roomId == this.displayedChatRoom.id){
         this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id);
@@ -577,6 +582,10 @@ export class ChatService {
     if (this.groupProfileComponent) {
       this.groupProfileComponent.init();
     }
+  }
+
+  set currentDisplayedLeftPanel(value: string) {
+    this.appComponent.currentDisplayedLeftPanel
   }
 
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }

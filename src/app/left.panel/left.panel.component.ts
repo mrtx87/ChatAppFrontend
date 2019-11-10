@@ -37,6 +37,14 @@ export class LeftPanelComponent implements OnInit {
     this.store.localUser = val;
   }
 
+  get currentDisplayedLeftPanel() : string {
+    return this.chatService.currentDisplayedLeftPanel;
+  }
+
+  set currentDisplayedLeftPanel(value: string) {
+    this.chatService.currentDisplayedLeftPanel = value;
+  }
+
   get availableRooms(): ChatRoom[] {
     let rooms = this.store.availableRooms;
     let availableRooms = [];

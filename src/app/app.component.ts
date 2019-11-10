@@ -4,11 +4,28 @@ import { Constants } from './constants';
 import { User } from './Entities/user';
 import { DataStore } from './data.store';
 import { ValueResolver } from './value.resolver';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  // ...
+} from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: '0' }),
+        animate('300ms ease-in', style({ opacity: 1 }))
+      ]),
+      transition('* => void', animate('300ms ease-out', style({ opacity: 0 })))
+    ])
+  ]
 })
 export class AppComponent {
 
@@ -17,7 +34,15 @@ export class AppComponent {
     //@TODO Menüs schließen bei klick
   }
 
-  public currentDisplayedLeftPanel: string;
+  private currentDisplayedLeftPanel_: string;
+
+  set currentDisplayedLeftPanel(value: string) {
+    this.currentDisplayedLeftPanel_ = value;
+  }
+
+  get currentDisplayedLeftPanel(): string {
+    return this.currentDisplayedLeftPanel_;
+  }
 
   get localUser(): User {
     return this.store.localUser;
@@ -36,6 +61,6 @@ export class AppComponent {
     private constants: Constants, private values: ValueResolver) {
 
     chatService.registerAppComponent(this);
-    this.currentDisplayedLeftPanel = constants.DEFAULT_PANEL;
+    this.currentDisplayedLeftPanel_ = constants.DEFAULT_PANEL;
   }
 }
