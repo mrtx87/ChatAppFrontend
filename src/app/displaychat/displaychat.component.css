@@ -1,9 +1,16 @@
-.chat-panel-wrapper {
+.wrapper {
   position: relative;
   display:flex;
   flex-direction:column;
   width:100%;
   height:74vh;
+  background-color: white;
+}
+.chat-panel-wrapper {
+  position: relative;
+  display:flex;
+  flex-direction:column;
+  width:100%;
   background-color: white;
   overflow: auto;
 }

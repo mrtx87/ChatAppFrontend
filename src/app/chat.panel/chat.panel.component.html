@@ -39,7 +39,7 @@
         </div>
 
     </div>
-    <app-displaychat></app-displaychat>
+    <app-displaychat class="app-displaychat"></app-displaychat>
     <div class="senden-container" >
         <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
         <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom" placeholder="Write a message">

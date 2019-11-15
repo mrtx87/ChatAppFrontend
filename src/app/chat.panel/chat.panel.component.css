@@ -1,16 +1,21 @@
 .wrapper {
-  display:flex;
+  display:grid;
   height: 100%;
   flex-direction:column;
-  background-color: #F1F1F1;
+  background-color: #fff;
+  grid-template-rows: 65px auto minmax(65px, auto);
 }
 
+.app-displaychat {
+  overflow: auto;
+}
 
 .senden-container {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
     padding: 15px 0;
+    background: var(--bg-grey);
 }
 
 .senden-container img {
@@ -37,6 +42,7 @@
     height: 65px;
     display: flex;
     align-items: center;
+    background: var(--bg-grey);
 }
 
 .menu-img {
