@@ -24,6 +24,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SearchresultComponent } from './searchresult/searchresult.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ValueResolver } from './value.resolver';
+import { stringify } from 'querystring';
 
 
 
@@ -316,9 +317,20 @@ export class ChatService {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
+
+    let nextAvailableRooms : Map<string, ChatRoom> = new Map<string, ChatRoom>();
     chatRooms.forEach(chatRoom => {
-      this.availableRooms.set(chatRoom.id, chatRoom);
-    });
+      if(this.availableRooms.has(chatRoom.id)) {
+        let transferRoom  = this.availableRooms.get(chatRoom.id);
+        nextAvailableRooms.set(transferRoom.id, transferRoom);
+      }else {
+        nextAvailableRooms.set(chatRoom.id, chatRoom);
+      }
+    }) 
+    this.availableRooms = nextAvailableRooms;
+    if(this.displayedChatRoom && !this.availableRooms.has(this.displayedChatRoom.id)){
+      this.displayedChatRoom = null;
+    }
     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     //get all chat messages per room from backend
     this.addMapToDATA(this.availableRooms);
