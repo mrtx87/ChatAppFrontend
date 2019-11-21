@@ -1,8 +1,8 @@
-<div style="position: relative;display:flex; flex-direction:column; width:100%; height:74vh; background-color: white; overflow: auto;">
+<div class="display-chat-messages">
     <ng-template ngFor let-m [ngForOf]="currentDisplayMessages">
 
         <!-- Date MESSAGE CONTAINER -->
-        <div style="width:100%; display:flex; justify-content: center; margin-top:15px;"
+        <div class="date-message-container"
             *ngIf="m.fromId === constants.CHAT_MESSAGE_DATE_TYPE">
             <div class="date-bubble">
                 {{ m?.createdAt | date: 'dd.MM.yyyy'}}
@@ -10,7 +10,7 @@
         </div>
 
         <!-- SYSTEM MESSAGE CONTAINER -->
-        <div style="width:100%; display:flex; justify-content: center; margin-top:15px;"
+        <div class="System-message-container"
             *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_TYPE">
             <div class="system-bubble"> 
                 {{ m?.body }}
@@ -18,7 +18,7 @@
         </div>
 
         <!-- INCOMING MESSAGE CONTAINER -->
-        <div id="{{m?.id}}" style="width:100%; display:flex; justify-content: flex-start; margin-top:15px;"
+        <div class="incoming-message-container" id="{{m?.id}}"
             *ngIf="m.fromId !== localUser.id && m.fromId !== constants.CHAT_MESSAGE_SYSTEM_TYPE && m.fromId !== constants.CHAT_MESSAGE_DATE_TYPE">
             <div class="chat-bubble left">
                 {{ m?.body}}
@@ -27,7 +27,7 @@
         </div>
 
         <!-- OUTGOING MESSAGE CONTAINER -->
-        <div id="{{m?.id}}" style="width:100%; display:flex; justify-content: flex-end; margin-top:15px;"
+        <div class="outgoing-message-container" id="{{m?.id}}"
             *ngIf="m.fromId === localUser.id">
             <div class="chat-bubble right">
                 {{ m?.body}}

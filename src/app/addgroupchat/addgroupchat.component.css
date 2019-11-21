@@ -84,6 +84,11 @@
     padding-left: 25px;
 }
 
+.add-user-2-group {
+    font-size:30px; 
+    color:white;
+}
+
 .added-user {
      display:flex; 
      flex-direction:column; 

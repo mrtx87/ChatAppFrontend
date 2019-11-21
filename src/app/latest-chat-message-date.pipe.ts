@@ -27,7 +27,7 @@ export class LatestChatMessageDatePipe implements PipeTransform {
       if(d.dayOfYear() - date.dayOfYear() == 1)
         return "Gestern";
 
-      if(d.dayOfYear() - date.dayOfYear() < 7){
+      if(d.dayOfYear() - date.dayOfYear() <= 7){
         if(date.weekday() == 1) 
           return "Montag";
         if(date.weekday() == 2) 
@@ -44,10 +44,10 @@ export class LatestChatMessageDatePipe implements PipeTransform {
           return "Sonntag";
       } 
       
-      if(d.dayOfYear() - date.dayOfYear() > 7)
+     // if(d.dayOfYear() - date.dayOfYear() > 7)
         return date.date() + "." + (date.month() + 1) + "." + date.year();
 
-      return dateString;
+     // return dateString;
   }
 
   constructor(private store: DataStore, private chatService: ChatService, private values: ValueResolver) { }
