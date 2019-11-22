@@ -334,13 +334,23 @@ export class ChatService {
     this.connect();
     this.sendRequestContacts();
     this.sendRequestRoomList();
+    // this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+  }
+
+  private addAvailableRoom(chatRoom: ChatRoom){
+    if (!this.availableRooms) {
+      this.availableRooms = new Map<string, ChatRoom>();
+    }
+    this.availableRooms.set(chatRoom.id, chatRoom);
+    this.sendRequestChatMessagesForSingleRoom(chatRoom);
+    this.addMapToDATA(this.availableRooms);
+    // this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
   }
 
   private updateAvailableRooms(chatRooms: ChatRoom[]) {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
-
     let nextAvailableRooms : Map<string, ChatRoom> = new Map<string, ChatRoom>();
     chatRooms.forEach(chatRoom => {
       if(this.availableRooms.has(chatRoom.id)) {
@@ -351,21 +361,26 @@ export class ChatService {
       }
     }) 
     this.availableRooms = nextAvailableRooms;
+
     if(this.displayedChatRoom && !this.availableRooms.has(this.displayedChatRoom.id)){
       this.displayedChatRoom = null;
     }
     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     //get all chat messages per room from backend
     this.addMapToDATA(this.availableRooms);
-    this.sendRequestAllChatMessagesForRooms(chatRooms);
+    // this.sendRequestAllChatMessagesForRooms(chatRooms);
   }
 
   /**
  * gets all chat messages for all received rooms
  * @param roomId 
  */
-  private sendRequestAllChatMessagesForRooms(chatRooms: ChatRoom[]) {
-    chatRooms.forEach(chatRoom => this.sendRequestChatMessages(chatRoom.id));
+  // private sendRequestAllChatMessagesForRooms(chatRooms: ChatRoom[]) {
+  //   chatRooms.forEach(chatRoom => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+  // }
+
+  private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom){
+    this.sendRequestChatMessages(chatRoom.id);
   }
 
   private addEntryToDATA(entry: any) {
@@ -408,7 +423,8 @@ export class ChatService {
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>response);
-      })
+        this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+       })
   }
 
   /**
@@ -569,9 +585,10 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
-        this.updateAvailableRooms(<ChatRoom[]>[response]);
+        this.addAvailableRoom(<ChatRoom>response);
         this.sendRequestContacts();
         this.displayedChatRoom = <ChatRoom>response;
+        this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
       });
   }
 
@@ -610,6 +627,8 @@ export class ChatService {
       .subscribe(response => {
         this.sendRequestContacts();
         this.sendRequestRoomList();
+        this.store.allChatMessages.delete(chatRoom.id);
+        this.store.DATA.delete(chatRoom.id);
       });
   }
 
