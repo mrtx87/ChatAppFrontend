@@ -18,7 +18,7 @@
         <div class="user-app-burger" tabindex="-1">
             <img class="user-app-burger-img" src="assets/threepoints.svg" (click)="displayUserMenu=!displayUserMenu">
             <div id="leftpanel-burger-menu" *ngIf="displayUserMenu" class="user-menu">
-                <div class="menu-row super-user-menu">
+                <div (click)="chatService.appComponent.currentDisplayedLeftPanel=constants?.GROUP_CHAT;" class="menu-row super-user-menu">
                     Neue Gruppe
                 </div>
                 <div (click) ="initDisplayProfile();displayUserMenu=false"  class="menu-row super-user-menu">
