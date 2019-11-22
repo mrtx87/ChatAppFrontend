@@ -1,0 +1,66 @@
+<div class="wrapper">
+    <div class="chat-panel-header">
+<<<<<<< HEAD
+        <div style="width:70%; margin-left: 10px;">
+            <div style="display:flex;">
+                <div><img style="width:50px; border-radius: 25px;" src="{{displayedChatRoom?.iconUrl}}"></div>
+                <div style="display:flex; flex-direction: column; padding: 8px;">
+                    <div style="font-weight: bolder;"> {{displayedChatRoom | chatRoomName}}</div>
+                    <div style="display: flex;">
+                        <span *ngFor="let id of displayedChatRoom?.userIds" style="margin-right: 4px;">
+                            {{ id | contactName}},
+=======
+        <div class="chat-panel-left-container">
+            <div class="chat-name-container">
+                <div *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img
+                        class="chat-img" src="{{displayedChatRoom | img}}"></div>
+                <div class="chat-name-member">
+                    <div class="chat-name"> {{displayedChatRoom | chatRoomName}}</div>
+                    <div class="chat-member-container">
+                        <span *ngFor="let id of displayedChatRoom?.userIds; let i = index" class="chat-member">
+                            {{ id | contactName}}
+                            {{ (displayedChatRoom && i != displayedChatRoom.userIds.length-1) ? ',' : '' }}
+>>>>>>> 9abdb22359fa62ce6a04902b8cd97a150b335201
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+<<<<<<< HEAD
+        <div style="width:30%; display:flex; align-items:center; justify-content: flex-end;">
+            <div class="menu-item-container"> <img  class="magnifier-img" src="assets/magnifier-glass.svg">
+=======
+        <div class="chat-panel-right-container" >
+            <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
+>>>>>>> 9abdb22359fa62ce6a04902b8cd97a150b335201
+            </div>
+            <div class="menu-item-container" tabindex="-1" (focusout)="displayRoomMenu=!displayRoomMenu">
+                <img (click)="displayRoomMenu=!displayRoomMenu" class="menu-img" src="assets/burger.svg">
+                <div id="room-menu" *ngIf="displayRoomMenu" class="room-menu">
+                    <div class="room-row sub-room-menu">
+                        Gruppeninfo
+                    </div>
+                    <div class="room-row sub-room-menu">
+                        Nachrichten auswählen
+                    </div>
+                    <div class="room-row sub-room-menu">
+                        Stumm
+                    </div>
+                    <div class="room-row sub-room-menu">
+                        Nachrichten leeren
+                    </div>
+                    <div class="room-row sub-room-menu">
+                        Gruppe verlassen
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <app-displaychat class="app-displaychat"></app-displaychat>
+    <div class="senden-container" >
+        <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
+        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom" placeholder="Write a message">
+        <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
+    </div>
+</div>
