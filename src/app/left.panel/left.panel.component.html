@@ -39,7 +39,6 @@
     <input [(ngModel)]="uploadImage" (change)="encodeImageFileAsURL()" id="file-input" type="file" name="name"
         style="display: none;" /> -->
 
-<<<<<<< HEAD
     <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
 
 
@@ -49,11 +48,6 @@
             <span class="magni"></span>
             <span (click)="focusOut()" class="blue-arrow"></span>
         </div>
-=======
-    <div class="search-contact-container">
-        <input [(ngModel)]="searchChatInputText" class="search-contact-inputfield" type="text"
-            placeholder="search chats">
->>>>>>> feature/removeContact
     </div>
     <div class="rooms-container">
         <div *ngFor="let chatRoom of availableRooms"
@@ -61,11 +55,7 @@
             (click)="toggleDisplayedRoom(chatRoom)">
             <!-- {{values.resolveLatestChatMessageBody(chatRoom.value)}} -->
             <div style="position: relative;">
-<<<<<<< HEAD
                 <img class="profil-image" src="{{chatRoom | img}}">
-=======
-                <img style="border-radius: 20px; width:55px;" src="{{chatRoom | img}}">
->>>>>>> feature/removeContact
                 <div [hidden]="!chatRoom.unseenChatMessageIds || chatRoom.unseenChatMessageIds == 0"
                     style="border-radius:50%; background-color: red; color:white; font-weight: bolder; left:2px; bottom:2px; padding:2px 5px; position:absolute;">
                     {{chatRoom.unseenChatMessageIds?.length}}
@@ -83,10 +73,6 @@
                 <div class="room-last-message-container">
                     {{chatRoom | lastestChatMessageBody}}
                 </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> feature/removeContact
             </div>
         </div>
     </div>
