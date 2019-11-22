@@ -23,6 +23,8 @@ import { LoginregisterComponent } from './loginregister/loginregister.component'
 import { ProfileComponent } from './profile/profile.component';
 import { SearchresultComponent } from './searchresult/searchresult.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ValueResolver } from './value.resolver';
+import { stringify } from 'querystring';
 
 
 
@@ -209,8 +211,9 @@ export class ChatService {
 
     this.stompClient.connect({}, function () {
       that.sendOwnOnlineStatus();
-      that.stompClient.subscribe("/client/" + that.localUser.id, messageFromServer =>
-        that.handleServerResponse(JSON.parse(messageFromServer.body))
+      that.stompClient.subscribe("/client/" + that.localUser.id, function(messageFromServer) {
+        that.handleServerResponse(JSON.parse(messageFromServer.body));
+      }
       );
     });
   }
@@ -220,6 +223,10 @@ export class ChatService {
 
       case this.constants.TM_TYPE_CHAT_MESSAGE: {
         this.processRequestedChatMessages(transferMessage.chatMessage.roomId, [transferMessage.chatMessage])
+      } break;
+      case this.constants.TM_TYPE_UPDATE_ROOMS_AND_CONTACTS: {
+        this.sendRequestRoomList();
+        this.sendRequestContacts();
       } break;
     }
   }
@@ -310,9 +317,20 @@ export class ChatService {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
+
+    let nextAvailableRooms : Map<string, ChatRoom> = new Map<string, ChatRoom>();
     chatRooms.forEach(chatRoom => {
-      this.availableRooms.set(chatRoom.id, chatRoom);
-    });
+      if(this.availableRooms.has(chatRoom.id)) {
+        let transferRoom  = this.availableRooms.get(chatRoom.id);
+        nextAvailableRooms.set(transferRoom.id, transferRoom);
+      }else {
+        nextAvailableRooms.set(chatRoom.id, chatRoom);
+      }
+    }) 
+    this.availableRooms = nextAvailableRooms;
+    if(this.displayedChatRoom && !this.availableRooms.has(this.displayedChatRoom.id)){
+      this.displayedChatRoom = null;
+    }
     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     //get all chat messages per room from backend
     this.addMapToDATA(this.availableRooms);
@@ -363,7 +381,7 @@ export class ChatService {
   * gets all chatrooms for the logged in user from backend
   * 
   */
-  sendRequestRoomList() {
+  private sendRequestRoomList() {
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>response);
@@ -384,6 +402,9 @@ export class ChatService {
     //count and set list of unseen messages ids in room
     this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
     
+    //count and set list of unseen messages ids in room
+    // this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
+
     //save responseChatMessages in DATA Store
     this.addListOfEntriesToDATA(responseChatMessages);
 
@@ -513,6 +534,23 @@ export class ChatService {
         this.updateAvailableRooms(<ChatRoom[]>[response]);
         this.sendRequestContacts();
         this.displayedChatRoom = <ChatRoom>response;
+      });
+  }
+  /**
+   * Requests removal of a contact together with its room.
+   * @param contactToRemove contact to remove
+   */
+  sendRemoveContact(conatactToRemove: Contact, chatRoom: ChatRoom) {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    let transferMessage: TransferMessage = new TransferMessage();
+    transferMessage.from = this.localUser;
+    transferMessage.chatRoom = chatRoom;
+    this.http
+      .post(this.constants.BASE_URL + "/remove-contact", transferMessage, { headers })
+      .subscribe(response => {
+        this.sendRequestContacts();
+        this.sendRequestRoomList();
       });
   }
 

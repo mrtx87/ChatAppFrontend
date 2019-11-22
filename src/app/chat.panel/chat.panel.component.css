@@ -45,6 +45,45 @@
     background: var(--bg-grey);
 }
 
+.chat-panel-left-container{
+  width:70%; 
+  margin-left: 10px;
+}
+
+.chat-name-container{
+  display:flex;
+}
+
+.chat-img {
+  width:50px; 
+  border-radius: 25px;
+}
+
+.chat-name-member {
+  display:flex; 
+  flex-direction: column; 
+  padding: 8px;
+}
+
+.chat-name{
+  font-weight: bolder;
+}
+
+.chat-member-container {
+  display: flex;
+}
+
+.chat-member {
+  margin-right: 4px;
+}
+
+.chat-panel-right-container {
+  width:30%; 
+  display:flex; 
+  align-items:center; 
+  justify-content: flex-end;
+}
+
 .menu-img {
     height: 35px;
     opacity: 0.5;

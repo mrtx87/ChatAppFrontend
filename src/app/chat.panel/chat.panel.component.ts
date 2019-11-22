@@ -67,6 +67,7 @@ export class ChatPanelComponent implements OnInit {
 
   triggerSendChatMessage() {
     if (this.chatInputText && this.chatInputText.length >= 1) {
+      // console.log(this.displayedChatRoom);
       const chatMessage: ChatMessage = new ChatMessage();
       chatMessage.body = this.chatInputText;
       chatMessage.fromId = this.localUser.id;
