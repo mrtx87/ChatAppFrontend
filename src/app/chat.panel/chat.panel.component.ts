@@ -6,6 +6,9 @@ import { ChatRoom } from '../Entities/chat.room';
 import { Constants } from '../constants';
 import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
+import { Contact } from '../Entities/contact';
+import { EmojiserviceService } from '../emojiservice.service';
+import { ChatEmoji } from '../chatEmoji';
 
 @Component({
   selector: 'app-chat-panel',
@@ -16,6 +19,15 @@ export class ChatPanelComponent implements OnInit {
 
 
   displayRoomMenu: boolean = false;
+  currentDisplayedRightPanel_: string = "null"
+
+  get currentDisplayedRightPanel(): string {
+    return this.currentDisplayedRightPanel_;
+  }
+
+  set currentDisplayedRightPanel(value: string) {
+    this.currentDisplayedRightPanel_ = value;
+  }
 
   get chatInputText(): string {
     return this.chatService.chatInputText;
@@ -38,10 +50,19 @@ export class ChatPanelComponent implements OnInit {
     this.chatService.displayedChatRoom = val;
   }
 
-  constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants) { }
+  get EMOJIS() : ChatEmoji[] {
+    return this.emojiService.EMOJIS;
+  }
+
+  constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants, private emojiService: EmojiserviceService) {
+    this.chatService.registerChatPanelComponent(this);
+  }
 
   ngOnInit() {
 
+  }
+  toggleRoomMenuDisplay() {
+    this.displayedChatRoom ? this.displayRoomMenu = !this.displayRoomMenu : this.displayRoomMenu = false;
   }
 
   triggerSendChatMessage() {
@@ -54,8 +75,43 @@ export class ChatPanelComponent implements OnInit {
       this.chatInputText = "";
     }
   }
-  
-  menuSelect(){
+
+  asyncInitProfile(contact: Contact) {
+    let that = this;
+    let interval = setInterval(function () {
+      if (that.chatService.profileComponent) {
+        that.chatService.profileComponent.init(contact.name, contact.info, contact.iconUrl, true);
+        clearInterval(interval);
+      }
+    }, 5);
+  }
+
+  asyncInitGroupProfile(chatRoom: ChatRoom, readOnly: boolean) {
+    let that = this;
+    let interval = setInterval(function () {
+      if (that.chatService.groupProfileComponent) {
+        that.chatService.groupProfileComponent.init(chatRoom, readOnly);
+        clearInterval(interval);
+      }
+    }, 5);
+  }
+
+  initDisplayProfile() {
+    if (this.displayedChatRoom.groupChat) {
+      this.currentDisplayedRightPanel = this.constants.GROUP_CHAT_PROFILE;
+      this.asyncInitGroupProfile(this.displayedChatRoom, true);
+      //this.store.addEntryWithouthIdToTEMPDATA(this.constants.DISPLAYED_ROOM_ID, this.displayedChatRoom);
+      return;
+    } else {
+      this.currentDisplayedRightPanel = this.constants.USER_PROFILE;
+      let otherContactId: string = this.displayedChatRoom.userIds.filter(id => id != this.localUser.id)[0];
+      let otherContact = this.chatService.getContactById(otherContactId);
+      this.asyncInitProfile(otherContact);
+      return;
+    }
+  }
+
+  menuSelect() {
     console.log(this)
     this.displayRoomMenu = !this.displayRoomMenu
   }
