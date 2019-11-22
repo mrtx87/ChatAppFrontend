@@ -49,6 +49,8 @@ export class AdduserComponent implements OnInit {
 
   createRoom(contact:Contact){
     this.chatService.sendCreateRoomAndContact(contact);
+    this.searchNewContactInputText = "";
+    this.newContactsList = [];
   }
 
 }
