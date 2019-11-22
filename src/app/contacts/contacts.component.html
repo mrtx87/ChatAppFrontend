@@ -20,13 +20,18 @@
         </div>
 
         <div class="contacts-container">
-            <div *ngFor="let contact of contacts" class="contacts-row"  (click)="values.resolveOneToOneRoomByContact(contact)">
-                <div>
-                    <img style="border-radius: 20px; width:40px;"
-                        src="{{contact.iconUrl ? contact.iconUrl : 'assets/default-user-icon.svg'}}">
+            <div *ngFor="let contact of contacts" class="contacts-row">
+                <div (click)="setDisplayedChatRoomByContact(contact)" style="width:100%; display: flex; flex-direction: row;">
+                    <div>
+                        <img style="border-radius: 20px; width:40px;"
+                            src="{{contact.iconUrl ? contact.iconUrl : 'assets/default-user-icon.svg'}}">
+                    </div>
+                    <div class="contact-text-container">
+                        {{contact?.name}}
+                    </div>
                 </div>
-                <div class="contact-text-container">
-                    {{contact?.name}}
+                <div>
+                    <img style="border-radius: 10px; width:20px;" src='assets/remove-button.svg' (click)="removeContact(contact)">
                 </div>
             </div>
         </div>

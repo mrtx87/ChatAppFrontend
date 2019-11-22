@@ -24,12 +24,16 @@ export class LeftPanelComponent implements OnInit {
 
   isFocused: boolean = false;
 
+<<<<<<< HEAD
   constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) {
     chatService.registerLeftPanelComponent(this);
    }
 
   ngOnInit() {
   }
+=======
+  ngOnInit() {}
+>>>>>>> feature/removeContact
 
   get localUser(): User {
     return this.store.localUser;
@@ -107,6 +111,7 @@ export class LeftPanelComponent implements OnInit {
       this.chatService.scrollIntoView(chatMessage.id);
     }
   }
+<<<<<<< HEAD
 
   isClicked() {
     this.isFocused = true;
@@ -133,4 +138,6 @@ export class LeftPanelComponent implements OnInit {
     this.asyncInitProfile();
   }
 
+=======
+>>>>>>> feature/removeContact
 }
