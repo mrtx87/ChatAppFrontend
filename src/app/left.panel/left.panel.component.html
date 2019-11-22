@@ -15,9 +15,29 @@
             <img class="new-user-logo-img" src="assets/new-user.svg"
                 (click)="currentDisplayedLeftPanel=constants?.ADD_USER_PANEL">
         </div>
-        <div class="user-app-burger" tabindex="-1">
-            <img class="user-app-burger-img" src="assets/threepoints.svg" (click)="displayUserMenu=!displayUserMenu">
+        <div [ngClass]="displayUserMenu ? 'active' : ''" class="user-app-burger" tabindex="-1">
+            <img class="user-app-burger-img" src="assets/burger.svg" (click)="displayUserMenu=!displayUserMenu">
             <div id="leftpanel-burger-menu" *ngIf="displayUserMenu" class="user-menu">
+
+
+
+
+
+                <!-- <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
+
+
+                    <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="searchChatInputText"
+                        class="search-contact-inputfield" type="text" placeholder="search chats">
+                    <div class="icons">
+                        <span class="magni"></span>
+                        <span (click)="focusOut()" class="blue-arrow"></span>
+                    </div>
+                </div> -->
+
+
+
+
+
                 <div class="menu-row super-user-menu">
                     Neue Gruppe
                 </div>

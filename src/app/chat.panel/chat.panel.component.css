@@ -6,6 +6,24 @@
   overflow:auto;
 }
 
+.rightpanel-burger-menu {
+  position: relative;
+  margin: 0 10px;
+  padding: 5px;
+  border-radius: 23px;
+  background: none;
+  transition: 0.2s;
+}
+
+.rightpanel-burger-menu:focus{
+outline: none;
+}
+
+.rightpanel-burger-menu.active {
+transition: 0.2s;
+background: rgba(0,0,0,.1);
+}
+
 
 .senden-container {
     width: 100%;
@@ -41,7 +59,7 @@
 }
 
 .chat-panel-left-container{
-  width:70%; 
+  width:70%;
   margin-left: 10px;
 }
 
@@ -50,13 +68,13 @@
 }
 
 .chat-img {
-  width:50px; 
+  width:50px;
   border-radius: 25px;
 }
 
 .chat-name-member {
-  display:flex; 
-  flex-direction: column; 
+  display:flex;
+  flex-direction: column;
   padding: 8px;
 }
 
@@ -73,9 +91,9 @@
 }
 
 .chat-panel-right-container {
-  width:30%; 
-  display:flex; 
-  align-items:center; 
+  width:30%;
+  display:flex;
+  align-items:center;
   justify-content: flex-end;
 }
 
@@ -89,9 +107,6 @@
     opacity: 0.5;
 }
 
-.menu-img:hover, .magnifier-img:hover {
-    opacity: 1;
-}
 
 .room-menu {
     position: absolute;
@@ -139,7 +154,7 @@
   .anim {
     animation: myanimation2 0.25s ease-out forwards;
   }
-  
+
   @keyframes myanimation2 {
     0% {
       right: -400px;
