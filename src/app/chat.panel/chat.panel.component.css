@@ -1,5 +1,4 @@
 .wrapper {
-  display:flex;
   height: 100%;
   flex-direction:column;
   background-color: #F1F1F1;
@@ -145,26 +144,46 @@ background: rgba(0,0,0,.1);
     padding: 10px;
 }
 
-.overlay-comp-container{
-    position:absolute;
-    top:0px;
-    bottom:0px;
-    right:0px;
-    width:400px;
-  }
+
+
+
 
   .anim {
     animation: myanimation2 0.25s ease-out forwards;
   }
 
+
+  .wrapper.chat {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .chat-panel-header {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  .displaychat {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+  .senden-container {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+  }
+
+  .overlay-comp-container{
+    width:0px;
+    grid-row: 1 / 4;
+    grid-column: 2 / 3;
+  }
+
   @keyframes myanimation2 {
     0% {
-      right: -400px;
-      opacity: 1;
+      width:0px;
     }
     100% {
-      opacity: 1;
-      right: 0px;
+      width:400px;
     }
   }
 
