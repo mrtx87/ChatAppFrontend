@@ -137,6 +137,8 @@ export class LeftPanelComponent implements OnInit {
     this.asyncInitProfile();
   }
 
+
+
   initLogout() {
     this.chatService.sendDisconnectMessage(this.localUser);
     this.chatService.resetClient();
