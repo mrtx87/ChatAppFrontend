@@ -11,5 +11,6 @@ export class TransferMessage {
     chatMessage: ChatMessage;
     contactsList: Contact[];
     unseenChatMessageIds: string[];
+    cookie: string;
 
 }
