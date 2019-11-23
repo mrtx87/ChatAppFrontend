@@ -18,7 +18,7 @@
         <div class="chat-panel-right-container" >
             <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
             </div>
-            <div id="rightpanel-burger-menu" class="menu-item-container" tabindex="-1">
+            <div class="rightpanel-burger-menu" [ngClass]="displayRoomMenu ? 'active' : ''" tabindex="-1">
                 <img (click)="toggleRoomMenuDisplay()" class="menu-img" src="assets/burger.svg">
                 <div id="room-menu" *ngIf="displayRoomMenu" class="room-menu">
                     <div (click)="initDisplayProfile()" class="room-row sub-room-menu">

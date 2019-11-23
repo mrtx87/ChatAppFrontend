@@ -49,8 +49,20 @@
 
 .user-app-burger {
     position: relative;
-    width: 10%;
-    padding: 0.7vw;
+    margin: 0 10px;
+    padding: 5px;
+    border-radius: 23px;
+    background: none;
+    transition: 0.2s;
+}
+
+.user-app-burger:focus{
+  outline: none;
+}
+
+.user-app-burger.active {
+  transition: 0.2s;
+  background: rgba(0,0,0,.1);
 }
 
 .user-app-burger-img {
@@ -247,7 +259,7 @@
   .anim {
     animation: myanimation 0.25s ease-out forwards;
   }
-  
+
   @keyframes myanimation {
     0% {
       left: -400px;
