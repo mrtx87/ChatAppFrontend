@@ -102,6 +102,8 @@
     </app-group-profile>
 
     <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedLeftPanel"
-        class="anim overlay-comp-container"></app-profile>
+        class="overlay-comp-container" [ngClass]="chatService.profileComponent.slideOut ? 'anim-out' : 'anim-in'"></app-profile>
+
+<!--class="anim overlay-comp-container"-->
 
 </div>

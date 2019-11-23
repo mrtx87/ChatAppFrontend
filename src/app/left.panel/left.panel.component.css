@@ -256,11 +256,15 @@
     width:100%;
   }
 
-  .anim {
-    animation: myanimation 0.25s ease-out forwards;
+  .anim-in {
+    animation: animationIn 0.25s ease-out forwards;
   }
 
-  @keyframes myanimation {
+  .anim-out {
+    animation: animationOut 0.25s ease-out forwards;
+  }
+
+  @keyframes animationIn {
     0% {
       left: -400px;
       opacity: 1;
@@ -268,5 +272,16 @@
     100% {
       opacity: 1;
       left: 0px;
+    }
+  }
+
+  @keyframes animationOut {
+    0% {
+      left: 0;
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      left: -400px;
     }
   }
