@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ChatService } from './chat.service';
 import { Constants } from './constants';
 import { User } from './Entities/user';
@@ -12,6 +12,7 @@ import {
   transition,
   // ...
 } from '@angular/animations';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,15 @@ import {
     ])
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  
+  
+  ngOnInit(): void {
+    let USER_COOKIE = this.cookieService.get(this.constants.USER_COOKIE_KEY);
+    if(USER_COOKIE) {
+      this.chatService.sendRequestLoginByCookie(USER_COOKIE)
+    }
+  }
 
   @HostListener("window:click", ["$event"])
   mouseEvent(event: MouseEvent) {
@@ -65,7 +74,7 @@ export class AppComponent {
   }
 
   constructor(private chatService: ChatService, private store: DataStore,
-    private constants: Constants, private values: ValueResolver) {
+    private constants: Constants, private values: ValueResolver, private cookieService : CookieService) {
 
     chatService.registerAppComponent(this);
     this.currentDisplayedLeftPanel_ = constants.DEFAULT_PANEL;

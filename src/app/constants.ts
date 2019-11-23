@@ -28,9 +28,12 @@ export class Constants{
     // TransferMessage Types
     public TM_TYPE_CHAT_MESSAGE: string = 'chat-message';
     public TM_TYPE_UPDATE_ROOMS_AND_CONTACTS: string = 'update-rooms-and-contacts';
+    public TM_FUNCTION_SET_COOKIE: string = "set-cookie";
 
     public CREATING_ROOM_CONTACTS_ID: string = "creating-room-contacts";
     public DISPLAYED_ROOM_ID: string = "displayed-room-id";
     public DISPLAYED_USER_ID: string = "displayed-user-id";
 
+    //COOKIE STUFF
+    public USER_COOKIE_KEY: string = "S9_CA_U";
 }

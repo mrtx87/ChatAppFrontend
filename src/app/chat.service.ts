@@ -25,6 +25,7 @@ import { SearchresultComponent } from './searchresult/searchresult.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ValueResolver } from './value.resolver';
 import { stringify } from 'querystring';
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -246,7 +247,11 @@ export class ChatService {
         this.sendRequestRoomList();
         this.sendRequestContacts();
       } break;
+      case this.constants.TM_FUNCTION_SET_COOKIE: {
+        this.cookieService.set(this.constants.USER_COOKIE_KEY, transferMessage.cookie);
+      } break;
     }
+
   }
 
   getContactById(id: string) {
@@ -303,6 +308,23 @@ export class ChatService {
       .set("Content-Type", "application/json");
     this.http
       .post(this.constants.BASE_URL + "/login", { username: this.loginUsername, password: this.loginPassword }, { headers })
+      .subscribe(response => {
+        const receivedUser = <User>response;
+        if (receivedUser.id && receivedUser.name) {
+          this.localUser = receivedUser;
+          this.addEntryToDATA(<Contact>this.localUser);
+          this.init();
+          this.isLoggedIn = true;
+
+        }
+      });
+  }
+
+  sendRequestLoginByCookie(user_cookie: string) {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    this.http
+      .post(this.constants.BASE_URL + "/login-by-cookie", { cookie: user_cookie }, { headers })
       .subscribe(response => {
         const receivedUser = <User>response;
         if (receivedUser.id && receivedUser.name) {
@@ -668,7 +690,7 @@ export class ChatService {
   }
 
 
-  constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }
+  constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) { }
 
   resetClient() {
     this.resetChatService();
