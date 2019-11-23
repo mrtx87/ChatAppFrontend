@@ -669,4 +669,13 @@ export class ChatService {
 
 
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore) { }
+
+  resetClient() {
+    this.resetChatService();
+    this.store.resetStore();
+  }
+
+  resetChatService() {
+    
+  }
 }

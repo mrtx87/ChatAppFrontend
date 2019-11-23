@@ -173,8 +173,8 @@ export class DataStore {
      */
     getChatMessageByRoomIdAndIndex(roomId: string, index: number): ChatMessage {
         let messages = this.getChatMessages(roomId);
-        if(index == -1){
-            index = messages.length-1;
+        if (index == -1) {
+            index = messages.length - 1;
         }
 
         if (messages && messages.length > index) {
@@ -189,6 +189,30 @@ export class DataStore {
 
     deleteFromTEMPDATA(id: string): any {
         return this.TEMPDATA.get(id);
+    }
+
+
+    resetStore() {
+        this.DATA_= new Map<string, any>();
+        this.TEMPDATA_= new Map<string, any>();
+
+        // LOGIN AND REGISTRATION PROPERTIES
+        this.registerUsername_ = null;;
+        this.registerPassword_ = null;
+        this.registerPasswordRepeat_ = null;
+
+        this.loginUsername_ = "default";
+        this.loginPassword_ = "123";
+        this.searchNewContactInputText_ = null;
+        this.newContactsList_ = null;
+
+        //LOCAL USER PROPERTIES
+        this.localUser = null;;
+        this.isLoggedIn_ = false;
+
+        this.allChatMessages_ = new Map<string, ChatMessage[]>();
+        this.availableRooms_ = new Map<string, ChatRoom>();
+        this.contacts_ = [];
     }
 
 }
