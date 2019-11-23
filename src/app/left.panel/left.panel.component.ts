@@ -83,6 +83,10 @@ export class LeftPanelComponent implements OnInit {
     reader.readAsDataURL(this.uploadImage);
   }*/
 
+  resetClient() {
+    
+  }
+
   toggleDisplayedRoom(chatRoom: ChatRoom) {
     this.displayedChatRoom = chatRoom;
 
@@ -131,6 +135,11 @@ export class LeftPanelComponent implements OnInit {
     //this.chatService.profileComponent.init(this.localUser.name, this.localUser.info, false);
 
     this.asyncInitProfile();
+  }
+
+  initLogout() {
+    this.chatService.sendDisconnectMessage(this.localUser);
+    this.chatService.resetClient();
   }
 
 }
