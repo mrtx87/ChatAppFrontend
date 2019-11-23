@@ -30,6 +30,7 @@ background: rgba(0,0,0,.1);
     display: flex;
     justify-content: space-evenly;
     padding: 15px 0;
+    background: var(--white-grey);
 }
 
 .senden-container img {
@@ -56,6 +57,7 @@ background: rgba(0,0,0,.1);
     height: 65px;
     display: flex;
     align-items: center;
+    background: var(--white-grey);
 }
 
 .chat-panel-left-container{
@@ -166,3 +168,33 @@ background: rgba(0,0,0,.1);
     }
   }
 
+
+
+  .wrapper {
+    justify-content: center;
+    position: relative;
+  }
+
+  .wrapper * {
+    z-index: 1;
+  }
+
+  .wrapper.home:after {
+    background:none;
+  }
+
+  .wrapper:after {
+    content: "";
+    background: url(../../assets/bg-chat.png);
+    opacity: 0.08;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: 0;   
+  }
+
+  .wrapper.home h1{
+    text-align: center;
+  }

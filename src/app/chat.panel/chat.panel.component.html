@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper chat" *ngIf="displayedChatRoom">
     <div class="chat-panel-header">
         <div class="chat-panel-left-container">
             <div class="chat-name-container">
@@ -52,4 +52,7 @@
 
     <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedRightPanel" class="anim overlay-comp-container">
     </app-profile>
+</div>
+<div class="wrapper home" *ngIf="!displayedChatRoom">
+<h1>welcome</h1>
 </div>
