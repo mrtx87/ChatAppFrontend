@@ -22,7 +22,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { LastestChatMessageBodyPipe } from './lastest-chat-message-body.pipe';
 import { LatestChatMessageDatePipe } from './latest-chat-message-date.pipe';
 import { ImgPipe } from './img.pipe';
-import { CookieService } from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import { ContactProfileComponent } from './contact-profile/contact-profile.component'
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { CookieService } from 'ngx-cookie-service'
     SettingsComponent,
     LastestChatMessageBodyPipe,
     LatestChatMessageDatePipe,
-    ImgPipe
+    ImgPipe,
+    ContactProfileComponent
   ],
   imports: [
     BrowserModule,

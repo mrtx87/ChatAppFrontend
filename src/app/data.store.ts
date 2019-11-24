@@ -173,7 +173,7 @@ export class DataStore {
      */
     getChatMessageByRoomIdAndIndex(roomId: string, index: number): ChatMessage {
         let messages = this.getChatMessages(roomId);
-        if (index == -1) {
+        if (messages && index == -1) {
             index = messages.length - 1;
         }
 

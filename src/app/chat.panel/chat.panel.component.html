@@ -2,8 +2,8 @@
     <div class="chat-panel-header">
         <div class="chat-panel-left-container">
             <div class="chat-name-container">
-                <div *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img
-                        class="chat-img" src="{{displayedChatRoom | img}}"></div>
+                <div *ngIf="displayedChatRoom" (click)="initDisplayContactProfile()"><img class="chat-img"
+                        src="{{displayedChatRoom | img}}"></div>
                 <div class="chat-name-member">
                     <div class="chat-name"> {{displayedChatRoom | chatRoomName}}</div>
                     <div class="chat-member-container">
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="chat-panel-right-container" >
+        <div class="chat-panel-right-container">
             <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
             </div>
             <div class="rightpanel-burger-menu" [ngClass]="displayRoomMenu ? 'active' : ''" tabindex="-1">
@@ -38,15 +38,15 @@
         </div>
 
     </div>
-    
-        <app-displaychat class="displaychat"></app-displaychat>
-        <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedRightPanel"
-        class="anim overlay-comp-container">
-        </app-group-profile>
 
-    <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedRightPanel" class="anim overlay-comp-container">
-    </app-profile>
-    
+    <app-displaychat class="displaychat"></app-displaychat>
+    <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedRightPanel"
+        class="anim overlay-comp-container">
+    </app-group-profile>
+
+    <app-contact-profile *ngIf="constants.CONTACT_PROFILE === currentDisplayedRightPanel" class="anim overlay-comp-container">
+    </app-contact-profile>
+
     <div class="senden-container">
         <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
         <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom"
@@ -54,8 +54,8 @@
         <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
     </div>
 
-    
+
 </div>
 <div class="wrapper home" *ngIf="!displayedChatRoom">
-<h1>welcome</h1>
+    <h1>welcome</h1>
 </div>

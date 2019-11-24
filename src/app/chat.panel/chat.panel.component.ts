@@ -91,7 +91,7 @@ export class ChatPanelComponent implements OnInit {
     }, 5);
   }
 
-  initDisplayProfile() {
+  initDisplayContactProfile() {
     if (this.displayedChatRoom.groupChat) {
       this.currentDisplayedRightPanel = this.constants.GROUP_CHAT_PROFILE;
       this.asyncInitGroupProfile(this.displayedChatRoom, true);

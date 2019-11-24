@@ -9,7 +9,9 @@ import { ValueResolver } from './value.resolver';
 export class ImgPipe implements PipeTransform {
 
   transform(chatRoom: ChatRoom): string {
-
+    if(!chatRoom){
+      return 'assets/picture.svg';
+    }
     if(chatRoom.groupChat) {
       return chatRoom && chatRoom.iconUrl ? chatRoom.iconUrl : 'assets/picture.svg';
     }
