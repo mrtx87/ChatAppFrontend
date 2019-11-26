@@ -698,6 +698,7 @@ export class ChatService {
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) { }
 
   resetClient() {
+    this.displayedChatRoom =  null;
     this.resetChatService();
     this.store.resetStore();
   }
