@@ -44,7 +44,7 @@
         class="anim overlay-comp-container">
     </app-group-profile>
 
-    <app-contact-profile *ngIf="constants.CONTACT_PROFILE === currentDisplayedRightPanel" [ngClass]="chatService.contactProfileComponent.slideOut ? 'anim-out' : 'anim-in'">
+    <app-contact-profile *ngIf="constants.CONTACT_PROFILE === currentDisplayedRightPanel" class="overlay-comp-container" [ngClass]="chatService.contactProfileComponent.slideOut ? 'animation-out-to-right' : 'animation-in-from-right'">
     </app-contact-profile>
 
     <div class="senden-container">

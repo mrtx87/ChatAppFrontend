@@ -2,7 +2,7 @@
     <div class="return-2-user-panel" >
         <div class="return-button-2-panel">
             <div class="r2upa">
-               <img (click)="initSlideOut()" src="assets/left-arrow.svg">
+               <img (click)="initSlideOut()" src="assets/right-arrow.svg">
             </div>
             <div class="r2bp">
                 Profil
@@ -42,6 +42,10 @@
                     <input  [(ngModel)]="currentlyDisplayedContact.info" type="text">
                     <span></span>
             </div>
+        </div>
+
+        <div class="delete-contact-container" >
+            <div (click)="removeContact()"> remove User </div>
         </div>
 
     </div>

@@ -50,7 +50,7 @@ export class ContactProfileComponent implements OnInit {
   }
 
   jumpBack() {
-
+    this.currentDisplayedRightPanel = null;
   }
 
 
@@ -68,6 +68,17 @@ export class ContactProfileComponent implements OnInit {
         clearInterval(interval);
       }
     }, 10)
+  }
+
+  removeContact(){
+    if(this.currentlyDisplayedContact){
+      console.log("Ya rly want to remove "+ this.currentlyDisplayedContact.name +", huh? Well, let's give it a try.");
+      // let chatRoom: ChatRoom = this.values.resolveDialogRoomByContact(contact);
+      this.chatService.sendRemoveContact(this.currentlyDisplayedContact, this.values.resolveDialogRoomByContact(this.currentlyDisplayedContact));
+      this.initSlideOut();
+    }else{
+      console.log("Don't remove anything as there was no other user. (Which is strange. You should investigate this.");
+    }
   }
 
 }
