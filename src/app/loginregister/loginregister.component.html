@@ -2,7 +2,7 @@
 
     <!-- LOGIN FORM -->
     <div *ngIf="!displayRegistration" class="login-form" >
-        <h3 style="color:white;">Anmelden</h3>
+        <h3>Anmelden</h3>
         <div class="register-row">
             <label>Benutzername</label>
             <input type="text" [(ngModel)]="loginUsername">
@@ -15,7 +15,7 @@
         <div class="send-btn" (click)="requestLogin()">
             Senden
         </div>
-        <div style="color:white;"> Noch kein Account ? <a (click)="displayRegistration = true"> register now.</a>
+        <div> Noch kein Account ? <a (click)="displayRegistration = true"> register now.</a>
         </div>
     </div>
 
@@ -24,7 +24,7 @@
 
     <!-- REGISTER FORM -->
     <div *ngIf="displayRegistration" class="register-form">
-        <h3 style="color:white;">Registration</h3>
+        <h3>Registration</h3>
         <div class="register-row">
             <label>Benutzername</label>
             <input type="text" [(ngModel)]="registerUsername">
@@ -34,7 +34,7 @@
             <input type="password" [(ngModel)]="registerPassword">
             <label>wiederhole Passwort</label>
             <input type="password" [(ngModel)]="registerPasswordRepeat" (keyup.enter)="requestRegistration()">
-            <div [hidden]="registrationValid" style="color:red; font-size:11px;"> passwörter stimmen nicht überein
+            <div [hidden]="registrationValid"> passwörter stimmen nicht überein
             </div>
 
         </div>
@@ -42,7 +42,7 @@
             Senden
         </div>
 
-        <div style="color:white;"> Bereits registriert? <a (click)="displayRegistration = false"> Hier anmelden.</a></div>
+        <div> Bereits registriert? <a (click)="displayRegistration = false"> Hier anmelden.</a></div>
 
     </div>
 

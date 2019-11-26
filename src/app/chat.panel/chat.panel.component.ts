@@ -7,6 +7,7 @@ import { Constants } from '../constants';
 import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
 import { Contact } from '../Entities/contact';
+import { isBoolean } from 'util';
 
 @Component({
   selector: 'app-chat-panel',
@@ -109,6 +110,26 @@ export class ChatPanelComponent implements OnInit {
   menuSelect() {
     console.log(this)
     this.displayRoomMenu = !this.displayRoomMenu
+  }
+
+
+  LineBreakOne : boolean = false;
+  LineBreakTwo : boolean = false;
+
+  countChars(){
+    let value = this.chatInputText.length;
+    if (value <= 5) {
+        this.LineBreakOne = false;
+    }
+    if (value >= 5 && value <=10) {
+        this.LineBreakOne = true;
+        this.LineBreakTwo = false;
+    }
+    if (value >= 10 && value <=15) {
+      this.LineBreakOne = false;
+      this.LineBreakTwo = true;
+    }
+
   }
 
 }

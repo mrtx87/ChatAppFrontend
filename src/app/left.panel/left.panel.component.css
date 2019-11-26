@@ -254,6 +254,7 @@
     bottom:0px;
     right:0px;
     width:100%;
+    background-color: var(--white-grey);
   }
 
   .anim-in {

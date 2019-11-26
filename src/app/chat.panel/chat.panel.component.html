@@ -38,7 +38,7 @@
         </div>
 
     </div>
-    
+
         <app-displaychat class="displaychat"></app-displaychat>
         <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedRightPanel"
         class="anim overlay-comp-container">
@@ -46,15 +46,15 @@
 
     <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedRightPanel" class="anim overlay-comp-container">
     </app-profile>
-    
+
     <div class="senden-container">
         <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
-        <input (keyup.enter)="triggerSendChatMessage()" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom"
+        <input id="test2" (keyup)="countChars();" (keyup.enter)="triggerSendChatMessage()" [ngClass]="textState ? 'test13' : 'test2'" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom"
             placeholder="Write a message">
         <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
     </div>
 
-    
+
 </div>
 <div class="wrapper home" *ngIf="!displayedChatRoom">
 <h1>welcome</h1>
