@@ -207,7 +207,7 @@ export class DataStore {
         this.newContactsList_ = null;
 
         //LOCAL USER PROPERTIES
-        this.localUser = null;;
+        this.localUser = null;
         this.isLoggedIn_ = false;
 
         this.allChatMessages_ = new Map<string, ChatMessage[]>();
