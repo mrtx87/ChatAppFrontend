@@ -2,7 +2,7 @@
     <div class="chat-panel-header">
         <div class="chat-panel-left-container">
             <div class="chat-name-container">
-                <div *ngIf="displayedChatRoom" (click)="initDisplayContactProfile()"><img class="chat-img"
+                <div *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img class="chat-img"
                         src="{{displayedChatRoom | img}}"></div>
                 <div class="chat-name-member">
                     <div class="chat-name"> {{displayedChatRoom | chatRoomName}}</div>
@@ -44,7 +44,7 @@
         class="anim overlay-comp-container">
     </app-group-profile>
 
-    <app-contact-profile *ngIf="constants.CONTACT_PROFILE === currentDisplayedRightPanel" class="anim overlay-comp-container">
+    <app-contact-profile *ngIf="constants.CONTACT_PROFILE === currentDisplayedRightPanel" [ngClass]="chatService.contactProfileComponent.slideOut ? 'anim-out' : 'anim-in'">
     </app-contact-profile>
 
     <div class="senden-container">
