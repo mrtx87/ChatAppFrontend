@@ -69,8 +69,9 @@ background: rgba(0,0,0,.1);
 }
 
 .chat-img {
-  width:50px;
+  width:40px;
   border-radius: 25px;
+  margin: 7px 0 0 0;
 }
 
 .chat-name-member {
@@ -156,7 +157,7 @@ background: rgba(0,0,0,.1);
   .wrapper.chat {
     display: grid;
     grid-template-columns: 1fr auto;
-    grid-template-rows: 50px 1fr auto;
+    grid-template-rows: 65px 1fr auto;
   }
 
   .chat-panel-header {
@@ -167,6 +168,7 @@ background: rgba(0,0,0,.1);
   .displaychat {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
+    overflow: auto;
   }
   .senden-container {
     grid-column: 1 / 2;
