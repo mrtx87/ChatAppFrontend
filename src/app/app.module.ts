@@ -45,7 +45,7 @@ import { ContactProfileComponent } from './contact-profile/contact-profile.compo
     LastestChatMessageBodyPipe,
     LatestChatMessageDatePipe,
     ImgPipe,
-    LanguagePipe
+    LanguagePipe,
     ContactProfileComponent
   ],
   imports: [
