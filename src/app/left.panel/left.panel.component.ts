@@ -7,6 +7,7 @@ import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
 import * as moment from 'moment';
 import { ChatMessage } from '../Entities/chat.message';
+import { LanguageService } from '../language.service';
 
 @Component({
   selector: 'app-left-panel',
@@ -26,6 +27,7 @@ export class LeftPanelComponent implements OnInit {
 
   constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) {
     chatService.registerLeftPanelComponent(this);
+
    }
 
   ngOnInit() {

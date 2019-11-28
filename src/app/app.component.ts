@@ -13,6 +13,7 @@ import {
   // ...
 } from '@angular/animations';
 import { CookieService } from 'ngx-cookie-service';
+import { LanguageService } from './language.service';
 
 @Component({
   selector: 'app-root',
@@ -67,6 +68,15 @@ export class AppComponent implements OnInit {
     this.store.localUser = val;
   }
 
+  get languageKeys() : string[] {
+    return this.langService.LANG_KEYS;
+  }
+
+  switchSelectedLanguage(langKey : string) {
+    this.langService.switchSelectedLanguage(langKey);
+    console.log(langKey)
+  }
+
   @HostListener("window:beforeunload", ["$event"])
   beforeunloadHandler($event: any) {
     this.chatService.sendDisconnectMessage(this.localUser);
@@ -74,7 +84,7 @@ export class AppComponent implements OnInit {
   }
 
   constructor(private chatService: ChatService, private store: DataStore,
-    private constants: Constants, private values: ValueResolver, private cookieService : CookieService) {
+    private constants: Constants, private values: ValueResolver, private cookieService : CookieService,private langService: LanguageService) {
 
     chatService.registerAppComponent(this);
     this.currentDisplayedLeftPanel_ = constants.DEFAULT_PANEL;

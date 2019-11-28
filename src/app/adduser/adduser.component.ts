@@ -5,6 +5,7 @@ import { Constants } from '../constants';
 import { Contact } from '../Entities/contact';
 import { User } from '../Entities/user';
 import { DataStore } from '../data.store';
+import { LanguageService } from '../language.service';
 
 @Component({
   selector: 'app-adduser',
@@ -34,7 +35,7 @@ export class AdduserComponent implements OnInit {
     this.store.localUser = val;
   }
 
-  constructor(private chatService : ChatService, private constants:Constants, private store : DataStore) { }
+  constructor(private chatService : ChatService, private constants:Constants, private store : DataStore,private langService : LanguageService) { }
 
   triggerNewContactSearch(){
       this.chatService.sendNewContactSearch();
