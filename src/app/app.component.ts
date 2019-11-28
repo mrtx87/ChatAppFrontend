@@ -33,10 +33,10 @@ export class AppComponent implements OnInit {
   
   
   ngOnInit(): void {
-    let USER_COOKIE = this.cookieService.get(this.constants.USER_COOKIE_KEY);
-    if(USER_COOKIE) {
-      this.chatService.sendRequestLoginByCookie(USER_COOKIE)
-    }
+    // let USER_COOKIE = this.cookieService.get(this.constants.USER_COOKIE_KEY);
+    // if(USER_COOKIE) {
+    //   this.chatService.sendRequestLoginByCookie(USER_COOKIE)
+    // }
   }
 
   @HostListener("window:click", ["$event"])

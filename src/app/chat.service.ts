@@ -26,6 +26,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { ValueResolver } from './value.resolver';
 import { stringify } from 'querystring';
 import { CookieService } from 'ngx-cookie-service';
+import { ContactProfileComponent } from './contact-profile/contact-profile.component';
 
 
 
@@ -34,33 +35,33 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class ChatService {
-
+  
   ws: SockJS;
   private stompClient;
-
-
+  
+  
   //FORMS AND PAGE INPUTS
   private chatInputText_: string;
-
+  
   //DISPLAY PARAMETERS
   private displayedChatRoom_: ChatRoom;
-
+  
   set currentDisplayedLeftPanel(value: string) {
     this.appComponent.currentDisplayedLeftPanel = value;
   }
-
+  
   get currentDisplayedLeftPanel(): string {
     return this.appComponent.currentDisplayedLeftPanel;
   }
-
+  
   set currentDisplayedRightPanel(value: string) {
     this.chatPanelComponent.currentDisplayedRightPanel = value;
   }
-
+  
   get currentDisplayedRightPanel(): string {
     return this.chatPanelComponent.currentDisplayedRightPanel;
   }
-
+  
   // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
   public groupProfileComponent: GroupProfileComponent;
@@ -72,15 +73,19 @@ export class ChatService {
   public lefPanelComponent: LeftPanelComponent;
   public loginRegisterComponent: LoginregisterComponent;
   public profileComponent: ProfileComponent;
-  public searchResultComponent: SearchresultComponent
-  public settingsComponent: SettingsComponent
-
-
-
+  public searchResultComponent: SearchresultComponent;
+  public settingsComponent: SettingsComponent;
+  public contactProfileComponent: ContactProfileComponent;
+  
+  
+  public registerContactProfileComponent(contactProfileComponent: ContactProfileComponent) {
+    this.contactProfileComponent = contactProfileComponent;
+  }
+  
   public registerAppComponent(appComponent: AppComponent) {
     this.appComponent = appComponent;
   }
-
+  
   public registerGroupProfileComponent(groupProfileComponent: GroupProfileComponent) {
     this.groupProfileComponent = groupProfileComponent;
   }
@@ -693,6 +698,7 @@ export class ChatService {
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) { }
 
   resetClient() {
+    this.displayedChatRoom =  null;
     this.resetChatService();
     this.store.resetStore();
   }

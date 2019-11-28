@@ -1,0 +1,52 @@
+<div class="profile">
+    <div class="return-2-user-panel" >
+        <div class="return-button-2-panel">
+            <div class="r2upa">
+               <img (click)="initSlideOut()" src="assets/right-arrow.svg">
+            </div>
+            <div class="r2bp">
+                Profil
+            </div>
+        </div>
+    </div>
+    <div class="profile-container">
+        <div class="profile-pic-container">
+            <div class="pp"> 
+                <img *ngIf="currentlyDisplayedContact" class="img-test" src="{{currentlyDisplayedContact.iconUrl ? currentlyDisplayedContact.iconUrl : 'assets/default-user-icon.svg'}}">
+                <!-- <img class="img-test"> -->
+                <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+            </div>
+            
+        </div>
+        <div class="edit-name-container">
+            <div class="profile-name">
+                <span>
+                    Dein Name
+                </span>
+            </div>
+            <div class="edit-profile-name">
+                    <input [(ngModel)]="currentlyDisplayedContact.name" type="text">
+                    <span></span>
+            </div>
+        </div>
+        <div class="disclaimer-text">
+            Das ist nicht dein Benutzername oder PIN-CODE. Dieser Name ist für deine WhatsApp Kontakte sichtbar.
+        </div>
+        <div class="edit-info-container">
+            <div class="profile-info">
+                <span>
+                    Info
+                </span>
+            </div>
+            <div class="edit-profile-info">
+                    <input  [(ngModel)]="currentlyDisplayedContact.info" type="text">
+                    <span></span>
+            </div>
+        </div>
+
+        <div class="delete-contact-container" >
+            <div (click)="removeContact()"> remove User </div>
+        </div>
+
+    </div>
+</div>

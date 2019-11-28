@@ -22,16 +22,6 @@ export class ContactsComponent implements OnInit {
     this.store.contacts = val;
   }
 
-  removeContact(contact: Contact){
-    if(contact){
-      console.log("Ya rly want to remove "+ contact.name +", huh? Well, let's give it a try.");
-      // let chatRoom: ChatRoom = this.values.resolveDialogRoomByContact(contact);
-      this.chatService.sendRemoveContact(contact, this.values.resolveDialogRoomByContact(contact));
-    }else{
-      console.log("Don't remove anything as there was no other user. (Which is strange. You should investigate this.");
-    }
-  }
-
   /**
    * Uses sets displayed chat room (dialog) regarding local user and given contact.
    * @param contact 
