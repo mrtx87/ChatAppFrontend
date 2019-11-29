@@ -27,11 +27,11 @@
                 <div class="menu-row super-user-menu">
                     Neue Gruppe
                 </div>
-                <div (click) ="initDisplayProfile();displayUserMenu=false"  class="menu-row super-user-menu">
+                <div (click) ="initDisplayProfile(); displayUserMenu=false"  class="menu-row super-user-menu">
                     Profil
                 </div>
-                <div class="menu-row super-user-menu">
-                    Einstellung
+                <div (click) ="initDisplaySettings(); displayUserMenu=false" class="menu-row super-user-menu">
+                    Einstellungen
                 </div>
                 <div (click)="initLogout()" class="menu-row super-user-menu">
                     Abmelden
@@ -103,6 +103,9 @@
 
     <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedLeftPanel"
         class="overlay-comp-container" [ngClass]="chatService.profileComponent.slideOut ? 'anim-out' : 'anim-in'"></app-profile>
+
+    <app-settings *ngIf="constants.USER_SETTINGS === currentDisplayedLeftPanel"
+        class="overlay-comp-container" [ngClass]="chatService.settingsComponent.slideOut ? 'anim-out' : 'anim-in'"></app-settings>
 
 <!--class="anim overlay-comp-container"-->
 

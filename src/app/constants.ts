@@ -13,6 +13,9 @@ export class Constants{
     public GROUP_CHAT : string = "group-chat";
     public GROUP_CHAT_PROFILE : string = "group-chat-profile";
     public USER_PROFILE : string = "user-profile";
+    // settings
+    public USER_SETTINGS : string ="user_settings"
+    
     public CONTACT_PROFILE : string = "contact-profile";
 
     public NEW_GROUP_IMAGE: string = "new-group-image";

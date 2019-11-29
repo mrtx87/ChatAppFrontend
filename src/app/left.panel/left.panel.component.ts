@@ -22,6 +22,7 @@ export class LeftPanelComponent implements OnInit {
 
   displayUserMenu: boolean = false;
   displayProfile: boolean = false;
+  displaySettingsMenu: boolean = false;
 
   isFocused: boolean = false;
 
@@ -139,7 +140,9 @@ export class LeftPanelComponent implements OnInit {
     this.asyncInitProfile();
   }
 
-
+  initDisplaySettings() {
+    this.currentDisplayedLeftPanel = this.constants.USER_SETTINGS;
+  }
 
   initLogout() {
     this.chatService.sendDisconnectMessage(this.localUser);
