@@ -139,6 +139,9 @@ export class LeftPanelComponent implements OnInit {
     this.asyncInitProfile();
   }
 
+  initDisplayNewGroup() {
+    this.currentDisplayedLeftPanel = this.constants.GROUP_CHAT;
+  }
 
 
   initLogout() {

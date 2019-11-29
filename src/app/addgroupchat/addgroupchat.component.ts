@@ -15,6 +15,7 @@ export class AddgroupchatComponent implements OnInit {
 
   creatingRoomContacts: Contact[] = [];
   query: string = "";
+  slideOut : boolean = false;
 
   get contacts(): Contact[] {
     return this.chatService.contacts.filter(contact => contact.name.includes(this.query) && !this.creatingRoomContacts.includes(contact));

@@ -24,7 +24,7 @@
 
 
 
-                <div class="menu-row super-user-menu">
+                <div (click) ="initDisplayNewGroup();displayUserMenu=false" class="menu-row super-user-menu">
                     Neue Gruppe
                 </div>
                 <div (click) ="initDisplayProfile();displayUserMenu=false"  class="menu-row super-user-menu">
@@ -94,7 +94,7 @@
     </app-contacts>
 
     <app-addgroupchat *ngIf="constants.GROUP_CHAT === currentDisplayedLeftPanel"
-        class="anim overlay-comp-container">
+    class="overlay-comp-container" [ngClass]="chatService.GROUP_CHAT.slideOut ? 'anim-out' : 'anim-in'">
     </app-addgroupchat>
 
     <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedLeftPanel"
