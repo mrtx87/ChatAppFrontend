@@ -35,33 +35,33 @@ import { ContactProfileComponent } from './contact-profile/contact-profile.compo
   providedIn: 'root'
 })
 export class ChatService {
-  
+
   ws: SockJS;
   private stompClient;
-  
-  
+
+
   //FORMS AND PAGE INPUTS
   private chatInputText_: string;
-  
+
   //DISPLAY PARAMETERS
   private displayedChatRoom_: ChatRoom;
-  
+
   set currentDisplayedLeftPanel(value: string) {
     this.appComponent.currentDisplayedLeftPanel = value;
   }
-  
+
   get currentDisplayedLeftPanel(): string {
     return this.appComponent.currentDisplayedLeftPanel;
   }
-  
+
   set currentDisplayedRightPanel(value: string) {
     this.chatPanelComponent.currentDisplayedRightPanel = value;
   }
-  
+
   get currentDisplayedRightPanel(): string {
     return this.chatPanelComponent.currentDisplayedRightPanel;
   }
-  
+
   // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
   public groupProfileComponent: GroupProfileComponent;
@@ -76,16 +76,16 @@ export class ChatService {
   public searchResultComponent: SearchresultComponent;
   public settingsComponent: SettingsComponent;
   public contactProfileComponent: ContactProfileComponent;
-  
-  
+
+
   public registerContactProfileComponent(contactProfileComponent: ContactProfileComponent) {
     this.contactProfileComponent = contactProfileComponent;
   }
-  
+
   public registerAppComponent(appComponent: AppComponent) {
     this.appComponent = appComponent;
   }
-  
+
   public registerGroupProfileComponent(groupProfileComponent: GroupProfileComponent) {
     this.groupProfileComponent = groupProfileComponent;
   }
@@ -235,7 +235,7 @@ export class ChatService {
 
     this.stompClient.connect({}, function () {
       that.sendOwnOnlineStatus();
-      that.stompClient.subscribe("/client/" + that.localUser.id, function(messageFromServer) {
+      that.stompClient.subscribe("/client/" + that.localUser.id, function (messageFromServer) {
         that.handleServerResponse(JSON.parse(messageFromServer.body));
       }
       );
@@ -252,15 +252,37 @@ export class ChatService {
         this.sendRequestRoomList();
         this.sendRequestContacts();
       } break;
-      case this.constants.TM_FUNCTION_SET_COOKIE: {
-        this.cookieService.set(this.constants.USER_COOKIE_KEY, transferMessage.cookie);
+      case this.constants.TM_FUNCTION_LOGIN_AND_COOKIE: {
+        this.finalizeLogin(transferMessage);
       } break;
     }
 
   }
+  
+  finalizeLogin(transferMessage: TransferMessage) {
+
+    if(this.localUser.id === transferMessage.from.id) {
+      if(transferMessage.cookie) {
+        this.cookieService.set(this.constants.USER_COOKIE_KEY, transferMessage.cookie);
+      }
+      this.isLoggedIn = true;
+    }
+
+  }
+
+  handleLoginResponse(receivedUser: User) {
+    if (receivedUser.id && receivedUser.name) {
+      this.localUser = receivedUser;
+      this.addEntryToDATA(<Contact>this.localUser);
+      this.init();
+      let that = this
+      return;
+    }
+    console.log("fehlerhafter login response")
+  }
 
   getContactById(id: string) {
-    return this.store.contacts && this.store.contacts.length > 0 ?  this.store.contacts.filter(c => c.id === id)[0] : null;
+    return this.store.contacts && this.store.contacts.length > 0 ? this.store.contacts.filter(c => c.id === id)[0] : null;
   }
 
   closeLocalWebsocketConnection() {
@@ -302,9 +324,8 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/register", { username: this.registerUsername, password: this.registerPassword }, { headers })
       .subscribe(response => {
-        this.localUser = <User>response;
-        this.isLoggedIn = true;
-        console.log(this.localUser);
+        const receivedUser = <User>response;
+        this.handleLoginResponse(receivedUser);
       });
   }
 
@@ -315,13 +336,7 @@ export class ChatService {
       .post(this.constants.BASE_URL + "/login", { username: this.loginUsername, password: this.loginPassword }, { headers })
       .subscribe(response => {
         const receivedUser = <User>response;
-        if (receivedUser.id && receivedUser.name) {
-          this.localUser = receivedUser;
-          this.addEntryToDATA(<Contact>this.localUser);
-          this.init();
-          this.isLoggedIn = true;
-
-        }
+        this.handleLoginResponse(receivedUser);
       });
   }
 
@@ -332,13 +347,7 @@ export class ChatService {
       .post(this.constants.BASE_URL + "/login-by-cookie", { cookie: user_cookie }, { headers })
       .subscribe(response => {
         const receivedUser = <User>response;
-        if (receivedUser.id && receivedUser.name) {
-          this.localUser = receivedUser;
-          this.addEntryToDATA(<Contact>this.localUser);
-          this.init();
-          this.isLoggedIn = true;
-
-        }
+        this.handleLoginResponse(receivedUser);
       });
   }
 
@@ -364,7 +373,7 @@ export class ChatService {
     // this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   }
 
-  private addAvailableRoom(chatRoom: ChatRoom){
+  private addAvailableRoom(chatRoom: ChatRoom) {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
@@ -378,18 +387,18 @@ export class ChatService {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
-    let nextAvailableRooms : Map<string, ChatRoom> = new Map<string, ChatRoom>();
+    let nextAvailableRooms: Map<string, ChatRoom> = new Map<string, ChatRoom>();
     chatRooms.forEach(chatRoom => {
-      if(this.availableRooms.has(chatRoom.id)) {
-        let transferRoom  = this.availableRooms.get(chatRoom.id);
+      if (this.availableRooms.has(chatRoom.id)) {
+        let transferRoom = this.availableRooms.get(chatRoom.id);
         nextAvailableRooms.set(transferRoom.id, transferRoom);
-      }else {
+      } else {
         nextAvailableRooms.set(chatRoom.id, chatRoom);
       }
-    }) 
+    })
     this.availableRooms = nextAvailableRooms;
 
-    if(this.displayedChatRoom && !this.availableRooms.has(this.displayedChatRoom.id)){
+    if (this.displayedChatRoom && !this.availableRooms.has(this.displayedChatRoom.id)) {
       this.displayedChatRoom = null;
     }
     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
@@ -406,7 +415,7 @@ export class ChatService {
   //   chatRooms.forEach(chatRoom => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   // }
 
-  private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom){
+  private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom) {
     this.sendRequestChatMessages(chatRoom.id);
   }
 
@@ -451,7 +460,7 @@ export class ChatService {
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>response);
         this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
-       })
+      })
   }
 
   /**
@@ -673,18 +682,18 @@ export class ChatService {
   }
 
   scrollIntoView(elementId: string, scrollConfig?: any) {
-    let threadId = setInterval(
+    let scrollWhenReady = setInterval(
       function () {
         let element: HTMLElement = document.getElementById(elementId);
         if (element) {
           //let scrollConfig = { behavior: "smooth"};
           element.scrollIntoView();
-          clearInterval(threadId);
+          clearInterval(scrollWhenReady);
         }
       }, 50);
   }
 
-  asyncInitRoomProfile(chatRoom:ChatRoom, readOnly : boolean) {
+  asyncInitRoomProfile(chatRoom: ChatRoom, readOnly: boolean) {
     let that = this;
     let interval = setInterval(function () {
       if (that.groupProfileComponent) {
@@ -698,12 +707,12 @@ export class ChatService {
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) { }
 
   resetClient() {
-    this.displayedChatRoom =  null;
+    this.displayedChatRoom = null;
     this.resetChatService();
     this.store.resetStore();
   }
 
   resetChatService() {
-    
+
   }
 }
