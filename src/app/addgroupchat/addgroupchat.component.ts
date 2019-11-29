@@ -5,6 +5,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { ChatService } from '../chat.service';
 import { Constants } from '../constants';
 import { DataStore } from '../data.store';
+import { User } from '../Entities/user';
 
 @Component({
   selector: 'app-addgroupchat',
@@ -13,9 +14,9 @@ import { DataStore } from '../data.store';
 })
 export class AddgroupchatComponent implements OnInit {
 
+
   creatingRoomContacts: Contact[] = [];
   query: string = "";
-  slideOut : boolean = false;
 
   get contacts(): Contact[] {
     return this.chatService.contacts.filter(contact => contact.name.includes(this.query) && !this.creatingRoomContacts.includes(contact));
@@ -24,8 +25,24 @@ export class AddgroupchatComponent implements OnInit {
     this.chatService.contacts = val;
   }
 
-  constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) {
+  get localUser(): User {
+    return this.store.localUser;
+  }
+  set localUser(val: User) {
+    this.store.localUser = val;
+  }
 
+  get currentDisplayedLeftPanel(): string {
+    return this.chatService.currentDisplayedLeftPanel;
+  }
+
+  set currentDisplayedLeftPanel(value: string) {
+    this.chatService.currentDisplayedLeftPanel = value;
+  }
+
+  constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) {
+    this.chatService.registerAddgroupchatComponent(this);
+    this.chatService.currentComponent(constants.ADD_GROUP_CHAT);
   }
 
   ngOnInit() {
@@ -39,6 +56,7 @@ export class AddgroupchatComponent implements OnInit {
       }
     }
   }
+
   ToRoomProfileCreation() {
     let room: ChatRoom = new ChatRoom();
     room.userIds = this.creatingRoomContacts.map(c => c.id);
@@ -50,8 +68,16 @@ export class AddgroupchatComponent implements OnInit {
     this.creatingRoomContacts = this.creatingRoomContacts.filter(c => c.id !== contact.id);
   }
 
-  isValid() : boolean{
+  isValid(): boolean {
     return this.creatingRoomContacts && this.creatingRoomContacts.length > 0;
+  }
+
+
+  slideOut: boolean = false;
+  intervalTimer = 0;
+
+  initSlideOut() {
+    this.chatService.initSlideOut(this, 200);
   }
 
 }

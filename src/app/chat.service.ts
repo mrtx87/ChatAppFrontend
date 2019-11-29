@@ -27,6 +27,8 @@ import { ValueResolver } from './value.resolver';
 import { stringify } from 'querystring';
 import { CookieService } from 'ngx-cookie-service';
 import { ContactProfileComponent } from './contact-profile/contact-profile.component';
+import { ComponentStack } from './component-stack';
+import { BaseComponent } from './base-component';
 
 
 
@@ -39,12 +41,18 @@ export class ChatService {
   ws: SockJS;
   private stompClient;
 
+  leftPanelComponentStack_: ComponentStack;
+
 
   //FORMS AND PAGE INPUTS
   private chatInputText_: string;
 
   //DISPLAY PARAMETERS
   private displayedChatRoom_: ChatRoom;
+
+  get leftPanelComponentStack(): ComponentStack {
+    return this.leftPanelComponentStack_;
+  }
 
   set currentDisplayedLeftPanel(value: string) {
     this.appComponent.currentDisplayedLeftPanel = value;
@@ -62,6 +70,8 @@ export class ChatService {
     return this.chatPanelComponent.currentDisplayedRightPanel;
   }
 
+
+
   // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
   public groupProfileComponent: GroupProfileComponent;
@@ -76,7 +86,6 @@ export class ChatService {
   public searchResultComponent: SearchresultComponent;
   public settingsComponent: SettingsComponent;
   public contactProfileComponent: ContactProfileComponent;
-
 
   public registerContactProfileComponent(contactProfileComponent: ContactProfileComponent) {
     this.contactProfileComponent = contactProfileComponent;
@@ -228,6 +237,15 @@ export class ChatService {
     this.store.registerPasswordRepeat = val;
   }
 
+
+  currentComponent(key: string) {
+    this.leftPanelComponentStack.push(key);
+  }
+
+  previousComponent() {
+    return this.leftPanelComponentStack.getPrevious();
+  }
+
   connect() {
     this.ws = new SockJS(this.constants.BASEURI + "/socket");
     this.stompClient = Stomp.over(this.ws);
@@ -258,11 +276,11 @@ export class ChatService {
     }
 
   }
-  
+
   finalizeLogin(transferMessage: TransferMessage) {
 
-    if(this.localUser.id === transferMessage.from.id) {
-      if(transferMessage.cookie) {
+    if (this.localUser.id === transferMessage.from.id) {
+      if (transferMessage.cookie) {
         this.cookieService.set(this.constants.USER_COOKIE_KEY, transferMessage.cookie);
       }
       this.isLoggedIn = true;
@@ -703,9 +721,6 @@ export class ChatService {
     }, 5);
   }
 
-
-  constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) { }
-
   resetClient() {
     this.displayedChatRoom = null;
     this.resetChatService();
@@ -715,4 +730,31 @@ export class ChatService {
   resetChatService() {
 
   }
+
+
+
+  constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) {
+    this.leftPanelComponentStack_ = new ComponentStack();
+
+  }
+
+
+  jumpBack() {
+    this.currentDisplayedLeftPanel = this.previousComponent();
+  }
+
+
+  initSlideOut(component: any, duration: number) {
+    component.slideOut = true;
+    let that = this;
+
+    let interval = setInterval(function () {
+      component.intervalTimer += 10;
+      if (component.intervalTimer >= duration) {
+        that.jumpBack();
+        clearInterval(interval);
+      }
+    }, 10)
+  }
+
 }

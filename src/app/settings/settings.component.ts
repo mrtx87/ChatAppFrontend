@@ -31,29 +31,16 @@ export class SettingsComponent implements OnInit {
   constructor(private chatService: ChatService, private store: DataStore,
     private constants: Constants, private values: ValueResolver, private imageService: ImageService) {
     this.chatService.registerSettingsComponent(this);
+    this.chatService.currentComponent(this.constants.USER_SETTINGS);
   }
   ngOnInit() {
   }
-
-  jumpBack() {
-    this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
-  }
-
 
   slideOut: boolean = false;
   intervalTimer = 0;
 
   initSlideOut() {
-    this.slideOut = true;
-    let that = this;
-
-    let interval = setInterval(function () {
-      that.intervalTimer += 10;
-      if (that.intervalTimer >= 300) {
-        that.jumpBack();
-        clearInterval(interval);
-      }
-    }, 10)
+    this.chatService.initSlideOut(this, 200);
   }
 
 }

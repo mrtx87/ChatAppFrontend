@@ -35,13 +35,25 @@ export class AdduserComponent implements OnInit {
     this.store.localUser = val;
   }
 
-  constructor(private chatService : ChatService, private constants:Constants, private store : DataStore,private langService : LanguageService) { }
+  get currentDisplayedLeftPanel(): string {
+    return this.chatService.currentDisplayedLeftPanel;
+  }
+
+  set currentDisplayedLeftPanel(value: string) {
+    this.chatService.currentDisplayedLeftPanel = value;
+  }
+
+  constructor(private chatService : ChatService, private constants:Constants, private store : DataStore,private langService : LanguageService) {
+    this.chatService.registerAdduserComponent(this);
+   }
 
   triggerNewContactSearch(){
       this.chatService.sendNewContactSearch();
   }
 
   ngOnInit() {
+    this.chatService.currentComponent(this.constants.ADD_USER_PANEL);
+
   }
 
   change(event:any) {
@@ -52,6 +64,13 @@ export class AdduserComponent implements OnInit {
     this.chatService.sendCreateRoomAndContact(contact);
     this.searchNewContactInputText = "";
     this.newContactsList = [];
+  }
+
+  slideOut: boolean = false;
+  intervalTimer = 0;
+
+  initSlideOut() {
+    this.chatService.initSlideOut(this, 200);
   }
 
 }

@@ -24,7 +24,8 @@ import { LatestChatMessageDatePipe } from './latest-chat-message-date.pipe';
 import { ImgPipe } from './img.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { LanguagePipe } from './language.pipe'
-import { ContactProfileComponent } from './contact-profile/contact-profile.component'
+import { ContactProfileComponent } from './contact-profile/contact-profile.component';
+import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profile.component'
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ContactProfileComponent } from './contact-profile/contact-profile.compo
     LatestChatMessageDatePipe,
     ImgPipe,
     LanguagePipe,
-    ContactProfileComponent
+    ContactProfileComponent,
+    EditGroupProfileComponent
   ],
   imports: [
     BrowserModule,

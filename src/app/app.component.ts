@@ -14,6 +14,7 @@ import {
 } from '@angular/animations';
 import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from './language.service';
+import { BaseComponent } from './base-component';
 
 @Component({
   selector: 'app-root',
@@ -85,7 +86,7 @@ export class AppComponent implements OnInit {
 
   constructor(private chatService: ChatService, private store: DataStore,
     private constants: Constants, private values: ValueResolver, private cookieService: CookieService, private langService: LanguageService) {
-
+    
     chatService.registerAppComponent(this);
     this.currentDisplayedLeftPanel_ = constants.DEFAULT_PANEL;
   }

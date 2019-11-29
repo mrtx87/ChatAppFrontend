@@ -4,15 +4,23 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
   })
 export class Constants{
-    public BASEURI : string =  "http://localhost:8080"; //"http://chatapplicationsection9.herokuapp.com";
-    public BASE_URL : string = "http://localhost:8080/data";  //"http://chatapplicationsection9.herokuapp.com/data";
 
-    public WS_BASE_URL : string = "/app/send";
-    public DISPLAY_CONTACTS_PANEL : string = "displaycontacts-panel";
+    //COMPONENT IDS
     public ADD_USER_PANEL : string = "adduser-panel";
-    public GROUP_CHAT : string = "group-chat";
+    public ADD_GROUP_CHAT : string = "add-group-chat";
     public GROUP_CHAT_PROFILE : string = "group-chat-profile";
     public USER_PROFILE : string = "user-profile";
+    public APP_COMPONENT : string = "app-component";
+    public CONTACTS_COMPONENT: string = "contacts-component";
+
+
+
+
+    public BASEURI : string =  "http://localhost:8080"; //"http://chatapplicationsection9.herokuapp.com";
+    public BASE_URL : string = "http://localhost:8080/data";  //"http://chatapplicationsection9.herokuapp.com/data";
+    public WS_BASE_URL : string = "/app/send";
+
+
     // settings
     public USER_SETTINGS : string ="user_settings"
     
