@@ -107,11 +107,7 @@ export class ProfileComponent implements OnInit {
   }
 
   jumpBack() {
-    if(this.readOnly) {
-      this.currentDisplayedRightPanel = "";
-    }else{
       this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
-    }
   }
 
 
