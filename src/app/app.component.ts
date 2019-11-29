@@ -30,19 +30,19 @@ import { LanguageService } from './language.service';
   ]
 })
 export class AppComponent implements OnInit {
-  
-  
+
+
   ngOnInit(): void {
-    // let USER_COOKIE = this.cookieService.get(this.constants.USER_COOKIE_KEY);
-    // if(USER_COOKIE) {
-    //   this.chatService.sendRequestLoginByCookie(USER_COOKIE)
-    // }
+    let USER_COOKIE = this.cookieService.get(this.constants.USER_COOKIE_KEY);
+    if (USER_COOKIE) {
+      this.chatService.sendRequestLoginByCookie(USER_COOKIE)
+    }
   }
 
   @HostListener("window:click", ["$event"])
   mouseEvent(event: MouseEvent) {
     let e: any = event;
-    if (e.srcElement.className != "menu-img" ) {
+    if (e.srcElement.className != "menu-img") {
       this.chatService.chatPanelComponent.displayRoomMenu = false;
     }
 
@@ -68,11 +68,11 @@ export class AppComponent implements OnInit {
     this.store.localUser = val;
   }
 
-  get languageKeys() : string[] {
+  get languageKeys(): string[] {
     return this.langService.LANG_KEYS;
   }
 
-  switchSelectedLanguage(langKey : string) {
+  switchSelectedLanguage(langKey: string) {
     this.langService.switchSelectedLanguage(langKey);
     console.log(langKey)
   }
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
   }
 
   constructor(private chatService: ChatService, private store: DataStore,
-    private constants: Constants, private values: ValueResolver, private cookieService : CookieService,private langService: LanguageService) {
+    private constants: Constants, private values: ValueResolver, private cookieService: CookieService, private langService: LanguageService) {
 
     chatService.registerAppComponent(this);
     this.currentDisplayedLeftPanel_ = constants.DEFAULT_PANEL;

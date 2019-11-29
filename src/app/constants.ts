@@ -28,7 +28,7 @@ export class Constants{
     // TransferMessage Types
     public TM_TYPE_CHAT_MESSAGE: string = 'chat-message';
     public TM_TYPE_UPDATE_ROOMS_AND_CONTACTS: string = 'update-rooms-and-contacts';
-    public TM_FUNCTION_SET_COOKIE: string = "set-cookie";
+    public TM_FUNCTION_LOGIN_AND_COOKIE: string = "login-and-cookie";
 
     public CREATING_ROOM_CONTACTS_ID: string = "creating-room-contacts";
     public DISPLAYED_ROOM_ID: string = "displayed-room-id";
