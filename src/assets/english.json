@@ -7,5 +7,15 @@
     "disclaimer_text": "That is not your Username or PIN-Code. This Name can only be seen by your whatsapp contacts.",
     "info": "info",
     "new_group": "New Group",
-    "log_out": "Log off"
+    "log_out": "Log off",
+    "remove_user": "remove user",
+    "add_user": "Add User",
+    "type_contact_name": "type contact name",
+    "welcome": "Welcome",
+    "choose_message": "choose messages",
+    "clear_messages": "clear messages",
+    "leave_group": "leave group",
+    "new_chat": "new chat",
+    "contact": "Contacts",
+    "search_contacts": "search Contacts"
 }

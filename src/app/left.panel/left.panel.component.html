@@ -90,7 +90,7 @@
     </app-adduser>
 
     <app-contacts *ngIf="constants.CONTACTS_COMPONENT === currentDisplayedLeftPanel"
-    class="overlay-comp-container" [ngClass]="chatService.contactsComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
+    class="new-chat overlay-comp-container" [ngClass]="chatService.contactsComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
     </app-contacts>
 
     <app-addgroupchat *ngIf="constants.ADD_GROUP_CHAT === currentDisplayedLeftPanel"

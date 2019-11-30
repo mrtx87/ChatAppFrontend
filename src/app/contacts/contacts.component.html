@@ -5,34 +5,45 @@
                <img (click)="initSlideOut()" src="assets/left-arrow.svg">
             </div>
             <div class="r2bp">
-                neuer chat
+                Neuer chat
             </div>
         </div>
     </div>
-    <div class="contacts-container">
-        <div class="search-contact-container">
-            <!-- <input type="file"  multiple="multiple" (change)="change($event)"> -->
-            <input [(ngModel)]="query" class="search-contact-inputfield" type="text" placeholder="search contacts">
+    <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
+
+
+        <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="query"
+            class="search-contact-inputfield" type="text" placeholder="search contacts">
+        <div class="icons">
+            <span class="magni"></span>
+            <span (click)="focusOut()" class="blue-arrow"></span>
         </div>
-        <div class="row-item"  (click)="initDisplayAddGroupChat()">
-            <div>
-                <img style="border-radius: 20px; width:40px;"
-                    src="assets/group.svg">
+    </div>
+    <div class="contacts-container-wrapper">
+        
+
+
+        
+
+
+
+        <div class="new-grp row-item"  (click)="initDisplayAddGroupChat()">
+            <div class="icon">
+                <img src="assets/group.svg">
             </div>
-            <div style="font-size:25px; width:80%;">
-                neue gruppe
-            </div>
+            <span>
+                Neue Gruppe
+            </span>
         </div>
 
-        <div class="row-item">
-            <h3> kontakte </h3>
+        <div class="contacted-recently">
+            <span>Häufig kontaktiert</span>
         </div>
         <div class="contacts-container">
             <div *ngFor="let contact of contacts" class="contacts-row">
                 <div (click)="setDisplayedChatRoomByContact(contact)" style="width:100%; display: flex; flex-direction: row;">
                     <div>
-                        <img style="border-radius: 20px; width:40px;"
-                            src="{{contact.iconUrl ? contact.iconUrl : 'assets/default-user-icon.svg'}}">
+                        <img src="{{contact.iconUrl ? contact.iconUrl : 'assets/default-user-icon.svg'}}">
                     </div>
                     <div class="contact-text-container">
                         {{contact?.name}}

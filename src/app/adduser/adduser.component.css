@@ -1,47 +1,48 @@
 .adduser {
-    /* position: absolute; */
     display: flex;
     flex-direction: column;
-    /* top: 0px; */
-    /* left: 0px; */
-    /* width: 100%; */
-    height: 90vh;
     background-color: #F7F7F7;
 }
 
 .return-2-user-panel {
     position: relative;
     width: 100%;
-    height: 15vh;
+    height: 108px;
     background-color: var(--main-green);
-    ;
     padding-left: 23px;
     padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .return-button-2-panel {
-    position: absolute;
-    bottom: 0px;
+    align-items: center;
     display: flex;
-    color: white;
+    flex: none;
+    height: 59px;
     width: 100%;
-    height: 34%;
+    color: #fff;
 }
 
 .r2upa {
     width: 30px;
-    margin-right: 50px;
+    margin-right: 25px;
     cursor: pointer;
-    filter: invert(95%) sepia(100%) saturate(14%) hue-rotate(213deg) brightness(104%) contrast(104%);
+    filter: invert(100%);
+}
+
+.r2upa img{
+    width: 20px;
 }
 
 .r2bp {
-    font-size: 23px;
+    font-size: 19px;
+    font-weight: 500;
 }
 
 
 .left-panel {
-    height: 90vh;
     display: flex;
     flex-direction: column;
     background-color: #FEFEFE;
@@ -112,7 +113,6 @@
 
 .search-contact-container{
     width:100%;
-    height: 85px;
     background-color: #F8F8F8;
 }
 
@@ -177,4 +177,79 @@
 .create-room-icon{
     height: 30px;
     width: 30px;
+}
+
+
+.search-contact-container {
+    width: 100%;
+    background-color: #F8F8F8;
+    transition: 0.2s;
+    position: relative;
+}
+
+.search-contact-container.is-focused {
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.07);
+}
+
+.search-contact-inputfield {
+    border: none;
+    border-radius: 17px;
+    width: calc(100% - 30px);
+    height: 34px;
+    margin: 8px 15px;
+    padding-left: 65px;
+    background:#fff;
+    background-size: 15px;
+}
+
+.icons {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  top: 13px;
+  left: 30px;
+}
+
+.icons .magni {
+  background: url(../../assets/magnifier-glass.svg) 5px 5px no-repeat;
+  background-size: 15px;
+  display: block;
+  height: 25px;
+  width: 25px;
+  position: absolute;
+  opacity: 1;
+  transition: 0.3s;
+  transform-origin: 50% 50%;
+}
+
+.icons .blue-arrow {
+  background: url(../../assets/arrow-blue.svg) 1px 2px no-repeat;
+  background-size: 20px;
+  display: block;
+  height: 25px;
+  width: 25px;
+  position: absolute;
+  transform: rotate(90deg);
+  opacity: 0;
+  transition: 0.3s;
+  transform-origin: 50% 50%;
+  cursor: pointer;
+}
+
+.search-contact-container.is-focused .icons .blue-arrow {
+  transform: rotate(0deg);
+  transition: 0.3s;
+  opacity: 1;
+}
+
+.search-contact-container.is-focused .icons .magni {
+  transform: rotate(-90deg);
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.search-contact-inputfield:focus {
+  outline: none;
 }

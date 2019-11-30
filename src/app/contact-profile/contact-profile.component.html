@@ -5,7 +5,7 @@
                <img (click)="initSlideOut()" src="assets/right-arrow.svg">
             </div>
             <div class="r2bp">
-                Profil
+                {{ 'user_profile' | tl8 }}
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
         </div>
 
         <div class="delete-contact-container" >
-            <div (click)="removeContact()"> remove User </div>
+            <div (click)="removeContact()"> {{ 'remove_user' | tl8 }} </div>
         </div>
 
     </div>
