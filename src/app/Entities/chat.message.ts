@@ -7,4 +7,5 @@ export class ChatMessage {
 	createdAt: string;
 	
 	seen: boolean;
+	searchBody: string;
 }

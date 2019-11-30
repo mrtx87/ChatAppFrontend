@@ -16,7 +16,10 @@
             </div>
         </div>
         <div class="chat-panel-right-container">
-            <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
+            <div class="menu-item-container" > <img class="magnifier-img" src="assets/magnifier-glass.svg" (click)="displaySearchInput = !displaySearchInput">
+                <div [hidden]= !displaySearchInput>
+                    <input type="text" (keyup.enter) = "triggerSearch()" [(ngModel)]="searchInputField_">
+                </div>
             </div>
             <div class="rightpanel-burger-menu" [ngClass]="displayRoomMenu ? 'active' : ''" tabindex="-1">
                 <img (click)="toggleRoomMenuDisplay()" class="menu-img" src="assets/burger.svg">

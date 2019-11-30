@@ -150,7 +150,7 @@ export class ChatService {
     return this.store.allChatMessages;
   }
   set chatMessagesByRoom(val: Map<string, ChatMessage[]>) {
-    this.chatMessagesByRoom = val;
+    this.store.allChatMessages = val;
   }
 
   get displayedChatRoom(): ChatRoom {

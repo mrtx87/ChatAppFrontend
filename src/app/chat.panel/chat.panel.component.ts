@@ -16,9 +16,11 @@ import { isBoolean } from 'util';
 })
 export class ChatPanelComponent implements OnInit {
 
-
+  displaySearchInput = false;
   displayRoomMenu: boolean = false;
-  currentDisplayedRightPanel_: string = "null"
+  currentDisplayedRightPanel_: string = "null";
+  searchInputField_ = "";
+
 
   get currentDisplayedRightPanel(): string {
     return this.currentDisplayedRightPanel_;
@@ -70,6 +72,43 @@ export class ChatPanelComponent implements OnInit {
       this.chatService.sendOutgoingChatMessage(this.displayedChatRoom, chatMessage);
       this.chatInputText = "";
     }
+  }
+
+  triggerSearch(){
+    let searchTerm: string = this.searchInputField_;
+    let messages: ChatMessage[] = this.store.getChatMessages(this.displayedChatRoom.id);
+    for(let message of messages){
+      if(message.fromId !== this.constants.CHAT_MESSAGE_SYSTEM_TYPE && message.fromId !== this.constants.CHAT_MESSAGE_DATE_TYPE) {
+        this.searchAndMarkMessage(message, searchTerm);
+      }
+    }
+  }
+
+  private searchAndMarkMessage(message: ChatMessage, searchTerm: string){
+    let restOfBody: string = message.body;
+    let searchBody: string = "";
+    let occurenceCount = 0;
+    while(restOfBody.length > 0){
+      let startIndex = restOfBody.indexOf(searchTerm);
+      if(startIndex > -1){
+        let prefix = restOfBody.substring(0, startIndex);
+        let foundText = restOfBody.substring(startIndex, startIndex + searchTerm.length);
+        let markedPart = "<mark>"+foundText+"</mark>";
+        restOfBody = restOfBody.substring(startIndex+searchTerm.length);
+        searchBody += prefix + markedPart;
+        occurenceCount++;
+      } else{
+        if(occurenceCount > 0){
+          searchBody += restOfBody;
+          restOfBody = "";
+        }else{
+          searchBody = null;
+          restOfBody = "";
+        }
+      }
+    }
+    console.log(searchBody);
+    message.searchBody = searchBody;
   }
 
   asyncInitContactProfile(contact: Contact) {
