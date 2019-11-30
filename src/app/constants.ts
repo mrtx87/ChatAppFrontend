@@ -48,4 +48,10 @@ export class Constants{
 
     //COOKIE STUFF
     public USER_COOKIE_KEY: string = "S9_CA_U";
+
+
+    //SEARCH STUFF
+
+    MARK_OPEN : string = "<span class=\"test\">"
+    MARK_CLOSE : string = "</span>"
 }

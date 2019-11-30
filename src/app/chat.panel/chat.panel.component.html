@@ -16,9 +16,11 @@
             </div>
         </div>
         <div class="chat-panel-right-container">
-            <div class="menu-item-container" > <img class="magnifier-img" src="assets/magnifier-glass.svg" (click)="displaySearchInput = !displaySearchInput">
-                <div [hidden]= !displaySearchInput>
+            <div class="menu-item-container" > <img class="magnifier-img" src="assets/magnifier-glass.svg" (click)="toggleDisplaySearch()">
+                <div *ngIf="displaySearchInput" style="display:flex;">
                     <input type="text" (keyup.enter) = "triggerSearch()" [(ngModel)]="searchInputField_">
+                    <div><img (click)="previousResult()" style="width: 25px; height:auto;" src="assets/arrow-down.svg"></div>
+                    <div><img (click)="nextResult()" style="width: 25px; height:auto;" src="assets/arrow-up.svg"></div>
                 </div>
             </div>
             <div class="rightpanel-burger-menu" [ngClass]="displayRoomMenu ? 'active' : ''" tabindex="-1">

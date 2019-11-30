@@ -8,6 +8,7 @@ import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
 import { Contact } from '../Entities/contact';
 import { isBoolean } from 'util';
+import { ChatMessageSearchService } from '../chat-message-search.service';
 
 @Component({
   selector: 'app-chat-panel',
@@ -16,6 +17,7 @@ import { isBoolean } from 'util';
 })
 export class ChatPanelComponent implements OnInit {
 
+  markedMessageJumpIndex;
   displaySearchInput = false;
   displayRoomMenu: boolean = false;
   currentDisplayedRightPanel_: string = "null";
@@ -51,7 +53,7 @@ export class ChatPanelComponent implements OnInit {
     this.chatService.displayedChatRoom = val;
   }
 
-  constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
+  constructor(private chatService: ChatService, private messageSearch: ChatMessageSearchService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
     this.chatService.registerChatPanelComponent(this);
   }
 
@@ -74,41 +76,24 @@ export class ChatPanelComponent implements OnInit {
     }
   }
 
-  triggerSearch(){
-    let searchTerm: string = this.searchInputField_;
-    let messages: ChatMessage[] = this.store.getChatMessages(this.displayedChatRoom.id);
-    for(let message of messages){
-      if(message.fromId !== this.constants.CHAT_MESSAGE_SYSTEM_TYPE && message.fromId !== this.constants.CHAT_MESSAGE_DATE_TYPE) {
-        this.searchAndMarkMessage(message, searchTerm);
-      }
+  triggerSearch() {
+    // localSearch
+    this.messageSearch.localSearch(this.searchInputField_);
+    if(this.messageSearch.markedMessages.length > 0){
+      // jump to last (in time)
+      this.markedMessageJumpIndex = this.messageSearch.markedMessages.length-1;
+
     }
   }
 
-  private searchAndMarkMessage(message: ChatMessage, searchTerm: string){
-    let restOfBody: string = message.body;
-    let searchBody: string = "";
-    let occurenceCount = 0;
-    while(restOfBody.length > 0){
-      let startIndex = restOfBody.indexOf(searchTerm);
-      if(startIndex > -1){
-        let prefix = restOfBody.substring(0, startIndex);
-        let foundText = restOfBody.substring(startIndex, startIndex + searchTerm.length);
-        let markedPart = "<mark>"+foundText+"</mark>";
-        restOfBody = restOfBody.substring(startIndex+searchTerm.length);
-        searchBody += prefix + markedPart;
-        occurenceCount++;
-      } else{
-        if(occurenceCount > 0){
-          searchBody += restOfBody;
-          restOfBody = "";
-        }else{
-          searchBody = null;
-          restOfBody = "";
-        }
-      }
+  toggleDisplaySearch() {
+    if (this.displaySearchInput) {
+      this.searchInputField_ = "";
+      this.messageSearch.resetSearch();
+      this.displaySearchInput = false;
+    } else {
+      this.displaySearchInput = true;
     }
-    console.log(searchBody);
-    message.searchBody = searchBody;
   }
 
   asyncInitContactProfile(contact: Contact) {
@@ -151,24 +136,23 @@ export class ChatPanelComponent implements OnInit {
     this.displayRoomMenu = !this.displayRoomMenu
   }
 
-
-  LineBreakOne : boolean = false;
-  LineBreakTwo : boolean = false;
-
-  countChars(){
-    let value = this.chatInputText.length;
-    if (value <= 5) {
-        this.LineBreakOne = false;
+  previousResult() {
+    this.markedMessageJumpIndex += 1;
+    let markedMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
+    if(markedMessage) {
+      this.chatService.scrollIntoView(markedMessage.id);
     }
-    if (value >= 5 && value <=10) {
-        this.LineBreakOne = true;
-        this.LineBreakTwo = false;
-    }
-    if (value >= 10 && value <=15) {
-      this.LineBreakOne = false;
-      this.LineBreakTwo = true;
+    console.log("previous")
+  }
+
+  nextResult() {
+    this.markedMessageJumpIndex -= 1;
+    let markedMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
+    if(markedMessage) {
+      this.chatService.scrollIntoView(markedMessage.id);
     }
 
+    console.log("next")
   }
 
 }
