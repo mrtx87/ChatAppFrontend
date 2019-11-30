@@ -2,17 +2,15 @@
     <ng-template ngFor let-m [ngForOf]="currentDisplayMessages">
 
         <!-- Date MESSAGE CONTAINER -->
-        <div class="date-message-container"
-            *ngIf="m.fromId === constants.CHAT_MESSAGE_DATE_TYPE">
+        <div class="date-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_DATE_TYPE">
             <div class="date-bubble">
                 {{ m?.createdAt | date: 'dd.MM.yyyy'}}
             </div>
         </div>
 
         <!-- SYSTEM MESSAGE CONTAINER -->
-        <div class="System-message-container"
-            *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_TYPE">
-            <div class="system-bubble"> 
+        <div class="System-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_TYPE">
+            <div class="system-bubble">
                 {{ m?.body }}
                 {{ m?.createdAt | date: "hh:mm" }}</div>
         </div>
@@ -20,19 +18,17 @@
         <!-- INCOMING MESSAGE CONTAINER -->
         <div class="incoming-message-container" id="{{m?.id}}"
             *ngIf="m.fromId !== localUser.id && m.fromId !== constants.CHAT_MESSAGE_SYSTEM_TYPE && m.fromId !== constants.CHAT_MESSAGE_DATE_TYPE">
-            <div class="chat-bubble left">
-                {{ m?.body}}
-                <span>{{ m?.createdAt | date: "hh:mm" }}</span></div>
-
+            <div [innerHTML]="m.searchBody ? m.searchBody : m.body" class="chat-bubble left">
+            </div>
+            <span>{{ m?.createdAt | date: "hh:mm" }}</span>
         </div>
 
         <!-- OUTGOING MESSAGE CONTAINER -->
-        <div class="outgoing-message-container" id="{{m?.id}}"
-            *ngIf="m.fromId === localUser.id">
-            <div class="chat-bubble right">
-                {{ m?.body}}
-                <span>{{ m?.createdAt | date: "hh:mm" }}</span></div>
-
+        <div class="outgoing-message-container" id="{{m?.id}}" *ngIf="m.fromId === localUser.id">
+            <div [innerHTML]="m.searchBody ? m.searchBody : m.body" class="chat-bubble right">
+                
+            </div>
+            <span>{{ m?.createdAt | date: "hh:mm" }}</span>
         </div>
 
     </ng-template>
