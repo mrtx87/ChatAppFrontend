@@ -748,6 +748,7 @@ export class ChatService {
     this.displayedChatRoom = null;
     this.resetChatService();
     this.store.resetStore();
+    this.loginRegisterComponent.isLoggingIn = false;
   }
 
   resetChatService() {
