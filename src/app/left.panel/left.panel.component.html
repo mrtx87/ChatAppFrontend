@@ -25,16 +25,16 @@
 
 
                 <div class="menu-row super-user-menu">
-                    Neue Gruppe
+                    {{ 'new_group' | tl8 }}
                 </div>
                 <div (click) ="initDisplayProfile(); displayUserMenu=false"  class="menu-row super-user-menu">
-                    Profil
+                   {{ 'user_profile' | tl8 }}
                 </div>
                 <div (click) ="initDisplaySettings(); displayUserMenu=false" class="menu-row super-user-menu">
-                    Einstellungen
+                   {{ 'user_settings' | tl8 }}
                 </div>
                 <div (click)="initLogout()" class="menu-row super-user-menu">
-                    Abmelden
+                    {{ 'log_out' | tl8 }}
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
 
 
         <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="searchChatInputText"
-            class="search-contact-inputfield" type="text" placeholder="search chats">
+            class="search-contact-inputfield" type="text" placeholder="{{ 'search_chats' | tl8 }}">
         <div class="icons">
             <span class="magni"></span>
             <span (click)="focusOut()" class="blue-arrow"></span>

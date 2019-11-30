@@ -72,10 +72,7 @@ export class AppComponent implements OnInit {
     return this.langService.LANG_KEYS;
   }
 
-  switchSelectedLanguage(langKey: string) {
-    this.langService.switchSelectedLanguage(langKey);
-    console.log(langKey)
-  }
+
 
   @HostListener("window:beforeunload", ["$event"])
   beforeunloadHandler($event: any) {

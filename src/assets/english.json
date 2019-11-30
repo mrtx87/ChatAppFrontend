@@ -1,4 +1,11 @@
 {
-    "add_new_contact": "add new contact"
-    
+    "add_new_contact": "add new contact",
+    "user_settings": "Settings",
+    "user_profile": "Profile",
+    "search_chats": "search chats",
+    "your_name": "Your Name",
+    "disclaimer_text": "That is not your Username or PIN-Code. This Name can only be seen by your whatsapp contacts.",
+    "info": "info",
+    "new_group": "New Group",
+    "log_out": "Log off"
 }

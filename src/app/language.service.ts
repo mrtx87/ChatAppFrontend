@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Language } from './language';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +12,35 @@ export class LanguageService {
     'german',
     'english'
   ];
-  languageTexts: Map<string, any> = new Map<string, any>();
 
-  availableLanguages: string[] = [];
-  selectedLanguageKey: string = "german";
+  private LANGUAGES_: Language[];
+  private languageTexts: Map<string, any> = new Map<string, any>();
+
+  private selectedLanguageKey: string = "german";
 
   constructor(private httpService: HttpClient) {
-
+    this.initAvailableLanguages();
     this.initLanguages();
   }
 
-  //TODO Alle Sprachen dynamisch einlesen und in languageTexts ablegen mit Hilfe von parseLanguageJson DONE
+  get LANGUAGES(){
+     return this.LANGUAGES_;
+  }
+
+  private initAvailableLanguages(){
+    this.LANGUAGES_ = [];
+    for (let lang_key of this.LANG_KEYS){
+      let iconParam = 'assets/' + lang_key + '-icon.svg';
+      let langParam = 'assets/' + lang_key + '.json';
+      let lang: Language = new Language(iconParam, langParam, lang_key);
+      this.LANGUAGES_.push(lang);
+    }
+
+  }
+
   initLanguages() {
-    for (let key of this.LANG_KEYS) {
-      this.parseLanguageJson(key);
+    for (let language of this.LANGUAGES_) {
+      this.parseLanguageJson(language.langKey,language.languageJsonUrl);
     }
   }
 
@@ -38,9 +54,9 @@ export class LanguageService {
   }
 
   private keyToText(text_key: string) : string {
-    let selectedLangObj = this.languageTexts.get(this.selectedLanguageKey);
-    if(selectedLangObj) {
-      let text = selectedLangObj[text_key];
+    let selectedTextObj = this.languageTexts.get(this.selectedLanguageKey);
+    if(selectedTextObj) {
+      let text = selectedTextObj[text_key];
        if(text){
           return text;
        }
@@ -60,14 +76,14 @@ export class LanguageService {
   }
 
 
-  private parseLanguageJson(key: string) {
-    let that = this
-    this.httpService.get('assets/' + key + '.json').subscribe(data => that.saveLangText(key, data), (err: HttpErrorResponse) => console.log(err.message));
+  private parseLanguageJson(key: string, jsonUrl: string) {
+    let that = this;
+    this.httpService.get(jsonUrl).subscribe(langObj => that.addLangObject(key, langObj), (err: HttpErrorResponse) => console.log(err.message));
     //add_new_user --> äquivalent zu this.GERMAN.add_new_user
   }
 
-  public saveLangText(key: string, langObj: any) {
-    this.languageTexts.set(key, langObj)
+  public addLangObject(key: string, langObj: any) {
+    this.languageTexts.set(key, langObj);
   }
 
 }

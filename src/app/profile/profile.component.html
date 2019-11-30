@@ -5,7 +5,7 @@
                <img (click)="initSlideOut()" src="assets/left-arrow.svg">
             </div>
             <div class="r2bp">
-                Profil
+                {{ 'user_profile' | tl8 }}
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
         <div class="edit-name-container">
             <div class="profile-name">
                 <span>
-                    Dein Name
+                    {{ 'your_name' | tl8 }}
                 </span>
             </div>
             <div class="edit-profile-name">
@@ -35,12 +35,12 @@
             </div>
         </div>
         <div class="disclaimer-text">
-            Das ist nicht dein Benutzername oder PIN-CODE. Dieser Name ist für deine WhatsApp Kontakte sichtbar.
+            {{ 'disclaimer_text' | tl8 }}
         </div>
         <div class="edit-info-container">
             <div class="profile-info">
                 <span>
-                    Info
+                    {{ 'info' | tl8 }}
                 </span>
             </div>
             <div class="edit-profile-info">

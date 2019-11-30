@@ -5,6 +5,8 @@ import { DataStore } from '../data.store';
 import { Constants } from '../constants';
 import { ValueResolver } from '../value.resolver';
 import { ImageService } from '../image.service';
+import { LanguageService } from '../language.service';
+import { Language } from '../language';
 
 @Component({
   selector: 'app-settings',
@@ -28,12 +30,26 @@ export class SettingsComponent implements OnInit {
     return this.chatService.currentDisplayedLeftPanel;
   }
 
+  get languages(): Language[] {
+    return this.langService.LANGUAGES;
+  }
+
+
   constructor(private chatService: ChatService, private store: DataStore,
-    private constants: Constants, private values: ValueResolver, private imageService: ImageService) {
+    private constants: Constants, private values: ValueResolver, private imageService: ImageService, private langService: LanguageService) {
     this.chatService.registerSettingsComponent(this);
   }
   ngOnInit() {
   }
+
+  switchSelectedLanguage(langKey: string) {
+    this.langService.switchSelectedLanguage(langKey);
+    console.log(langKey)
+  }
+
+
+
+
 
   jumpBack() {
     this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
