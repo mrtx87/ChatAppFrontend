@@ -315,7 +315,7 @@ export class ChatService {
           this.addEntryToDATA(<Contact>this.localUser);
           this.init();
           this.isLoggedIn = true;
- // test
+ 
         }
       });
   }
