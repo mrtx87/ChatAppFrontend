@@ -7,7 +7,6 @@ import { Constants } from '../constants';
 import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
 import { Contact } from '../Entities/contact';
-import { isBoolean } from 'util';
 import { ChatMessageSearchService } from '../chat-message-search.service';
 
 @Component({
@@ -17,7 +16,6 @@ import { ChatMessageSearchService } from '../chat-message-search.service';
 })
 export class ChatPanelComponent implements OnInit {
 
-  markedMessageJumpIndex;
   displaySearchInput = false;
   displayRoomMenu: boolean = false;
   currentDisplayedRightPanel_: string = "null";
@@ -27,9 +25,12 @@ export class ChatPanelComponent implements OnInit {
   get currentDisplayedRightPanel(): string {
     return this.currentDisplayedRightPanel_;
   }
-
   set currentDisplayedRightPanel(value: string) {
     this.currentDisplayedRightPanel_ = value;
+  }
+
+  get markedMessageCount() {
+    return this.messageSearch.markedMessages.length;
   }
 
   get chatInputText(): string {
@@ -51,6 +52,13 @@ export class ChatPanelComponent implements OnInit {
   }
   set displayedChatRoom(val: ChatRoom) {
     this.chatService.displayedChatRoom = val;
+  }
+
+  get markedMessageJumpIndex() {
+    return this.messageSearch.markedMessageJumpIndex;
+  }
+  set markedMessageJumpIndex(val: number) {
+    this.messageSearch.markedMessageJumpIndex = val;
   }
 
   constructor(private chatService: ChatService, private messageSearch: ChatMessageSearchService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
@@ -79,10 +87,9 @@ export class ChatPanelComponent implements OnInit {
   triggerSearch() {
     // localSearch
     this.messageSearch.localSearch(this.searchInputField_);
-    if(this.messageSearch.markedMessages.length > 0){
+    if (this.messageSearch.markedMessages.length > 0) {
       // jump to last (in time)
-      this.markedMessageJumpIndex = this.messageSearch.markedMessages.length-1;
-
+      this.markedMessageJumpIndex = this.messageSearch.markedMessages.length - 1;
     }
   }
 
@@ -137,25 +144,34 @@ export class ChatPanelComponent implements OnInit {
   }
 
   previousResult() {
-    this.markedMessageJumpIndex += 1;
-    let markedMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
-    if(markedMessage) {
-      this.chatService.scrollIntoView(markedMessage.id);
+    if (this.markedMessageJumpIndex + 1 < this.markedMessageCount) {
+      this.markedMessageJumpIndex += 1;
+    } else {
+      this.markedMessageJumpIndex = 0;
     }
-    console.log("previous")
+
+    this.scrollToSearchResult();
   }
 
   nextResult() {
-    this.markedMessageJumpIndex -= 1;
-    let markedMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
-    if(markedMessage) {
-      this.chatService.scrollIntoView(markedMessage.id);
+    if (this.markedMessageJumpIndex - 1 >= 0) {
+      this.markedMessageJumpIndex -= 1;
+    } else {
+      this.markedMessageJumpIndex = this.markedMessageCount - 1;
     }
 
-    console.log("next")
+    this.scrollToSearchResult();
+
   }
 
-  isFocused : boolean = false;
+  scrollToSearchResult() {
+    let markedMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
+    if (markedMessage) {
+      this.chatService.scrollIntoView(markedMessage.id);
+    }
+  }
+
+  isFocused: boolean = false;
 
   isClicked() {
     this.isFocused = true;

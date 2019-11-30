@@ -11,7 +11,7 @@ import { ChatRoom } from './Entities/chat.room';
 })
 export class ChatMessageSearchService {
 
-
+  private markedMessageJumpIndex_;
   private markedMessages_: ChatMessage[] = [];
 
   get markedMessages() {
@@ -21,6 +21,13 @@ export class ChatMessageSearchService {
     this.markedMessages_ = val;
   }
 
+  get markedMessageJumpIndex() {
+    return this.markedMessageJumpIndex_;
+  }
+  set markedMessageJumpIndex(val: number) {
+    this.markedMessageJumpIndex_ = val;
+  }
+  
   get displayedChatRoom(): ChatRoom {
     return this.chatService.displayedChatRoom;
   }
@@ -34,9 +41,11 @@ export class ChatMessageSearchService {
   resetSearch() {
     this.markedMessages.forEach(message => message.searchBody = null);
     this.markedMessages = [];
+    this.markedMessageJumpIndex = -1;
   }
 
   localSearch(searchTerm: string) {
+    this.resetSearch();
     let messages: ChatMessage[] = this.store.getChatMessages(this.displayedChatRoom.id);
     for (let message of messages) {
       if (message.fromId !== this.constants.CHAT_MESSAGE_SYSTEM_TYPE && message.fromId !== this.constants.CHAT_MESSAGE_DATE_TYPE) {
@@ -48,7 +57,7 @@ export class ChatMessageSearchService {
   }
 
   getMarkedMessageByIndex(index: number): ChatMessage {
-    if(index > -1 && index < this.markedMessages.length){
+    if (index > -1 && index < this.markedMessages.length) {
       return this.markedMessages[index];
     }
     return null;

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
-import { Driver } from 'selenium-webdriver/opera';
 import { Constants } from '../constants';
 import { Contact } from '../Entities/contact';
 import { User } from '../Entities/user';

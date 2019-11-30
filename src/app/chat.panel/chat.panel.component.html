@@ -21,6 +21,7 @@
                     <input type="text" (keyup.enter) = "triggerSearch()" [(ngModel)]="searchInputField_">
                     <div><img (click)="previousResult()" style="width: 25px; height:auto;" src="assets/arrow-down.svg"></div>
                     <div><img (click)="nextResult()" style="width: 25px; height:auto;" src="assets/arrow-up.svg"></div>
+                    <div>{{markedMessageCount-markedMessageJumpIndex || '-'}}/{{markedMessageCount || '-'}}</div>
                 </div>
             </div>
             <div class="rightpanel-burger-menu" [ngClass]="displayRoomMenu ? 'active' : ''" tabindex="-1">
@@ -57,7 +58,7 @@
 
     <div class="senden-container">
         <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
-        <input id="test2" (keyup)="countChars();" (keyup.enter)="triggerSendChatMessage()" [ngClass]="textState ? 'test13' : 'test2'" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom"
+        <input id="test2" (keyup.enter)="triggerSendChatMessage()" [ngClass]="textState ? 'test13' : 'test2'" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom"
             placeholder="Write a message">
         <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
     </div>
