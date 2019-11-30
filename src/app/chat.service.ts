@@ -26,6 +26,10 @@ import { SettingsComponent } from './settings/settings.component';
 import { ValueResolver } from './value.resolver';
 import { stringify } from 'querystring';
 import { CookieService } from 'ngx-cookie-service';
+import { ContactProfileComponent } from './contact-profile/contact-profile.component';
+import { ComponentStack } from './component-stack';
+import { BaseComponent } from './base-component';
+import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profile.component';
 
 
 
@@ -35,8 +39,11 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class ChatService {
 
+
   ws: SockJS;
   private stompClient;
+
+  leftPanelComponentStack_: ComponentStack;
 
 
   //FORMS AND PAGE INPUTS
@@ -44,6 +51,10 @@ export class ChatService {
 
   //DISPLAY PARAMETERS
   private displayedChatRoom_: ChatRoom;
+
+  get leftPanelComponentStack(): ComponentStack {
+    return this.leftPanelComponentStack_;
+  }
 
   set currentDisplayedLeftPanel(value: string) {
     this.appComponent.currentDisplayedLeftPanel = value;
@@ -61,6 +72,8 @@ export class ChatService {
     return this.chatPanelComponent.currentDisplayedRightPanel;
   }
 
+
+
   // REGISTERABLE COMPONENTS
   public appComponent: AppComponent;
   public groupProfileComponent: GroupProfileComponent;
@@ -72,10 +85,18 @@ export class ChatService {
   public lefPanelComponent: LeftPanelComponent;
   public loginRegisterComponent: LoginregisterComponent;
   public profileComponent: ProfileComponent;
-  public searchResultComponent: SearchresultComponent
-  public settingsComponent: SettingsComponent
+  public searchResultComponent: SearchresultComponent;
+  public settingsComponent: SettingsComponent;
+  public contactProfileComponent: ContactProfileComponent;
+  public editGroupProfileComponent: EditGroupProfileComponent;
 
+  public registerContactProfileComponent(contactProfileComponent: ContactProfileComponent) {
+    this.contactProfileComponent = contactProfileComponent;
+  }
 
+  public registerEditGroupProfileComponent(editGroupProfileComponent: EditGroupProfileComponent) {
+   this.editGroupProfileComponent = editGroupProfileComponent;
+  }
 
   public registerAppComponent(appComponent: AppComponent) {
     this.appComponent = appComponent;
@@ -223,6 +244,18 @@ export class ChatService {
     this.store.registerPasswordRepeat = val;
   }
 
+  clearLeftPanelComponentStack() {
+    this.leftPanelComponentStack.clear();
+  }
+
+  currentComponent(key: string) {
+    this.leftPanelComponentStack.push(key);
+  }
+
+  previousComponent() {
+    return this.leftPanelComponentStack.getPrevious();
+  }
+
   connect() {
     this.ws = new SockJS(this.constants.BASEURI + "/socket");
     this.stompClient = Stomp.over(this.ws);
@@ -230,7 +263,7 @@ export class ChatService {
 
     this.stompClient.connect({}, function () {
       that.sendOwnOnlineStatus();
-      that.stompClient.subscribe("/client/" + that.localUser.id, function(messageFromServer) {
+      that.stompClient.subscribe("/client/" + that.localUser.id, function (messageFromServer) {
         that.handleServerResponse(JSON.parse(messageFromServer.body));
       }
       );
@@ -247,15 +280,37 @@ export class ChatService {
         this.sendRequestRoomList();
         this.sendRequestContacts();
       } break;
-      case this.constants.TM_FUNCTION_SET_COOKIE: {
-        this.cookieService.set(this.constants.USER_COOKIE_KEY, transferMessage.cookie);
+      case this.constants.TM_FUNCTION_LOGIN_AND_COOKIE: {
+        this.finalizeLogin(transferMessage);
       } break;
     }
 
   }
 
+  finalizeLogin(transferMessage: TransferMessage) {
+
+    if (this.localUser.id === transferMessage.from.id) {
+      if (transferMessage.cookie) {
+        this.cookieService.set(this.constants.USER_COOKIE_KEY, transferMessage.cookie);
+      }
+      this.isLoggedIn = true;
+    }
+
+  }
+
+  handleLoginResponse(receivedUser: User) {
+    if (receivedUser.id && receivedUser.name) {
+      this.localUser = receivedUser;
+      this.addEntryToDATA(<Contact>this.localUser);
+      this.init();
+      let that = this
+      return;
+    }
+    console.log("fehlerhafter login response")
+  }
+
   getContactById(id: string) {
-    return this.store.contacts && this.store.contacts.length > 0 ?  this.store.contacts.filter(c => c.id === id)[0] : null;
+    return this.store.contacts && this.store.contacts.length > 0 ? this.store.contacts.filter(c => c.id === id)[0] : null;
   }
 
   closeLocalWebsocketConnection() {
@@ -297,9 +352,8 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/register", { username: this.registerUsername, password: this.registerPassword }, { headers })
       .subscribe(response => {
-        this.localUser = <User>response;
-        this.isLoggedIn = true;
-        console.log(this.localUser);
+        const receivedUser = <User>response;
+        this.handleLoginResponse(receivedUser);
       });
   }
 
@@ -310,13 +364,7 @@ export class ChatService {
       .post(this.constants.BASE_URL + "/login", { username: this.loginUsername, password: this.loginPassword }, { headers })
       .subscribe(response => {
         const receivedUser = <User>response;
-        if (receivedUser.id && receivedUser.name) {
-          this.localUser = receivedUser;
-          this.addEntryToDATA(<Contact>this.localUser);
-          this.init();
-          this.isLoggedIn = true;
-
-        }
+        this.handleLoginResponse(receivedUser);
       });
   }
 
@@ -327,13 +375,7 @@ export class ChatService {
       .post(this.constants.BASE_URL + "/login-by-cookie", { cookie: user_cookie }, { headers })
       .subscribe(response => {
         const receivedUser = <User>response;
-        if (receivedUser.id && receivedUser.name) {
-          this.localUser = receivedUser;
-          this.addEntryToDATA(<Contact>this.localUser);
-          this.init();
-          this.isLoggedIn = true;
-
-        }
+        this.handleLoginResponse(receivedUser);
       });
   }
 
@@ -359,7 +401,7 @@ export class ChatService {
     // this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   }
 
-  private addAvailableRoom(chatRoom: ChatRoom){
+  private addAvailableRoom(chatRoom: ChatRoom) {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
@@ -369,28 +411,39 @@ export class ChatService {
     // this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
   }
 
+  private addNewAvailableRoom(chatRoom: ChatRoom) {
+    if (!this.availableRooms) {
+      this.availableRooms = new Map<string, ChatRoom>();
+    }
+    this.availableRooms.set(chatRoom.id, chatRoom);
+  }
+
   private updateAvailableRooms(chatRooms: ChatRoom[]) {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
-    let nextAvailableRooms : Map<string, ChatRoom> = new Map<string, ChatRoom>();
+    let nextAvailableRooms: Map<string, ChatRoom> = new Map<string, ChatRoom>();
     chatRooms.forEach(chatRoom => {
-      if(this.availableRooms.has(chatRoom.id)) {
-        let transferRoom  = this.availableRooms.get(chatRoom.id);
+      if (this.availableRooms.has(chatRoom.id)) {
+        let transferRoom = this.availableRooms.get(chatRoom.id);
         nextAvailableRooms.set(transferRoom.id, transferRoom);
-      }else {
+      } else {
         nextAvailableRooms.set(chatRoom.id, chatRoom);
       }
-    }) 
+    })
     this.availableRooms = nextAvailableRooms;
 
-    if(this.displayedChatRoom && !this.availableRooms.has(this.displayedChatRoom.id)){
+    if (this.displayedChatRoom && !this.availableRooms.has(this.displayedChatRoom.id)) {
       this.displayedChatRoom = null;
     }
     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
     //get all chat messages per room from backend
     this.addMapToDATA(this.availableRooms);
     // this.sendRequestAllChatMessagesForRooms(chatRooms);
+  }
+
+  sendUpdateAllChatMessages() {
+    this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   }
 
   /**
@@ -401,7 +454,7 @@ export class ChatService {
   //   chatRooms.forEach(chatRoom => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   // }
 
-  private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom){
+  private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom) {
     this.sendRequestChatMessages(chatRoom.id);
   }
 
@@ -442,11 +495,12 @@ export class ChatService {
   * 
   */
   private sendRequestRoomList() {
+    let that = this;
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>response);
-        this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
-       })
+        that.sendUpdateAllChatMessages()
+      })
   }
 
   /**
@@ -616,7 +670,7 @@ export class ChatService {
 
   /**
    * send a request to create a new room with an unkown contact
-   * @param contact 
+   * @clearLeftPanelComponentStackparam contact 
    * @param title 
    */
   sendCreateGroupRoom(from: Contact, chatroom: ChatRoom) {
@@ -629,9 +683,10 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
-        this.updateAvailableRooms(<ChatRoom[]>[response]);
-        this.sendRequestContacts();
-        this.displayedChatRoom = <ChatRoom>response;
+        let chatRoom : ChatRoom = <ChatRoom> response;
+        this.addAvailableRoom(chatRoom);
+        this.sendRequestChatMessagesForSingleRoom(chatRoom);
+        this.displayedChatRoom = chatRoom;
       });
   }
   /**
@@ -668,18 +723,18 @@ export class ChatService {
   }
 
   scrollIntoView(elementId: string, scrollConfig?: any) {
-    let threadId = setInterval(
+    let scrollWhenReady = setInterval(
       function () {
         let element: HTMLElement = document.getElementById(elementId);
         if (element) {
           //let scrollConfig = { behavior: "smooth"};
           element.scrollIntoView();
-          clearInterval(threadId);
+          clearInterval(scrollWhenReady);
         }
       }, 50);
   }
 
-  asyncInitRoomProfile(chatRoom:ChatRoom, readOnly : boolean) {
+  asyncInitRoomProfile(chatRoom: ChatRoom, readOnly: boolean) {
     let that = this;
     let interval = setInterval(function () {
       if (that.groupProfileComponent) {
@@ -689,15 +744,41 @@ export class ChatService {
     }, 5);
   }
 
-
-  constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) { }
-
   resetClient() {
+    this.displayedChatRoom = null;
     this.resetChatService();
     this.store.resetStore();
+    this.loginRegisterComponent.isLoggingIn = false;
   }
 
   resetChatService() {
-    
+
   }
+
+
+
+  constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) {
+    this.leftPanelComponentStack_ = new ComponentStack();
+
+  }
+
+
+  jumpBack() {
+    this.currentDisplayedLeftPanel = this.previousComponent();
+  }
+
+
+  initSlideOut(component: any, duration: number) {
+    component.slideOut = true;
+    let that = this;
+
+    let interval = setInterval(function () {
+      component.intervalTimer += 10;
+      if (component.intervalTimer >= duration) {
+        that.jumpBack();
+        clearInterval(interval);
+      }
+    }, 10)
+  }
+
 }

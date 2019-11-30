@@ -146,14 +146,6 @@ background: rgba(0,0,0,.1);
 }
 
 
-
-
-
-  .anim {
-    animation: myanimation2 0.25s ease-out forwards;
-  }
-
-
   .wrapper.chat {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -181,7 +173,12 @@ background: rgba(0,0,0,.1);
     grid-column: 2 / 3;
   }
 
-  @keyframes myanimation2 {
+
+  .animation-in-from-right {
+    animation: animFromRight 0.25s ease-out forwards;
+  }
+
+  @keyframes animFromRight {
     0% {
       width:0px;
     }
@@ -189,6 +186,20 @@ background: rgba(0,0,0,.1);
       width:400px;
     }
   }
+
+  .animation-out-to-right {
+    animation: animFromLeft 0.25s ease-out forwards;
+  }
+
+  @keyframes animFromLeft {
+    0% {
+      width:400px;
+    }
+    100% {
+      width:0px;
+    }
+  }
+
 
 
 
@@ -220,3 +231,8 @@ background: rgba(0,0,0,.1);
   .wrapper.home h1{
     text-align: center;
   }
+
+
+
+ 
+  

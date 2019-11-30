@@ -2,19 +2,18 @@
     <div class="return-2-user-panel" >
         <div class="return-button-2-panel">
             <div class="r2upa">
-               <img (click)="initSlideOut()" src="assets/left-arrow.svg">
+               <img (click)="initSlideOut()" src="assets/right-arrow.svg">
             </div>
             <div class="r2bp">
-                Settings
+                Profil
             </div>
         </div>
     </div>
     <div class="profile-container">
         <div class="profile-pic-container">
             <div class="pp"> 
-                <!--<img *ngIf="localUser" class="img-test" src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">!-->
-                <img (click)="!readOnly ? fileInput.click() : ''"
-                    src="{{iconUrl || 'assets/default-user-icon.svg'}}" class="img-test">
+                <img *ngIf="currentlyDisplayedContact" class="img-test" src="{{currentlyDisplayedContact.iconUrl ? currentlyDisplayedContact.iconUrl : 'assets/default-user-icon.svg'}}">
+                <!-- <img class="img-test"> -->
                 <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
             </div>
             
@@ -26,12 +25,8 @@
                 </span>
             </div>
             <div class="edit-profile-name">
-                    <input tabindex="-1" id="checkbox1" type="checkbox">
-                    <label *ngIf="!readOnly" for="checkbox1" (click)="updateUserProfile()"></label>
-                    <div *ngIf="!readOnly" class="submenu"><span>12</span><a class="smiley"></a><span></span></div>
-                    <input [(ngModel)]="name" type="text" placeholder="edit name">
+                    <input [(ngModel)]="currentlyDisplayedContact.name" type="text">
                     <span></span>
-                    
             </div>
         </div>
         <div class="disclaimer-text">
@@ -44,14 +39,14 @@
                 </span>
             </div>
             <div class="edit-profile-info">
-                    <input tabindex="-1" id="checkbox2" type="checkbox">
-                    <label *ngIf="!readOnly" for="checkbox2" (click)="updateUserProfile()"></label>
-                    <div *ngIf="!readOnly" class="submenu"><span>12</span><a class="smiley"></a><span></span></div>
-                    <input  [(ngModel)]="info" type="text" placeholder="edit info">
+                    <input  [(ngModel)]="currentlyDisplayedContact.info" type="text">
                     <span></span>
             </div>
         </div>
 
+        <div class="delete-contact-container" >
+            <div (click)="removeContact()"> remove User </div>
+        </div>
+
     </div>
 </div>
-

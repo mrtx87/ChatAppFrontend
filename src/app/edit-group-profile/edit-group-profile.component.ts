@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../Entities/user';
+import { ChatRoom } from '../Entities/chat.room';
 import { ChatService } from '../chat.service';
 import { ValueResolver } from '../value.resolver';
 import { DataStore } from '../data.store';
 import { Constants } from '../constants';
-import { ChatRoom } from '../Entities/chat.room';
-import { Contact } from '../Entities/contact';
-import { User } from '../Entities/user';
 import { ImageService } from '../image.service';
 
 @Component({
-  selector: 'app-group-profile',
-  templateUrl: './group-profile.component.html',
-  styleUrls: ['./group-profile.component.css']
+  selector: 'app-edit-group-profile',
+  templateUrl: './edit-group-profile.component.html',
+  styleUrls: ['./edit-group-profile.component.css']
 })
-export class GroupProfileComponent implements OnInit {
+export class EditGroupProfileComponent implements OnInit {
 
-
+  readOnly: boolean = true;
 
   set currentDisplayedLeftPanel(value: string) {
     this.chatService.currentDisplayedLeftPanel = value;
@@ -23,6 +22,14 @@ export class GroupProfileComponent implements OnInit {
 
   get currentDisplayedLeftPanel(): string {
     return this.chatService.currentDisplayedLeftPanel;
+  }
+
+  get currentDisplayedRightPanel(): string {
+    return this.chatService.currentDisplayedRightPanel;
+  }
+
+  set currentDisplayedRightPanel(value: string) {
+    this.chatService.currentDisplayedRightPanel = value;
   }
 
   get localUser(): User {
@@ -62,17 +69,17 @@ export class GroupProfileComponent implements OnInit {
   }
 
   constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants, private imageService: ImageService) {
-    chatService.registerGroupProfileComponent(this);
-    chatService.currentComponent(this.constants.GROUP_CHAT_PROFILE)
+    chatService.registerEditGroupProfileComponent(this);
   }
 
   updateChatroomTitle() {
-    if (this.currentChatRoom) {
+    if (this.currentChatRoom && !this.readOnly) {
       this.currentChatRoom.title = this.roomTitleText;
     }
   }
 
   init(chatRoom: ChatRoom, readOnly: boolean) {
+    this.readOnly = readOnly;
     this.currentChatRoom = chatRoom;
 
     this.roomTitleText = chatRoom.title;
@@ -81,24 +88,19 @@ export class GroupProfileComponent implements OnInit {
   }
 
   onFileChanged(event) {
+    if (!this.readOnly) {
       this.imageService.onFileChanged(event, this.constants.NEW_GROUP_IMAGE);
       this.startImageListener();
-    
+    }
   }
 
 
   isValid() {
-    return this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
+    return !this.readOnly && this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
   }
 
-  sendCreateNewGroupRoom() {
-    if (this.currentChatRoom) {
-      this.currentChatRoom.title = this.roomTitleText;
-      this.currentChatRoom.userIds.push(this.localUser.id);
-      this.chatService.sendCreateGroupRoom(this.localUser, this.currentChatRoom);
-      this.chatService.clearLeftPanelComponentStack();
-      this.initSlideOut();
-    }
+  jumpBack() {
+    this.currentDisplayedRightPanel = null;
   }
 
 
@@ -106,7 +108,15 @@ export class GroupProfileComponent implements OnInit {
   intervalTimer = 0;
 
   initSlideOut() {
-    this.chatService.initSlideOut(this, 200);
-  }
+    this.slideOut = true;
+    let that = this;
 
+    let interval = setInterval(function () {
+      that.intervalTimer += 10;
+      if (that.intervalTimer >= 300) {
+        that.jumpBack();
+        clearInterval(interval);
+      }
+    }, 10)
+  }
 }

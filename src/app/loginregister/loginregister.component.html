@@ -1,7 +1,7 @@
 <div *ngIf="!isLoggedIn" class="login-register-container">
 
     <!-- LOGIN FORM -->
-    <div *ngIf="!displayRegistration" class="login-form" >
+    <div *ngIf="!displayRegistration && !isLoggingIn" class="login-form" >
         <h3>Anmelden</h3>
         <div class="register-row">
             <label>Benutzername</label>
@@ -23,7 +23,7 @@
 
 
     <!-- REGISTER FORM -->
-    <div *ngIf="displayRegistration" class="register-form">
+    <div *ngIf="displayRegistration && !isLoggingIn" class="register-form">
         <h3>Registration</h3>
         <div class="register-row">
             <label>Benutzername</label>
@@ -45,6 +45,12 @@
         <div> Bereits registriert? <a (click)="displayRegistration = false"> Hier anmelden.</a></div>
 
     </div>
+
+
+        <!-- WHILE LOGGING IN-->
+        <div *ngIf="isLoggingIn" class="register-form">
+            <h2> trying to log in </h2>
+        </div>
 
 
     <!-- <div [hidden] ="!isRegistering"> <h2>registering your account...</h2></div> -->

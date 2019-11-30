@@ -22,27 +22,40 @@ export class ContactsComponent implements OnInit {
     this.store.contacts = val;
   }
 
-  removeContact(contact: Contact){
-    if(contact){
-      console.log("Ya rly want to remove "+ contact.name +", huh? Well, let's give it a try.");
-      // let chatRoom: ChatRoom = this.values.resolveDialogRoomByContact(contact);
-      this.chatService.sendRemoveContact(contact, this.values.resolveDialogRoomByContact(contact));
-    }else{
-      console.log("Don't remove anything as there was no other user. (Which is strange. You should investigate this.");
-    }
+  get currentDisplayedLeftPanel(): string {
+    return this.chatService.currentDisplayedLeftPanel;
+  }
+
+  set currentDisplayedLeftPanel(value: string) {
+    this.chatService.currentDisplayedLeftPanel = value;
   }
 
   /**
    * Uses sets displayed chat room (dialog) regarding local user and given contact.
    * @param contact 
    */
-  setDisplayedChatRoomByContact(contact: Contact){
+  setDisplayedChatRoomByContact(contact: Contact) {
     this.chatService.displayedChatRoom = this.values.resolveDialogRoomByContact(contact);
     this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) {}
+  constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) {
+    this.chatService.registerContactsComponent(this);
+    this.chatService.currentComponent(constants.CONTACTS_COMPONENT);
+
+  }
+
+  initDisplayAddGroupChat() {
+    this.chatService.appComponent.currentDisplayedLeftPanel = this.constants.ADD_GROUP_CHAT;
+  }
+
+  slideOut: boolean = false;
+  intervalTimer = 0;
+
+  initSlideOut() {
+    this.chatService.initSlideOut(this, 200);
+  }
 
 }

@@ -22,7 +22,10 @@ import { SettingsComponent } from './settings/settings.component';
 import { LastestChatMessageBodyPipe } from './lastest-chat-message-body.pipe';
 import { LatestChatMessageDatePipe } from './latest-chat-message-date.pipe';
 import { ImgPipe } from './img.pipe';
-import { CookieService } from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import { LanguagePipe } from './language.pipe'
+import { ContactProfileComponent } from './contact-profile/contact-profile.component';
+import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profile.component'
 
 @NgModule({
   declarations: [
@@ -42,7 +45,10 @@ import { CookieService } from 'ngx-cookie-service'
     SettingsComponent,
     LastestChatMessageBodyPipe,
     LatestChatMessageDatePipe,
-    ImgPipe
+    ImgPipe,
+    LanguagePipe,
+    ContactProfileComponent,
+    EditGroupProfileComponent
   ],
   imports: [
     BrowserModule,

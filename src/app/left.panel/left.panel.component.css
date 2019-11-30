@@ -261,8 +261,16 @@
     animation: animationIn 0.25s ease-out forwards;
   }
 
+  .anim-in-fast {
+    animation: animationIn 0.15s ease-out forwards;
+  }
+
   .anim-out {
     animation: animationOut 0.25s ease-out forwards;
+  }
+
+  .anim-out-fast {
+    animation: animationOut 0.15s ease-out forwards;
   }
 
   @keyframes animationIn {

@@ -35,6 +35,11 @@
     filter: invert(95%) sepia(100%) saturate(14%) hue-rotate(213deg) brightness(104%) contrast(104%);
 }
 
+
+.r2upa img{
+    width: 30px;
+}
+
 .r2bp {
     font-size: 23px;
 }
@@ -318,4 +323,13 @@
 
 .success-img {
     height: 50px;
+}
+
+.delete-contact-container {
+    display:flex;
+    width:100%;
+    height:50px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid red;
 }
