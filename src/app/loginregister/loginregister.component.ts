@@ -13,6 +13,14 @@ export class LoginregisterComponent implements OnInit {
   isRegistering: boolean = false;
   displayRegistration: boolean = false;
 
+  private isLoggingIn_ : boolean = false;
+
+  get isLoggingIn(): boolean {
+    return this.isLoggingIn_;
+  }
+  set isLoggingIn(val: boolean) {
+    this.isLoggingIn_ = val;
+  }
 
   get loginUsername(): string {
     return this.store.loginUsername;
@@ -56,7 +64,9 @@ export class LoginregisterComponent implements OnInit {
     this.store.registerPasswordRepeat = val;
   }
 
-  constructor(private chatService: ChatService, private store: DataStore) { }
+  constructor(private chatService: ChatService, private store: DataStore) {
+    chatService.registerLoginRegisterComponent(this);
+   }
 
   ngOnInit() {
     

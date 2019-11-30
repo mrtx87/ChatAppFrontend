@@ -29,7 +29,7 @@ export class LeftPanelComponent implements OnInit {
   constructor(private chatService: ChatService, private values: ValueResolver, private constants: Constants, private store: DataStore) {
     chatService.registerLeftPanelComponent(this);
 
-   }
+  }
 
   ngOnInit() {
   }
@@ -87,7 +87,7 @@ export class LeftPanelComponent implements OnInit {
   }*/
 
   resetClient() {
-    
+
   }
 
   toggleDisplayedRoom(chatRoom: ChatRoom) {
@@ -135,13 +135,23 @@ export class LeftPanelComponent implements OnInit {
 
   initDisplayProfile() {
     this.currentDisplayedLeftPanel = this.constants.USER_PROFILE;
-    //this.chatService.profileComponent.init(this.localUser.name, this.localUser.info, false);
-
     this.asyncInitProfile();
   }
 
   initDisplaySettings() {
     this.currentDisplayedLeftPanel = this.constants.USER_SETTINGS;
+  }
+
+  initDisplayNewGroup() {
+    this.currentDisplayedLeftPanel = this.constants.ADD_GROUP_CHAT;
+  }
+
+  initDisplayContacts() {
+    this.currentDisplayedLeftPanel = this.constants.CONTACTS_COMPONENT;
+  }
+
+  initDisplayAddContact() {
+    this.currentDisplayedLeftPanel = this.constants.ADD_USER_PANEL;
   }
 
   initLogout() {

@@ -10,19 +10,23 @@
     justify-content: center;
 }
 
+h3 {
+  margin: 20px 0 40px 0;
+}
+
 .register-form {
     display: flex;
     flex-direction: column;
     width: 250px;
     align-items: center;
-    border: solid 1px black;
+    border: solid 1px var(--light-grey);
     padding: 5px;
-    background-color: rgba(0, 0, 0, 0.452);
+    background-color: var(--white-grey);
     border-radius: 5px;
 }
 
 .register-form label, .login-form label {
-    color: white;
+   color: var(--text-black);
 }
 
 .register-row {
@@ -32,23 +36,27 @@
 .register-row input {
     width: 100%;
     margin-bottom: 10px;
-    height: 3vh;
+    height: 30px;
+    border-radius: 5px;
+    border:none;
+    padding: 5px 10px;
 }
 
 .send-btn {
-    padding: 2px 5px;
-    border: solid 1px black;
-    color: white;
+    padding: 15px 20px;
+    margin: 10px 0 15px 0;
+    background: var(--main-green);
+    border-radius: 5px;
 }
 
 
 .login-form {
     display: flex;
     flex-direction: column;
-    width: 250px;
+    width: 330px;
     align-items: center;
-    border: solid 1px black;
-    padding: 5px;
-    background-color: rgba(0, 0, 0, 0.452);
+    padding: 15px;
+    background-color: var(--white-grey);
     border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.25);
 }

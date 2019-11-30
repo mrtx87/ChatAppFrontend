@@ -24,8 +24,13 @@
 
 
 
-                <div (click) ="initDisplayNewGroup();displayUserMenu=false" class="menu-row super-user-menu">
+<<<<<<< HEAD
+                <div class="menu-row super-user-menu">
                     {{ 'new_group' | tl8 }}
+=======
+                <div (click) ="initDisplayNewGroup();displayUserMenu=false" class="menu-row super-user-menu">
+                    Neue Gruppe
+>>>>>>> ec9b4576c2586aaf02e7212d7dbfcd029ce7f55b
                 </div>
                 <div (click) ="initDisplayProfile(); displayUserMenu=false"  class="menu-row super-user-menu">
                    {{ 'user_profile' | tl8 }}

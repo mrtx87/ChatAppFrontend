@@ -109,7 +109,7 @@ export class ValueResolver {
 
   resolveChatRoomName(chatRoom: ChatRoom): string {
     if (chatRoom) {
-      if (chatRoom.userIds && chatRoom.userIds.length == 2) {
+      if (chatRoom && !chatRoom.groupChat) {
         //1on1 room
         let userId = this.getNotLocalUserId(chatRoom.userIds);
         let contact: Contact = this.resolveContactId(userId);
@@ -157,6 +157,7 @@ export class ValueResolver {
     if (lookedUpcontact) {
       return lookedUpcontact;
     }
+    this.chatService.sendResolveContactId(userId);
     return null;
   }
 
@@ -168,7 +169,7 @@ export class ValueResolver {
   resolveDialogRoomByContact(contact: Contact): ChatRoom {
     let chatRoom: ChatRoom = null;
     this.availableRooms.forEach(room => {
-      if (room.userIds.length == 2 && room.userIds.includes(contact.id) && room.userIds.includes(this.localUser.id)) {
+      if (!room.groupChat && room.userIds.includes(contact.id) && room.userIds.includes(this.localUser.id)) {
         chatRoom = room;
       }
     });

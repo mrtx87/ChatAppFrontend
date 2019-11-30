@@ -254,14 +254,23 @@
     bottom:0px;
     right:0px;
     width:100%;
+    background-color: var(--white-grey);
   }
 
   .anim-in {
     animation: animationIn 0.25s ease-out forwards;
   }
 
+  .anim-in-fast {
+    animation: animationIn 0.15s ease-out forwards;
+  }
+
   .anim-out {
     animation: animationOut 0.25s ease-out forwards;
+  }
+
+  .anim-out-fast {
+    animation: animationOut 0.15s ease-out forwards;
   }
 
   @keyframes animationIn {

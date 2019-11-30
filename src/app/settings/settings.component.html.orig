@@ -1,0 +1,22 @@
+<div class="profile">
+    <div class="return-2-user-panel">
+        <div class="return-button-2-panel">
+            <div class="r2upa">
+                <img (click)="initSlideOut()" src="assets/left-arrow.svg">
+            </div>
+            <div class="r2bp">
+                {{ 'user_settings' | tl8 }}
+            </div>
+        </div>
+    </div>
+    <div class="language-wrapper">
+        <div class="change-language-container">
+            <div class="languages-container">
+                <div style="margin: 5px;" *ngFor="let language of languages"
+                    (click)="switchSelectedLanguage(language.langKey)"> <img style="width:25px; height:auto;" src ="{{ language.iconUrl }}">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

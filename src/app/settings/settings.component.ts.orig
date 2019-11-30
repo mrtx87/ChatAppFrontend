@@ -43,6 +43,7 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
   }
 
+<<<<<<< HEAD
   switchSelectedLanguage(langKey: string) {
     this.langService.switchSelectedLanguage(langKey);
     console.log(langKey)
@@ -52,6 +53,13 @@ export class SettingsComponent implements OnInit {
 
 
 
+  jumpBack() {
+    this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+  }
+
+
+=======
+>>>>>>> ec9b4576c2586aaf02e7212d7dbfcd029ce7f55b
   slideOut: boolean = false;
   intervalTimer = 0;
 
