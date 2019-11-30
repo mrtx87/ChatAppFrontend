@@ -92,7 +92,7 @@ export class ChatPanelComponent implements OnInit {
     }, 5);
   }
 
-  icon: string = "&#128523;";
+  iconCode: string = "&#128523;";
 
   initDisplayProfile() {
     if (this.displayedChatRoom.groupChat) {
