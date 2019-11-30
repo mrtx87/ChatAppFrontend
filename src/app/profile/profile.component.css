@@ -1,17 +1,14 @@
 .profile {
-    /* position: absolute; */
     display: flex;
     flex-direction: column;
-    /* top: 0px; */
-    /* left: 0px; */
-    /* width: 100%; */
+    height: 100%;
 }
 
 
 .return-2-user-panel {
     position: relative;
     width: 100%;
-    height: 100px;
+    height: 108px;
     background-color: var(--main-green);;
     padding-left: 23px;
     padding-right: 20px;
@@ -22,24 +19,31 @@
     bottom: 0px;
     display: flex;
     color: white;
-    height: 34%;
+    height: 40px;
+}
+
+.return-button-2-panel img {
+    width: 20px;
 }
 
 .r2upa{
     width: 30px;
-    margin-right: 50px;
+    margin-right: 25px;
     cursor: pointer;
-    filter: invert(95%) sepia(100%) saturate(14%) hue-rotate(213deg) brightness(104%) contrast(104%);
+    filter: invert(100%);
 }
 
 .r2bp {
-    font-size: 23px;
+    font-size: 19px;
+    font-weight: 500;
 }
 
 .profile-container {
     display: flex;
     flex-direction: column;
     width: 100%;
+    overflow: auto;
+    flex:1;
 }
 
 .profile-pic-container {
@@ -56,6 +60,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .img-test {
@@ -70,7 +75,6 @@
     box-shadow: 0 1px 3px rgba(0,0,0,.08);
     margin-bottom: 10px;
     width: 100%;
-    height: 95px;
     padding: 14px 25px 10px;
 }
 
@@ -199,7 +203,6 @@
     box-shadow: 0 1px 3px rgba(0,0,0,.08);
     margin-bottom: 10px;
     width: 100%;
-    height: 95px;
     padding: 14px 25px 10px;
 }
 

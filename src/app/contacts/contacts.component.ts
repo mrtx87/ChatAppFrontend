@@ -58,4 +58,14 @@ export class ContactsComponent implements OnInit {
     this.chatService.initSlideOut(this, 200);
   }
 
+  isFocused: boolean = false;
+
+  isClicked() {
+    this.isFocused = true;
+  }
+
+  focusOut() {
+    this.isFocused = false;
+  }
+
 }

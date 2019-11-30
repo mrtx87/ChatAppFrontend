@@ -171,4 +171,14 @@ export class ChatPanelComponent implements OnInit {
 
   }
 
+  isFocused : boolean = false;
+
+  isClicked() {
+    this.isFocused = true;
+  }
+
+  focusOut() {
+    this.isFocused = false;
+  }
+
 }

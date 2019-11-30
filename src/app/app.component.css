@@ -8,6 +8,7 @@
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 2fr;
     box-shadow: 0px 1px 6px -2px rgba(0, 0, 0, 0.5);
+    z-index: 1;
 }
 
 .anim {
@@ -24,10 +25,20 @@
 }
 
 .main-wrapper {
-  width:100%;
   height:100%;
-  padding: 50px;
-  background: var(--main-background);
+  padding: 19px 50px 50px 50px;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.main-wrapper:after {
+  content: "";
+  margin: 0 -50px;
+  height: 127px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background:  var(--dark-green);
 }
 
 .comp-container{

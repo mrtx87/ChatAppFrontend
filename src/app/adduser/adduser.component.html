@@ -9,10 +9,21 @@
             </div>
         </div>
     </div>
-    <div class="search-contact-container">
-        <input [(ngModel)]="searchNewContactInputText" class="search-contact-inputfield" type="text"
-            placeholder="{{ 'add_new_contact' | tl8 }}" (keyup.enter)="triggerNewContactSearch()">
+    
+
+    <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
+
+
+        <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="searchNewContactInputText"
+            class="search-contact-inputfield" type="text" placeholder="add new contact">
+        <div class="icons">
+            <span class="magni"></span>
+            <span (click)="focusOut()" class="blue-arrow"></span>
+        </div>
     </div>
+
+
+
     <div class="rooms-container">
         <div *ngFor="let contact of newContactsList" class="new-contact-row">
             <div>
