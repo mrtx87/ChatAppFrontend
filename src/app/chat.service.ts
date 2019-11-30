@@ -244,6 +244,9 @@ export class ChatService {
     this.store.registerPasswordRepeat = val;
   }
 
+  clearLeftPanelComponentStack() {
+    this.leftPanelComponentStack.clear();
+  }
 
   currentComponent(key: string) {
     this.leftPanelComponentStack.push(key);
@@ -406,6 +409,13 @@ export class ChatService {
     this.sendRequestChatMessagesForSingleRoom(chatRoom);
     this.addMapToDATA(this.availableRooms);
     // this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+  }
+
+  private addNewAvailableRoom(chatRoom: ChatRoom) {
+    if (!this.availableRooms) {
+      this.availableRooms = new Map<string, ChatRoom>();
+    }
+    this.availableRooms.set(chatRoom.id, chatRoom);
   }
 
   private updateAvailableRooms(chatRooms: ChatRoom[]) {
@@ -660,7 +670,7 @@ export class ChatService {
 
   /**
    * send a request to create a new room with an unkown contact
-   * @param contact 
+   * @clearLeftPanelComponentStackparam contact 
    * @param title 
    */
   sendCreateGroupRoom(from: Contact, chatroom: ChatRoom) {
@@ -673,11 +683,10 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
-        this.updateAvailableRooms(<ChatRoom[]>[response]);
-        this.sendUpdateAllChatMessages();
-        this.sendRequestContacts();
-        this.sendRequestChatMessagesForSingleRoom
-        this.displayedChatRoom = <ChatRoom>response;
+        let chatRoom : ChatRoom = <ChatRoom> response;
+        this.addAvailableRoom(chatRoom);
+        this.sendRequestChatMessagesForSingleRoom(chatRoom);
+        this.displayedChatRoom = chatRoom;
       });
   }
   /**

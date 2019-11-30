@@ -32,4 +32,8 @@ export class ComponentStack {
         return this.componentIds && this.componentIds.length > 0 ? this.getLast() : '';
     }
 
+
+    clear() {
+        this.componentIds = []
+    }
 }
