@@ -157,6 +157,7 @@ export class ValueResolver {
     if (lookedUpcontact) {
       return lookedUpcontact;
     }
+    this.chatService.sendResolveContactId(userId);
     return null;
   }
 
