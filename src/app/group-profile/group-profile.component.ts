@@ -16,7 +16,6 @@ import { ImageService } from '../image.service';
 export class GroupProfileComponent implements OnInit {
 
 
-  readOnly: boolean = true;
 
   set currentDisplayedLeftPanel(value: string) {
     this.chatService.currentDisplayedLeftPanel = value;
@@ -24,14 +23,6 @@ export class GroupProfileComponent implements OnInit {
 
   get currentDisplayedLeftPanel(): string {
     return this.chatService.currentDisplayedLeftPanel;
-  }
-
-  get currentDisplayedRightPanel(): string {
-    return this.chatService.currentDisplayedRightPanel;
-  }
-
-  set currentDisplayedRightPanel(value: string) {
-    this.chatService.currentDisplayedRightPanel = value;
   }
 
   get localUser(): User {
@@ -72,16 +63,16 @@ export class GroupProfileComponent implements OnInit {
 
   constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants, private imageService: ImageService) {
     chatService.registerGroupProfileComponent(this);
+    chatService.currentComponent(this.constants.GROUP_CHAT_PROFILE)
   }
 
   updateChatroomTitle() {
-    if (this.currentChatRoom && !this.readOnly) {
+    if (this.currentChatRoom) {
       this.currentChatRoom.title = this.roomTitleText;
     }
   }
 
   init(chatRoom: ChatRoom, readOnly: boolean) {
-    this.readOnly = readOnly;
     this.currentChatRoom = chatRoom;
 
     this.roomTitleText = chatRoom.title;
@@ -90,31 +81,30 @@ export class GroupProfileComponent implements OnInit {
   }
 
   onFileChanged(event) {
-    if (!this.readOnly) {
       this.imageService.onFileChanged(event, this.constants.NEW_GROUP_IMAGE);
       this.startImageListener();
-    }
+    
   }
 
 
   isValid() {
-    return !this.readOnly && this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
+    return this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
   }
 
   sendCreateNewGroupRoom() {
-    if (this.currentChatRoom && !this.readOnly) {
+    if (this.currentChatRoom) {
       this.currentChatRoom.title = this.roomTitleText;
       this.currentChatRoom.userIds.push(this.localUser.id);
       this.chatService.sendCreateGroupRoom(this.localUser, this.currentChatRoom);
     }
   }
 
-  jumpBack() {
-    if (this.readOnly) {
-      this.currentDisplayedRightPanel = null;
-    } else {
-      this.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
-    }
+
+  slideOut: boolean = false;
+  intervalTimer = 0;
+
+  initSlideOut() {
+    this.chatService.initSlideOut(this, 200);
   }
 
 }

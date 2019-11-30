@@ -49,11 +49,25 @@ export class ContactProfileComponent implements OnInit {
     this.currentlyDisplayedContact = contact;
   }
 
+  jumpBack() {
+    this.currentDisplayedRightPanel = null;
+  }
+
+
   slideOut: boolean = false;
   intervalTimer = 0;
 
   initSlideOut() {
-    this.chatService.initSlideOut(this, 200);
+    this.slideOut = true;
+    let that = this;
+
+    let interval = setInterval(function () {
+      that.intervalTimer += 10;
+      if (that.intervalTimer >= 300) {
+        that.jumpBack();
+        clearInterval(interval);
+      }
+    }, 10)
   }
 
   removeContact(){

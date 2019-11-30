@@ -8,7 +8,8 @@ export class Constants{
     //COMPONENT IDS
     public ADD_USER_PANEL : string = "adduser-panel";
     public ADD_GROUP_CHAT : string = "add-group-chat";
-    public GROUP_CHAT_PROFILE : string = "group-chat-profile";
+    public GROUP_CHAT_PROFILE : string = "new-group-chat-profile";
+    public EDIT_GROUP_CHAT_PROFILE : string = "edit-group-chat-profile";
     public USER_PROFILE : string = "user-profile";
     public APP_COMPONENT : string = "app-component";
     public CONTACTS_COMPONENT: string = "contacts-component";

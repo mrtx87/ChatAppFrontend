@@ -15,6 +15,7 @@
                 </div>
             </div>
         </div>
+        <div [innerHTML]="iconCode"> </div>
         <div class="chat-panel-right-container">
             <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg">
             </div>
@@ -40,11 +41,14 @@
     </div>
 
     <app-displaychat class="displaychat"></app-displaychat>
-    <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedRightPanel"
-        class="anim overlay-comp-container">
-    </app-group-profile>
 
-    <app-contact-profile *ngIf="constants.CONTACT_PROFILE === currentDisplayedRightPanel" class="overlay-comp-container" [ngClass]="chatService.contactProfileComponent.slideOut ? 'animation-out-to-right' : 'animation-in-from-right'">
+    <app-edit-group-profile *ngIf="constants.EDIT_GROUP_CHAT_PROFILE === currentDisplayedRightPanel"
+        class="overlay-comp-container"
+        [ngClass]="chatService.editGroupProfileComponent.slideOut ? 'animation-out-to-right' : 'animation-in-from-right'">
+    </app-edit-group-profile>
+
+    <app-contact-profile *ngIf="constants.CONTACT_PROFILE === currentDisplayedRightPanel" class="overlay-comp-container"
+        [ngClass]="chatService.contactProfileComponent.slideOut ? 'animation-out-to-right' : 'animation-in-from-right'">
     </app-contact-profile>
 
     <div class="senden-container">

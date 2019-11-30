@@ -5,7 +5,7 @@
                 <img src="assets/left-arrow.svg">
             </div>!-->
             <div class="r2upa">
-                <img (click)="jumpBack()"
+                <img (click)="initSlideOut()"
                     src="assets/left-arrow.svg">
             </div>
             <div class="r2bp">
@@ -17,7 +17,7 @@
         <div class="profile-pic-container">
             <div class="pp">
                 <!--<img *ngIf="localUser" class="img-test" src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">!-->
-                <img (click)="!readOnly ? fileInput.click() : ''"
+                <img (click)="fileInput.click()"
                     src="{{currentChatRoom | img}}" class="img-test">
                 <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
             </div>

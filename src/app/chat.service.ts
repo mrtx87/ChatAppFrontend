@@ -29,6 +29,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ContactProfileComponent } from './contact-profile/contact-profile.component';
 import { ComponentStack } from './component-stack';
 import { BaseComponent } from './base-component';
+import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profile.component';
 
 
 
@@ -37,6 +38,7 @@ import { BaseComponent } from './base-component';
   providedIn: 'root'
 })
 export class ChatService {
+
 
   ws: SockJS;
   private stompClient;
@@ -86,9 +88,14 @@ export class ChatService {
   public searchResultComponent: SearchresultComponent;
   public settingsComponent: SettingsComponent;
   public contactProfileComponent: ContactProfileComponent;
+  public editGroupProfileComponent: EditGroupProfileComponent;
 
   public registerContactProfileComponent(contactProfileComponent: ContactProfileComponent) {
     this.contactProfileComponent = contactProfileComponent;
+  }
+
+  public registerEditGroupProfileComponent(editGroupProfileComponent: EditGroupProfileComponent) {
+   this.editGroupProfileComponent = editGroupProfileComponent;
   }
 
   public registerAppComponent(appComponent: AppComponent) {
@@ -425,6 +432,10 @@ export class ChatService {
     // this.sendRequestAllChatMessagesForRooms(chatRooms);
   }
 
+  sendUpdateAllChatMessages() {
+    this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+  }
+
   /**
  * gets all chat messages for all received rooms
  * @param roomId 
@@ -474,10 +485,11 @@ export class ChatService {
   * 
   */
   private sendRequestRoomList() {
+    let that = this;
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>response);
-        this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+        that.sendUpdateAllChatMessages()
       })
   }
 
@@ -662,7 +674,9 @@ export class ChatService {
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>[response]);
+        this.sendUpdateAllChatMessages();
         this.sendRequestContacts();
+        this.sendRequestChatMessagesForSingleRoom
         this.displayedChatRoom = <ChatRoom>response;
       });
   }

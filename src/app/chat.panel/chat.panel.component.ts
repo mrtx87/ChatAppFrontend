@@ -84,26 +84,26 @@ export class ChatPanelComponent implements OnInit {
   asyncInitGroupProfile(chatRoom: ChatRoom, readOnly: boolean) {
     let that = this;
     let interval = setInterval(function () {
-      if (that.chatService.groupProfileComponent) {
-        that.chatService.groupProfileComponent.init(chatRoom, readOnly);
+      if (that.chatService.editGroupProfileComponent) {
+        that.chatService.editGroupProfileComponent.init(chatRoom, readOnly);
         clearInterval(interval);
       }
     }, 5);
   }
 
+  icon: string = "&#128523;";
+
   initDisplayProfile() {
     if (this.displayedChatRoom.groupChat) {
-      this.currentDisplayedRightPanel = this.constants.GROUP_CHAT_PROFILE;
+      this.currentDisplayedRightPanel = this.constants.EDIT_GROUP_CHAT_PROFILE;
       this.asyncInitGroupProfile(this.displayedChatRoom, true);
-      //this.store.addEntryWithouthIdToTEMPDATA(this.constants.DISPLAYED_ROOM_ID, this.displayedChatRoom);
-      return;
-    } else {
-      this.currentDisplayedRightPanel = this.constants.CONTACT_PROFILE;
-      let otherContactId: string = this.displayedChatRoom.userIds.filter(id => id != this.localUser.id)[0];
-      let otherContact = this.chatService.getContactById(otherContactId);
-      this.asyncInitContactProfile(otherContact);
       return;
     }
+
+    this.currentDisplayedRightPanel = this.constants.CONTACT_PROFILE;
+    let otherContactId: string = this.displayedChatRoom.userIds.filter(id => id != this.localUser.id)[0];
+    let otherContact = this.chatService.getContactById(otherContactId);
+    this.asyncInitContactProfile(otherContact);
   }
 
   menuSelect() {

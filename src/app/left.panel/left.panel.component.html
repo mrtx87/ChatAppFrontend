@@ -98,7 +98,7 @@
     </app-addgroupchat>
 
     <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedLeftPanel"
-        class="anim overlay-comp-container">
+    class="overlay-comp-container" [ngClass]="chatService.groupProfileComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
     </app-group-profile>
 
     <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedLeftPanel"
