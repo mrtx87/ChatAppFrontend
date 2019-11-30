@@ -26,13 +26,13 @@
                         {{displayedChatRoom && displayedChatRoom.groupChat ? 'Gruppeninfo' : 'Nutzerprofil'}}
                     </div>
                     <div class="room-row sub-room-menu">
-                        Nachrichten auswählen!
+                        {{ 'choose_message' | tl8 }}
                     </div>
                     <div class="room-row sub-room-menu">
-                        Nachrichten leeren
+                        {{ 'clear_messages' | tl8 }}
                     </div>
                     <div class="room-row sub-room-menu">
-                        Gruppe verlassen
+                        {{ 'leave_group' | tl8 }}
                     </div>
                 </div>
             </div>
@@ -61,5 +61,5 @@
 
 </div>
 <div class="wrapper home" *ngIf="!displayedChatRoom">
-    <h1>welcome</h1>
+    <h1>{{ 'welcome' | tl8 }}</h1>
 </div>

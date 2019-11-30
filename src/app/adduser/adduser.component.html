@@ -11,7 +11,7 @@
     </div>
     <div class="search-contact-container">
         <input [(ngModel)]="searchNewContactInputText" class="search-contact-inputfield" type="text"
-            placeholder="add new contact" (keyup.enter)="triggerNewContactSearch()">
+            placeholder="{{ 'add_new_contact' | tl8 }}" (keyup.enter)="triggerNewContactSearch()">
     </div>
     <div class="rooms-container">
         <div *ngFor="let contact of newContactsList" class="new-contact-row">

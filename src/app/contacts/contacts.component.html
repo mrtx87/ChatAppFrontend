@@ -5,14 +5,14 @@
                <img (click)="initSlideOut()" src="assets/left-arrow.svg">
             </div>
             <div class="r2bp">
-                neuer chat
+                {{ 'new_chat' | tl8 }}
             </div>
         </div>
     </div>
     <div class="contacts-container">
         <div class="search-contact-container">
             <!-- <input type="file"  multiple="multiple" (change)="change($event)"> -->
-            <input [(ngModel)]="query" class="search-contact-inputfield" type="text" placeholder="search contacts">
+            <input [(ngModel)]="query" class="search-contact-inputfield" type="text" placeholder="{{ 'search_contacts' | tl8 }}">
         </div>
         <div class="row-item"  (click)="initDisplayAddGroupChat()">
             <div>
@@ -20,12 +20,12 @@
                     src="assets/group.svg">
             </div>
             <div style="font-size:25px; width:80%;">
-                neue gruppe
+                {{ 'new_group' | tl8 }}
             </div>
         </div>
 
         <div class="row-item">
-            <h3> kontakte </h3>
+            <h3> {{ 'contact' | tl8 }} </h3>
         </div>
         <div class="contacts-container">
             <div *ngFor="let contact of contacts" class="contacts-row">

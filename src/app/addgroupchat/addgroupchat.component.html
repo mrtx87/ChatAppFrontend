@@ -5,7 +5,7 @@
                <img (click)="initSlideOut()" src="assets/left-arrow.svg">
             </div>
             <div class="r2bp">
-                Teilnehmer hinzufügen
+                {{ 'add_user' | tl8 }}
             </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
         </div>
         <div class="search-contact-container">
             <!-- <input type="file"  multiple="multiple" (change)="change($event)"> -->
-            <input [(ngModel)]="query" class="search-contact-inputfield" type="text" placeholder="type contact name">
+            <input [(ngModel)]="query" class="search-contact-inputfield" type="text" placeholder="{{ 'type_contact_name' | tl8 }}">
         </div>
         <div class="contacts-container">
             <div *ngFor="let contact of contacts" class="contacts-row" (click)="addToCreatingRoom(contact)">

@@ -7,5 +7,16 @@
     "disclaimer_text": "Das ist nicht dein Benutzername oder PIN-CODE. Dieser Name ist für deine WhatsApp Kontakte sichtbar.",
     "info": "info",
     "new_group": "Neue Gruppe",
-    "log_out": "Abmelden"
+    "log_out": "Abmelden",
+    "remove_user": "Kontakt entfernen",
+    "add_user": "Teilnehmer hinzufügen",
+    "type_contact_name": "Kontaknamen eingeben",
+    "welcome": "Willkommen",
+    "choose_message": "Nachrichten auswählen",
+    "clear_messages": "Nachrichten leeren",
+    "leave_group": "Gruppe verlassen",
+    "new_chat": "neuer Chat",
+    "contact": "Kontakte",
+    "search_contacts": "Suche Kontakte"
+    
 }
