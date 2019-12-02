@@ -8,6 +8,7 @@ import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
 import { Contact } from '../Entities/contact';
 import { ChatMessageSearchService } from '../chat-message-search.service';
+import { IconService } from '../emoji.service';
 
 @Component({
   selector: 'app-chat-panel',
@@ -61,12 +62,24 @@ export class ChatPanelComponent implements OnInit {
     this.messageSearch.markedMessageJumpIndex = val;
   }
 
-  constructor(private chatService: ChatService, private messageSearch: ChatMessageSearchService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
+  get icons(): any[] {
+    return this.iconService.ICONS;
+  }
+
+  constructor(private chatService: ChatService, private iconService: IconService, private messageSearch: ChatMessageSearchService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
     this.chatService.registerChatPanelComponent(this);
   }
 
   ngOnInit() {
+    let that = this
 
+    let interval = setInterval(function () {
+      let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
+      if (textArea) {
+        textArea.addEventListener("keyup", event => that.changeValue(event));
+        clearInterval(interval);
+      }
+    }, 250);
   }
   toggleRoomMenuDisplay() {
     this.displayedChatRoom ? this.displayRoomMenu = !this.displayRoomMenu : this.displayRoomMenu = false;
@@ -181,4 +194,22 @@ export class ChatPanelComponent implements OnInit {
     this.isFocused = false;
   }
 
+
+  chatTxt: string = "";
+
+  insertIconInChatInputText(icon: any) {
+    console.log("insert")
+    let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
+    //textArea.innerHTML += icon.hexCode;
+    this.chatInputText += icon.hexCode;
+    textArea.innerHTML += icon.hexCode;
+  }
+
+  changeValue(event) {
+    let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
+
+    textArea.innerHTML += event.key || '';
+    //textArea.innerHTML = this.chatInputText;
+
+  }
 }

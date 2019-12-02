@@ -47,7 +47,7 @@ export class ChatService {
 
 
   //FORMS AND PAGE INPUTS
-  private chatInputText_: string;
+  private chatInputText_: string = "";
 
   //DISPLAY PARAMETERS
   private displayedChatRoom_: ChatRoom;

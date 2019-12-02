@@ -16,10 +16,12 @@
             </div>
         </div>
         <div class="chat-panel-right-container">
-            <div class="menu-item-container" > <img class="magnifier-img" src="assets/magnifier-glass.svg" (click)="toggleDisplaySearch()">
+            <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg"
+                    (click)="toggleDisplaySearch()">
                 <div *ngIf="displaySearchInput" style="display:flex;">
-                    <input type="text" (keyup.enter) = "triggerSearch()" [(ngModel)]="searchInputField_">
-                    <div><img (click)="previousResult()" style="width: 25px; height:auto;" src="assets/arrow-down.svg"></div>
+                    <input type="text" (keyup.enter)="triggerSearch()" [(ngModel)]="searchInputField_">
+                    <div><img (click)="previousResult()" style="width: 25px; height:auto;" src="assets/arrow-down.svg">
+                    </div>
                     <div><img (click)="nextResult()" style="width: 25px; height:auto;" src="assets/arrow-up.svg"></div>
                     <div>{{markedMessageCount-markedMessageJumpIndex || '-'}}/{{markedMessageCount || '-'}}</div>
                 </div>
@@ -58,8 +60,8 @@
 
     <div class="senden-container">
         <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
-        <input id="test2" (keyup.enter)="triggerSendChatMessage()" [ngClass]="textState ? 'test13' : 'test2'" [(ngModel)]="chatInputText" [hidden]="!displayedChatRoom"
-            placeholder="Write a message">
+        <textarea id="input-chatmessages" (keyup.enter)="triggerSendChatMessage()" style="font-weight: normal;"
+             (change)="changeValue($event)" rows="1" [hidden]="!displayedChatRoom" placeholder="Write a message"></textarea>
         <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
     </div>
 
@@ -67,4 +69,13 @@
 </div>
 <div class="wrapper home" *ngIf="!displayedChatRoom">
     <h1>{{ 'welcome' | tl8 }}</h1>
+</div>
+
+
+<!-- NOCH DEBUG -->
+
+<div *ngIf="displayedChatRoom" style=" z-index:999999; display:flex; position: fixed; top: 400px; left: 400px; width:500px; flex-wrap: wrap; overflow-y: scroll;">
+    <div *ngFor="let icon of icons" style="margin:5px;">
+        <div (click)="insertIconInChatInputText(icon)" [innerHTML]="icon?.dezCode"></div>
+    </div>
 </div>

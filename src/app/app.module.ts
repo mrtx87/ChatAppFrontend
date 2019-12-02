@@ -25,7 +25,8 @@ import { ImgPipe } from './img.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { LanguagePipe } from './language.pipe'
 import { ContactProfileComponent } from './contact-profile/contact-profile.component';
-import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profile.component'
+import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profile.component';
+import { EmojiPipe } from './emoji.pipe'
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profi
     ImgPipe,
     LanguagePipe,
     ContactProfileComponent,
-    EditGroupProfileComponent
+    EditGroupProfileComponent,
+    EmojiPipe
   ],
   imports: [
     BrowserModule,
