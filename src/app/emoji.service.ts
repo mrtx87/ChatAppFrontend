@@ -26,11 +26,23 @@ export class IconService {
     let that = this;
     this.httpService.get(jsonUrl).subscribe(
       iconsObj => { 
-        that.ICONS = <any[]>iconsObj 
+        that.ICONS = <any[]>iconsObj //:-) :)
         //console.log(that.ICONS);
       },
       (err: HttpErrorResponse) => console.log(err.message)
       );
     //add_new_user --> äquivalent zu this.GERMAN.add_new_user
+  }
+
+  /**
+   * convertEmoji
+   */
+  public convertEmoji(input: string, trait: string = "dezCode") {
+    for (let icon of this.ICONS) {
+      if(icon["alias"] && icon["alias"].indexOf(input) !== -1){
+        return icon[trait];
+      }
+    }
+    return false;
   }
 }
