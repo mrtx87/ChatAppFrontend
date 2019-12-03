@@ -7,7 +7,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 })
 export class IconService {
 
-
   private ICONS_: any[];
 
   get ICONS(): any[] {
@@ -31,6 +30,5 @@ export class IconService {
       },
       (err: HttpErrorResponse) => console.log(err.message)
       );
-    //add_new_user --> äquivalent zu this.GERMAN.add_new_user
   }
 }
