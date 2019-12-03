@@ -34,9 +34,6 @@ export class IconService {
     //add_new_user --> äquivalent zu this.GERMAN.add_new_user
   }
 
-  /**
-   * convertEmoji
-   */
   public convertEmoji(input: string, trait: string = "dezCode") {
     for (let icon of this.ICONS) {
       if(icon["alias"] && icon["alias"].indexOf(input) !== -1){
