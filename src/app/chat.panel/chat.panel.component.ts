@@ -22,6 +22,18 @@ export class ChatPanelComponent implements OnInit {
   currentDisplayedRightPanel_: string = "null";
   searchInputField_ = "";
 
+  get searchInputField() {
+    return this.searchInputField_;
+  }
+  set searchInputField(val: string) {
+    // trigger search
+    this.searchInputField_ = val;
+    if (this.displaySearchInput && val.length >= 2) {
+      this.triggerSearch();
+    } else {
+      this.messageSearch.resetSearch();
+    }
+  }
 
   get currentDisplayedRightPanel(): string {
     return this.currentDisplayedRightPanel_;
@@ -31,7 +43,9 @@ export class ChatPanelComponent implements OnInit {
   }
 
   get markedMessageCount() {
-    return this.messageSearch.markedMessages.length;
+    return this.messageSearch.markedMessages && this.messageSearch.markedMessages.length > 0 ?
+      this.messageSearch.markedMessages.length :
+      0;
   }
 
   get chatInputText(): string {
@@ -70,30 +84,31 @@ export class ChatPanelComponent implements OnInit {
     this.chatService.registerChatPanelComponent(this);
   }
 
+  inputField: HTMLElement;
   ngOnInit() {
     let that = this
-
     let interval = setInterval(function () {
-      let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
-      if (textArea) {
-        textArea.addEventListener("keyup", event => that.changeValue(event));
+       that.inputField = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
+      if (that.inputField) {
+        that.inputField.addEventListener("keyup", event => that.changeValue(event));
         clearInterval(interval);
       }
-    }, 250);
+    }, 250); 
   }
+
   toggleRoomMenuDisplay() {
     this.displayedChatRoom ? this.displayRoomMenu = !this.displayRoomMenu : this.displayRoomMenu = false;
   }
 
   triggerSendChatMessage() {
-    if (this.chatInputText && this.chatInputText.length >= 1) {
+    if (this.inputField.innerHTML && this.inputField.innerHTML.length >= 1) {
       // console.log(this.displayedChatRoom);
       const chatMessage: ChatMessage = new ChatMessage();
-      chatMessage.body = this.chatInputText;
+      chatMessage.body = this.inputField.innerHTML;
       chatMessage.fromId = this.localUser.id;
       chatMessage.roomId = this.displayedChatRoom.id;
       this.chatService.sendOutgoingChatMessage(this.displayedChatRoom, chatMessage);
-      this.chatInputText = "";
+      this.inputField.innerHTML = "";
     }
   }
 
@@ -198,17 +213,15 @@ export class ChatPanelComponent implements OnInit {
   chatTxt: string = "";
 
   insertIconInChatInputText(icon: any) {
-    console.log("insert")
-    let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
     //textArea.innerHTML += icon.hexCode;
-    this.chatInputText += icon.hexCode;
-    textArea.innerHTML += icon.hexCode;
+    //this.chatInputText += icon.hexCode;
+    this.inputField.innerHTML += icon.hexCode;
   }
 
   changeValue(event) {
-    let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
+    //let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
 
-    textArea.innerHTML += event.key || '';
+    //this.inputField.innerHTML += event.key || '';
     //textArea.innerHTML = this.chatInputText;
 
   }
