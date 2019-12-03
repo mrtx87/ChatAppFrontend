@@ -22,6 +22,18 @@ export class ChatPanelComponent implements OnInit {
   currentDisplayedRightPanel_: string = "null";
   searchInputField_ = "";
 
+  get searchInputField() {
+    return this.searchInputField_;
+  }
+  set searchInputField(val: string) {
+    // trigger search
+    this.searchInputField_ = val;
+    if (this.displaySearchInput && val.length >= 2) {
+      this.triggerSearch();
+    } else {
+      this.messageSearch.resetSearch();
+    }
+  }
 
   get currentDisplayedRightPanel(): string {
     return this.currentDisplayedRightPanel_;
@@ -31,7 +43,9 @@ export class ChatPanelComponent implements OnInit {
   }
 
   get markedMessageCount() {
-    return this.messageSearch.markedMessages.length;
+    return this.messageSearch.markedMessages && this.messageSearch.markedMessages.length > 0 ?
+      this.messageSearch.markedMessages.length :
+      0;
   }
 
   get chatInputText(): string {
