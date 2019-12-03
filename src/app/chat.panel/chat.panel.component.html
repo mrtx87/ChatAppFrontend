@@ -59,10 +59,24 @@
     </app-contact-profile>
 
     <div class="senden-container">
-        <img src="assets/happiness.svg" [hidden]="!displayedChatRoom">
-        <textarea id="input-chatmessages" (keyup.enter)="triggerSendChatMessage()" style="font-weight: normal;"
-             (change)="changeValue($event)" rows="1" [hidden]="!displayedChatRoom" placeholder="Write a message"></textarea>
-        <img src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
+
+        <div class="emoji-container" *ngIf="displayedChatRoom" [ngClass]="EmojiContainerState ? 'open' : ''">
+            <div *ngFor="let icon of icons" style="margin:5px;">
+                <div (click)="insertIconInChatInputText(icon)" [innerHTML]="icon?.dezCode"></div>
+            </div>
+        </div>
+
+        <div class="bottom-container" [ngClass]="EmojiContainerState ? 'open' : ''">
+          <div class="emoji-controller">
+            <div><img (click)=EmojiContainerClose() src="assets/close.svg" [hidden]="!displayedChatRoom"></div>
+            <div><img (click)=EmojiContainerOpen() src="assets/emoji.svg" [hidden]="!displayedChatRoom"></div>
+            <div><img src="assets/gif.svg"></div>
+            <div><img src="assets/img.svg"></div>
+        </div>
+          <textarea id="input-chatmessages" (keyup.enter)="triggerSendChatMessage()" style="font-weight: normal;"
+              (change)="changeValue($event)" rows="1" [hidden]="!displayedChatRoom" placeholder="Write a message"></textarea>
+          <img class="send" src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
+        </div>
     </div>
 
 
@@ -74,8 +88,3 @@
 
 <!-- NOCH DEBUG -->
 
-<div *ngIf="displayedChatRoom" style=" z-index:999999; display:flex; position: fixed; top: 400px; left: 400px; width:500px; flex-wrap: wrap; overflow-y: scroll;">
-    <div *ngFor="let icon of icons" style="margin:5px;">
-        <div (click)="insertIconInChatInputText(icon)" [innerHTML]="icon?.dezCode"></div>
-    </div>
-</div>

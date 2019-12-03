@@ -212,4 +212,15 @@ export class ChatPanelComponent implements OnInit {
     //textArea.innerHTML = this.chatInputText;
 
   }
+
+  EmojiContainerState: boolean = false;
+
+  EmojiContainerOpen() {
+    this.EmojiContainerState = true;
+  }
+
+  EmojiContainerClose() {
+    this.EmojiContainerState = false;
+  }
+
 }
