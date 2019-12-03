@@ -20,7 +20,7 @@ body {
     --menu-element-color: #FFFCE8;
     --medium-black:rgb(69, 69, 69);
     --medium-grey:rgb(149, 149, 149);
-    --light-grey:rgb(209, 209, 209);
+    --light-grey:rgb(#ededed);
     --light-green: #D6FFC0;
     --white-grey: #F4F4F4;
     --main-green: #00BFA5;
