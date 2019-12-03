@@ -89,19 +89,22 @@ background: rgba(0,0,0,.1);
 }
 
 .senden-container img {
-    width: 26px;
+  width: 26px;
 }
 
-.senden-container textarea {
-    width: 100%;
-    border-radius: 25px;
-    border: none;
-    padding: 0 15px;
-    min-height: 38px;
-    align-self: center;
+.senden-container #input-chatmessages {
+  width: 100%;
+  border-radius: 25px;
+  border: none;
+  padding: 15px 20px;
+  min-height: 38px;
+  align-self: center;
+  max-height: 80px;
+  overflow: auto;
+  background: #fff;
 }
 
-.senden-container textarea:focus {
+.senden-container #input-chatmessages:focus {
   outline: none;
 }
 

@@ -23,7 +23,9 @@
                     <div><img (click)="previousResult()" style="width: 25px; height:auto;" src="assets/arrow-down.svg">
                     </div>
                     <div><img (click)="nextResult()" style="width: 25px; height:auto;" src="assets/arrow-up.svg"></div>
-                    <div>{{ markedMessageCount > 0 ? markedMessageCount-markedMessageJumpIndex : '0'}}/{{markedMessageCount > 0 ? markedMessageCount : '0'}}</div>
+                    <div>
+                        {{ markedMessageCount > 0 ? markedMessageCount-markedMessageJumpIndex : '0'}}/{{markedMessageCount > 0 ? markedMessageCount : '0'}}
+                    </div>
                 </div>
             </div>
             <div class="rightpanel-burger-menu" [ngClass]="displayRoomMenu ? 'active' : ''" tabindex="-1">
@@ -67,15 +69,16 @@
         </div>
 
         <div class="bottom-container" [ngClass]="EmojiContainerState ? 'open' : ''">
-          <div class="emoji-controller">
-            <div><img (click)=EmojiContainerClose() src="assets/close.svg" [hidden]="!displayedChatRoom"></div>
-            <div><img (click)=EmojiContainerOpen() src="assets/emoji.svg" [hidden]="!displayedChatRoom"></div>
-            <div><img src="assets/gif.svg"></div>
-            <div><img src="assets/img.svg"></div>
-        </div>
-          <textarea id="input-chatmessages" (keyup.enter)="triggerSendChatMessage()" style="font-weight: normal;"
-              (change)="changeValue($event)" rows="1" [hidden]="!displayedChatRoom" placeholder="Write a message"></textarea>
-          <img class="send" src="assets/paper-plane.svg" [hidden]="!displayedChatRoom" (click)="triggerSendChatMessage()">
+            <div class="emoji-controller">
+                <div><img (click)=EmojiContainerClose() src="assets/close.svg" [hidden]="!displayedChatRoom"></div>
+                <div><img (click)=EmojiContainerOpen() src="assets/emoji.svg" [hidden]="!displayedChatRoom"></div>
+                <div><img src="assets/gif.svg"></div>
+                <div><img src="assets/img.svg"></div>
+            </div>
+            <div id="input-chatmessages" contenteditable="true" (keyup.enter)="triggerSendChatMessage()" style="font-weight: normal;"
+                [hidden]="!displayedChatRoom"></div>
+            <img class="send" src="assets/paper-plane.svg" [hidden]="!displayedChatRoom"
+                (click)="triggerSendChatMessage()">
         </div>
     </div>
 
@@ -87,4 +90,3 @@
 
 
 <!-- NOCH DEBUG -->
-
