@@ -65,7 +65,7 @@
 
     <div class="senden-container">
 
-        <div class="emoji-container" *ngIf="displayedChatRoom" [ngClass]="EmojiContainerState ? 'open' : ''">
+        <div class="emoji-container" [hidden]="!displayedChatRoom" [ngClass]="EmojiContainerState ? 'open' : ''">
             <div *ngFor="let icon of icons" style="margin:5px;">
                 <div (click)="insertIconInChatInputText(icon)" [innerHTML]="icon?.dezCode"></div>
             </div>

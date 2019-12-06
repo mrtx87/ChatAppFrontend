@@ -224,7 +224,7 @@ export class ChatPanelComponent implements OnInit {
 
   changeValue(event: KeyboardEvent) {
 
-    if(event.key === 'Enter') {
+    if(event.keyCode === this.constants.ENTER_KEY) {
       event.preventDefault();
       console.log( event )
       this.triggerSendChatMessage();
