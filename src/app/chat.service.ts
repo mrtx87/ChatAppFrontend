@@ -45,7 +45,7 @@ export class ChatService {
 
   leftPanelComponentStack_: ComponentStack;
 
-
+  onlineStatusInterval: any;
   //FORMS AND PAGE INPUTS
   private chatInputText_: string = "";
 
@@ -283,6 +283,23 @@ export class ChatService {
       case this.constants.TM_FUNCTION_LOGIN_AND_COOKIE: {
         this.finalizeLogin(transferMessage);
       } break;
+      case this.constants.TM_FUNCTION_CREATE_ROOM_AND_CONTACT: {
+        let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
+        this.addAvailableRoom(chatRoom);
+        this.sendRequestContacts();
+        this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+        if (transferMessage.from.id === this.localUser.id) {
+          this.displayedChatRoom = chatRoom;
+        }
+      } break;
+      case this.constants.TM_FUNCTION_CREATE_GROUP_ROOM: {
+        let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
+        this.addAvailableRoom(chatRoom);
+        this.sendRequestChatMessagesForSingleRoom(chatRoom);
+        if (transferMessage.from.id === this.localUser.id) {
+          this.displayedChatRoom = chatRoom;
+        }
+      } break;
     }
 
   }
@@ -399,19 +416,36 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/update/roomId/" + chatRoom.id, { from: <Contact>this.localUser, chatRoom: chatRoom }, { headers })
       .subscribe(response => {
-        let chatRoomDTO = <ChatRoom> response;
+        let chatRoomDTO = <ChatRoom>response;
         chatRoom.iconUrl = chatRoomDTO.iconUrl;
         chatRoom.title = chatRoomDTO.title;
         console.log(response)
       });
-  }
+  } ///data/online/status/contacts/userId/{userId}
+
+
 
 
   init() {
     this.connect();
     this.sendRequestContacts();
     this.sendRequestRoomList();
+    this.listenForOnlineStatusOfContacts();
+
     // this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+  }
+
+  private listenForOnlineStatusOfContacts() {
+    let that = this;
+    this.onlineStatusInterval = setInterval(
+      function () {
+        if (!that.isLoggedIn) {
+          clearInterval(that.onlineStatusInterval);
+          return;
+        }
+        that.sendRequestContacts();
+      }, 10000
+    );
   }
 
   private addAvailableRoom(chatRoom: ChatRoom) {
@@ -674,6 +708,8 @@ export class ChatService {
     chatRoomStub.title = title ? title : contact.name;
     chatRoomStub.userIds = [this.localUser.id, contact.id];
     transferMessage.chatRoom = chatRoomStub;
+
+
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
@@ -765,6 +801,8 @@ export class ChatService {
     this.resetChatService();
     this.store.resetStore();
     this.loginRegisterComponent.isLoggingIn = false;
+    clearInterval(this.onlineStatusInterval);
+    this.onlineStatusInterval = null;
   }
 
   resetChatService() {

@@ -6,11 +6,14 @@
                         src="{{displayedChatRoom | img}}"></div>
                 <div class="chat-name-member">
                     <div class="chat-name"> {{displayedChatRoom | chatRoomName}}</div>
-                    <div class="chat-member-container">
+                    <div class="chat-member-container" *ngIf="displayedChatRoom.groupChat">
                         <span *ngFor="let id of displayedChatRoom?.userIds; let i = index" class="chat-member">
                             {{ id | contactName}}
                             {{ (displayedChatRoom && i != displayedChatRoom.userIds.length-1) ? ',' : '' }}
                         </span>
+                    </div>
+                    <div class="chat-member-container" *ngIf="!displayedChatRoom.groupChat">
+                        <span class="online-status"> {{ displayedChatRoom | onlineStatus }} </span>
                     </div>
                 </div>
             </div>
@@ -75,7 +78,7 @@
                 <div><img src="assets/gif.svg"></div>
                 <div><img src="assets/img.svg"></div>
             </div>
-            <div id="input-chat-messages" contenteditable="true"  style="font-weight: normal;"
+            <div id="input-chat-messages" contenteditable="true" style="font-weight: normal;"
                 [hidden]="!displayedChatRoom"></div>
             <img class="send" src="assets/paper-plane.svg" [hidden]="!displayedChatRoom"
                 (click)="triggerSendChatMessage()">
