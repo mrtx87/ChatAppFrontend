@@ -262,7 +262,7 @@ export class ChatService {
     let that = this;
 
     this.stompClient.connect({}, function () {
-      that.sendOwnOnlineStatus();
+      that.sendRequestLoginFinalization();
       that.stompClient.subscribe("/client/" + that.localUser.id, function (messageFromServer) {
         that.handleServerResponse(JSON.parse(messageFromServer.body));
       }
@@ -318,9 +318,9 @@ export class ChatService {
     this.ws.close();
   }
 
-  sendOwnOnlineStatus() {
+  sendRequestLoginFinalization() {
     this.stompClient.send(
-      "/app/send/online-status",
+      "/app/send/login-finalization",
       {},
       JSON.stringify({ from: <Contact>this.localUser })
     );
