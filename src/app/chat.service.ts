@@ -393,6 +393,19 @@ export class ChatService {
       });
   }
 
+  sendUpdateChatRoomProfile(chatRoom: ChatRoom) {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    this.http
+      .post(this.constants.BASE_URL + "/update/roomId/" + chatRoom.id, { from: <Contact>this.localUser, chatRoom: chatRoom }, { headers })
+      .subscribe(response => {
+        let chatRoomDTO = <ChatRoom> response;
+        chatRoom.iconUrl = chatRoomDTO.iconUrl;
+        chatRoom.title = chatRoomDTO.title;
+        console.log(response)
+      });
+  }
+
 
   init() {
     this.connect();

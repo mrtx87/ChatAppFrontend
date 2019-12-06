@@ -145,7 +145,7 @@ export class ChatPanelComponent implements OnInit {
     }, 5);
   }
 
-  asyncInitGroupProfile(chatRoom: ChatRoom, readOnly: boolean) {
+  asyncInitEditGroupProfile(chatRoom: ChatRoom, readOnly: boolean) {
     let that = this;
     let interval = setInterval(function () {
       if (that.chatService.editGroupProfileComponent) {
@@ -160,7 +160,7 @@ export class ChatPanelComponent implements OnInit {
   initDisplayProfile() {
     if (this.displayedChatRoom.groupChat) {
       this.currentDisplayedRightPanel = this.constants.EDIT_GROUP_CHAT_PROFILE;
-      this.asyncInitGroupProfile(this.displayedChatRoom, true);
+      this.asyncInitEditGroupProfile(this.displayedChatRoom, false);
       return;
     }
 
