@@ -1,7 +1,7 @@
 .profile {
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    background-color: var(--white-grey);
     height: 100%;
 }
 
@@ -55,6 +55,7 @@
     position: relative;
     width: 100%;
     height: 26vh;
+    background:#fff;
 }
 
 .pp {
@@ -329,7 +330,22 @@
     display:flex;
     width:100%;
     height:50px;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid red;
+    background: #fff;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+
+.delete-contact-container > div {
+  margin-left: 70px;
+  color: var(--red);
+  align-self: center;
+}
+
+.delete-contact-container > div:before {
+  content: "";
+  background: url(../../assets/delete.svg);
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  left: 30px;
 }

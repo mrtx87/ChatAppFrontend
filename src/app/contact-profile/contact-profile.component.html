@@ -2,7 +2,7 @@
     <div class="return-2-user-panel" >
         <div class="return-button-2-panel">
             <div class="r2upa">
-               <img (click)="initSlideOut()" src="assets/right-arrow.svg">
+               <img (click)="initSlideOut()" src="assets/close.svg">
             </div>
             <div class="r2bp">
                 {{ 'user_profile' | tl8 }}
@@ -11,12 +11,12 @@
     </div>
     <div class="profile-container">
         <div class="profile-pic-container">
-            <div class="pp"> 
+            <div class="pp">
                 <img *ngIf="currentlyDisplayedContact" class="img-test" src="{{currentlyDisplayedContact.iconUrl ? currentlyDisplayedContact.iconUrl : 'assets/default-user-icon.svg'}}">
                 <!-- <img class="img-test"> -->
                 <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
             </div>
-            
+
         </div>
         <div class="edit-name-container">
             <div class="profile-name">
