@@ -13,12 +13,6 @@ import { ImageService } from '../image.service';
 })
 export class ProfileComponent implements OnInit {
 
-
-
-
-
-  readOnly: boolean = true;
-
   name: string = "";
   info: string = "";
   iconUrl: string = "";
@@ -59,24 +53,21 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  init(name: string, info: string, iconUrl:string, readOnly: boolean) {
-    this.readOnly = readOnly;
+  init(name: string, info: string, iconUrl:string) {
     this.name = name;
     this.info = info;
     this.iconUrl = iconUrl;
   }
 
   valid(): boolean {
-    if (!this.readOnly && this.name != this.localUser.name || this.info != this.localUser.info) {
+    if (this.name != this.localUser.name || this.info != this.localUser.info) {
       return true;
     }
   }
 
   onFileChanged(event) {
-    if (!this.readOnly) {
       this.imageService.onFileChanged(event, this.constants.NEW_LOCAL_USER_IMAGE);
       this.startImageListener();
-    }
   }
 
   imageListener: any;
@@ -99,7 +90,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateUserProfile() {
-    if (!this.readOnly && this.localUser.name != this.name || this.localUser.info != this.info || this.localUser.iconUrl != this.iconUrl) {
+    if (this.localUser.name != this.name || this.localUser.info != this.info || this.localUser.iconUrl != this.iconUrl) {
       this.localUser.name = this.name;
       this.localUser.info = this.info;
       this.localUser.iconUrl = this.iconUrl;

@@ -127,7 +127,7 @@ export class LeftPanelComponent implements OnInit {
     let that = this;
     let interval = setInterval(function () {
       if (that.chatService.profileComponent) {
-        that.chatService.profileComponent.init(that.localUser.name, that.localUser.info, that.localUser.iconUrl, false);
+        that.chatService.profileComponent.init(that.localUser.name, that.localUser.info, that.localUser.iconUrl);
         clearInterval(interval);
       }
     }, 5);
