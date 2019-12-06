@@ -54,4 +54,8 @@ export class Constants{
 
     MARK_OPEN : string = "<span class=\"test\">"
     MARK_CLOSE : string = "</span>"
+
+    //KEYCODES
+
+    public ENTER_KEY : number = 13;
 }

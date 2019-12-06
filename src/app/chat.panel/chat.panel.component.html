@@ -75,7 +75,7 @@
                 <div><img src="assets/gif.svg"></div>
                 <div><img src="assets/img.svg"></div>
             </div>
-            <div id="input-chatmessages" contenteditable="true" (keyup.enter)="triggerSendChatMessage()" style="font-weight: normal;"
+            <div id="input-chat-messages" contenteditable="true"  style="font-weight: normal;"
                 [hidden]="!displayedChatRoom"></div>
             <img class="send" src="assets/paper-plane.svg" [hidden]="!displayedChatRoom"
                 (click)="triggerSendChatMessage()">

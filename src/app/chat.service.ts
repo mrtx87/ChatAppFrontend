@@ -95,7 +95,7 @@ export class ChatService {
   }
 
   public registerEditGroupProfileComponent(editGroupProfileComponent: EditGroupProfileComponent) {
-   this.editGroupProfileComponent = editGroupProfileComponent;
+    this.editGroupProfileComponent = editGroupProfileComponent;
   }
 
   public registerAppComponent(appComponent: AppComponent) {
@@ -515,11 +515,14 @@ export class ChatService {
       this.chatMessagesByRoom.set(roomId, []);
     }
 
+
+    //generate list of unseen messages
+    this.updateUnseenMessagesIds(roomId, responseChatMessages);
+
     //filter for incoming messages
     let incomingMessages = responseChatMessages.filter(cm => cm.fromId != this.localUser.id);
     if (incomingMessages && incomingMessages.length > 0) {
-      //generate list of unseen messages
-      this.updateUnseenMessagesIds(roomId, responseChatMessages);
+
       if (this.displayedChatRoom && roomId == this.displayedChatRoom.id) {
         this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id);
       }
@@ -683,7 +686,7 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
-        let chatRoom : ChatRoom = <ChatRoom> response;
+        let chatRoom: ChatRoom = <ChatRoom>response;
         this.addAvailableRoom(chatRoom);
         this.sendRequestChatMessagesForSingleRoom(chatRoom);
         this.displayedChatRoom = chatRoom;

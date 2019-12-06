@@ -88,9 +88,11 @@ export class ChatPanelComponent implements OnInit {
   ngOnInit() {
     let that = this
     let interval = setInterval(function () {
-       that.inputField = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
+       that.inputField = <HTMLTextAreaElement>document.getElementById('input-chat-messages');
       if (that.inputField) {
         that.inputField.addEventListener("keyup", event => that.changeValue(event));
+        that.inputField.addEventListener("keydown", event => event.keyCode === that.constants.ENTER_KEY ? event.preventDefault() : {});
+
         clearInterval(interval);
       }
     }, 250); 
@@ -101,10 +103,10 @@ export class ChatPanelComponent implements OnInit {
   }
 
   triggerSendChatMessage() {
-    if (this.inputField.innerHTML && this.inputField.innerHTML.length >= 1) {
+    if (this.inputField.innerText && this.inputField.innerText.length >= 0) {
       // console.log(this.displayedChatRoom);
       const chatMessage: ChatMessage = new ChatMessage();
-      chatMessage.body = this.inputField.innerHTML;
+      chatMessage.body = this.inputField.innerText;
       chatMessage.fromId = this.localUser.id;
       chatMessage.roomId = this.displayedChatRoom.id;
       this.chatService.sendOutgoingChatMessage(this.displayedChatRoom, chatMessage);
@@ -218,11 +220,18 @@ export class ChatPanelComponent implements OnInit {
     this.inputField.innerHTML += icon.hexCode;
   }
 
-  changeValue(event) {
+  changeValue(event: KeyboardEvent) {
+
+    if(event.key === 'Enter') {
+      event.preventDefault();
+      console.log( event )
+      this.triggerSendChatMessage();
+    }
     //let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
 
     //this.inputField.innerHTML += event.key || '';
     //textArea.innerHTML = this.chatInputText;
+
 
   }
 
