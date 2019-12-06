@@ -88,9 +88,11 @@ export class ChatPanelComponent implements OnInit {
   ngOnInit() {
     let that = this
     let interval = setInterval(function () {
-       that.inputField = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
+       that.inputField = <HTMLTextAreaElement>document.getElementById('input-chat-messages');
       if (that.inputField) {
         that.inputField.addEventListener("keyup", event => that.changeValue(event));
+        that.inputField.addEventListener("keydown", event => event.keyCode === that.constants.ENTER_KEY ? event.preventDefault() : {});
+
         clearInterval(interval);
       }
     }, 250); 
@@ -101,14 +103,16 @@ export class ChatPanelComponent implements OnInit {
   }
 
   triggerSendChatMessage() {
-    if (this.inputField.innerHTML && this.inputField.innerHTML.length >= 1) {
+    if (this.inputField.innerText && this.inputField.innerText.length >= 0) {
       // console.log(this.displayedChatRoom);
       const chatMessage: ChatMessage = new ChatMessage();
-      chatMessage.body = this.inputField.innerHTML;
+      chatMessage.body = this.inputField.innerText;
       chatMessage.fromId = this.localUser.id;
       chatMessage.roomId = this.displayedChatRoom.id;
       this.chatService.sendOutgoingChatMessage(this.displayedChatRoom, chatMessage);
       this.inputField.innerHTML = "";
+      this.inputField.innerText = "";
+
     }
   }
 
@@ -141,7 +145,7 @@ export class ChatPanelComponent implements OnInit {
     }, 5);
   }
 
-  asyncInitGroupProfile(chatRoom: ChatRoom, readOnly: boolean) {
+  asyncInitEditGroupProfile(chatRoom: ChatRoom, readOnly: boolean) {
     let that = this;
     let interval = setInterval(function () {
       if (that.chatService.editGroupProfileComponent) {
@@ -156,7 +160,7 @@ export class ChatPanelComponent implements OnInit {
   initDisplayProfile() {
     if (this.displayedChatRoom.groupChat) {
       this.currentDisplayedRightPanel = this.constants.EDIT_GROUP_CHAT_PROFILE;
-      this.asyncInitGroupProfile(this.displayedChatRoom, true);
+      this.asyncInitEditGroupProfile(this.displayedChatRoom, false);
       return;
     }
 
@@ -178,7 +182,7 @@ export class ChatPanelComponent implements OnInit {
       this.markedMessageJumpIndex = 0;
     }
 
-    this.scrollToSearchResult();
+    this.scrollToSearchResult(true);
   }
 
   nextResult() {
@@ -188,14 +192,14 @@ export class ChatPanelComponent implements OnInit {
       this.markedMessageJumpIndex = this.markedMessageCount - 1;
     }
 
-    this.scrollToSearchResult();
+    this.scrollToSearchResult(true);
 
   }
 
-  scrollToSearchResult() {
+  scrollToSearchResult(smooth: boolean) {
     let markedMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
     if (markedMessage) {
-      this.chatService.scrollIntoView(markedMessage.id);
+        this.chatService.scrollIntoView(markedMessage.id, smooth);
     }
   }
 
@@ -218,11 +222,18 @@ export class ChatPanelComponent implements OnInit {
     this.inputField.innerHTML += icon.hexCode;
   }
 
-  changeValue(event) {
+  changeValue(event: KeyboardEvent) {
+
+    if(event.keyCode === this.constants.ENTER_KEY) {
+      event.preventDefault();
+      console.log( event )
+      this.triggerSendChatMessage();
+    }
     //let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
 
     //this.inputField.innerHTML += event.key || '';
     //textArea.innerHTML = this.chatInputText;
+
 
   }
 

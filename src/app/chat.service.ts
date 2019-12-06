@@ -45,7 +45,7 @@ export class ChatService {
 
   leftPanelComponentStack_: ComponentStack;
 
-
+  onlineStatusInterval: any;
   //FORMS AND PAGE INPUTS
   private chatInputText_: string = "";
 
@@ -95,7 +95,7 @@ export class ChatService {
   }
 
   public registerEditGroupProfileComponent(editGroupProfileComponent: EditGroupProfileComponent) {
-   this.editGroupProfileComponent = editGroupProfileComponent;
+    this.editGroupProfileComponent = editGroupProfileComponent;
   }
 
   public registerAppComponent(appComponent: AppComponent) {
@@ -262,7 +262,7 @@ export class ChatService {
     let that = this;
 
     this.stompClient.connect({}, function () {
-      that.sendOwnOnlineStatus();
+      that.sendRequestLoginFinalization();
       that.stompClient.subscribe("/client/" + that.localUser.id, function (messageFromServer) {
         that.handleServerResponse(JSON.parse(messageFromServer.body));
       }
@@ -282,6 +282,23 @@ export class ChatService {
       } break;
       case this.constants.TM_FUNCTION_LOGIN_AND_COOKIE: {
         this.finalizeLogin(transferMessage);
+      } break;
+      case this.constants.TM_FUNCTION_CREATE_ROOM_AND_CONTACT: {
+        let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
+        this.addAvailableRoom(chatRoom);
+        this.sendRequestContacts();
+        this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+        if (transferMessage.from.id === this.localUser.id) {
+          this.displayedChatRoom = chatRoom;
+        }
+      } break;
+      case this.constants.TM_FUNCTION_CREATE_GROUP_ROOM: {
+        let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
+        this.addAvailableRoom(chatRoom);
+        this.sendRequestChatMessagesForSingleRoom(chatRoom);
+        if (transferMessage.from.id === this.localUser.id) {
+          this.displayedChatRoom = chatRoom;
+        }
       } break;
     }
 
@@ -318,9 +335,9 @@ export class ChatService {
     this.ws.close();
   }
 
-  sendOwnOnlineStatus() {
+  sendRequestLoginFinalization() {
     this.stompClient.send(
-      "/app/send/online-status",
+      "/app/send/login-finalization",
       {},
       JSON.stringify({ from: <Contact>this.localUser })
     );
@@ -393,12 +410,42 @@ export class ChatService {
       });
   }
 
+  sendUpdateChatRoomProfile(chatRoom: ChatRoom) {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    this.http
+      .post(this.constants.BASE_URL + "/update/roomId/" + chatRoom.id, { from: <Contact>this.localUser, chatRoom: chatRoom }, { headers })
+      .subscribe(response => {
+        let chatRoomDTO = <ChatRoom>response;
+        chatRoom.iconUrl = chatRoomDTO.iconUrl;
+        chatRoom.title = chatRoomDTO.title;
+        console.log(response)
+      });
+  } ///data/online/status/contacts/userId/{userId}
+
+
+
 
   init() {
     this.connect();
     this.sendRequestContacts();
     this.sendRequestRoomList();
+    this.listenForOnlineStatusOfContacts();
+
     // this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+  }
+
+  private listenForOnlineStatusOfContacts() {
+    let that = this;
+    this.onlineStatusInterval = setInterval(
+      function () {
+        if (!that.isLoggedIn) {
+          clearInterval(that.onlineStatusInterval);
+          return;
+        }
+        that.sendRequestContacts();
+      }, 10000
+    );
   }
 
   private addAvailableRoom(chatRoom: ChatRoom) {
@@ -515,16 +562,19 @@ export class ChatService {
       this.chatMessagesByRoom.set(roomId, []);
     }
 
+
+    //generate list of unseen messages
+    this.updateUnseenMessagesIds(roomId, responseChatMessages);
+
     //filter for incoming messages
     let incomingMessages = responseChatMessages.filter(cm => cm.fromId != this.localUser.id);
     if (incomingMessages && incomingMessages.length > 0) {
-      //generate list of unseen messages
-      this.updateUnseenMessagesIds(roomId, responseChatMessages);
+
       if (this.displayedChatRoom && roomId == this.displayedChatRoom.id) {
-        this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id);
+        this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id, false);
       }
     } else {
-      this.scrollIntoView(responseChatMessages[responseChatMessages.length - 1].id);
+      this.scrollIntoView(responseChatMessages[responseChatMessages.length - 1].id, false);
     }
     //count and set list of unseen messages ids in room
     // this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
@@ -658,6 +708,8 @@ export class ChatService {
     chatRoomStub.title = title ? title : contact.name;
     chatRoomStub.userIds = [this.localUser.id, contact.id];
     transferMessage.chatRoom = chatRoomStub;
+
+
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
@@ -683,7 +735,7 @@ export class ChatService {
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
-        let chatRoom : ChatRoom = <ChatRoom> response;
+        let chatRoom: ChatRoom = <ChatRoom>response;
         this.addAvailableRoom(chatRoom);
         this.sendRequestChatMessagesForSingleRoom(chatRoom);
         this.displayedChatRoom = chatRoom;
@@ -722,13 +774,17 @@ export class ChatService {
     );
   }
 
-  scrollIntoView(elementId: string, scrollConfig?: any) {
+  scrollIntoView(elementId: string, smooth: boolean) {
     let scrollWhenReady = setInterval(
       function () {
         let element: HTMLElement = document.getElementById(elementId);
         if (element) {
           //let scrollConfig = { behavior: "smooth"};
-          element.scrollIntoView();
+          if(smooth) {
+            element.scrollIntoView({ behavior: "smooth"});
+          }else{
+            element.scrollIntoView();
+          }
           clearInterval(scrollWhenReady);
         }
       }, 50);
@@ -748,7 +804,10 @@ export class ChatService {
     this.displayedChatRoom = null;
     this.resetChatService();
     this.store.resetStore();
+    this.chatPanelComponent.displaySearchInput = false;
     this.loginRegisterComponent.isLoggingIn = false;
+    clearInterval(this.onlineStatusInterval);
+    this.onlineStatusInterval = null;
   }
 
   resetChatService() {

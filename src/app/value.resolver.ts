@@ -185,6 +185,18 @@ export class ValueResolver {
     return null;
   }
 
+
+   resolveNotLocalUser(userIds: string[]): Contact {
+    let userId : string = this.getNotLocalUserId(userIds);
+    let contact : Contact = this.resolveContactId(userId);
+    return contact;
+  }
+
+  resolveOnlineStatusOfUser(userId: string) : boolean {
+    let contact : Contact = this.resolveContactId(userId);
+    return !!contact.online;
+  }
+
   private getNotLocalUserId(userIds: string[]): string {
     if (this.isNotLocalUser(userIds[0])) {
       return userIds[0];

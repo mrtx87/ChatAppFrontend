@@ -91,7 +91,7 @@ background: rgba(0,0,0,.1);
   width: 26px;
 }
 
-.senden-container #input-chatmessages {
+.senden-container #input-chat-messages {
   width: 100%;
   align-self: center;
   max-height: 76px;
@@ -115,7 +115,7 @@ background: rgba(0,0,0,.1);
 margin: 10px 0 0 0;
 }
 
-.senden-container #input-chatmessages:focus {
+.senden-container #input-chat-messages:focus {
   outline: none;
 }
 

@@ -76,8 +76,7 @@
                         {{chatRoom | latestChatMessageDate}}
                     </span>
                 </div>
-                <div class="room-last-message-container">
-                    {{chatRoom | lastestChatMessageBody}}
+                <div [innerHTML]="values.resolveLatestChatMessageBody(chatRoom)" class="room-last-message-container">
                 </div>
             </div>
         </div>

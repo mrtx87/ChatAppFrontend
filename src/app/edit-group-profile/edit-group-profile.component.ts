@@ -53,6 +53,7 @@ export class EditGroupProfileComponent implements OnInit {
       if (that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE) && that.currentChatRoom) {
         that.currentChatRoom.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE);
         that.store.deleteFromTEMPDATA(that.constants.NEW_GROUP_IMAGE);
+        that.chatService.sendUpdateChatRoomProfile(that.currentChatRoom)
         clearInterval(that.imageListener)
         that.imageListener = null;
       }
@@ -92,11 +93,6 @@ export class EditGroupProfileComponent implements OnInit {
       this.imageService.onFileChanged(event, this.constants.NEW_GROUP_IMAGE);
       this.startImageListener();
     }
-  }
-
-
-  isValid() {
-    return !this.readOnly && this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
   }
 
   jumpBack() {
