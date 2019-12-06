@@ -571,10 +571,10 @@ export class ChatService {
     if (incomingMessages && incomingMessages.length > 0) {
 
       if (this.displayedChatRoom && roomId == this.displayedChatRoom.id) {
-        this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id);
+        this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id, false);
       }
     } else {
-      this.scrollIntoView(responseChatMessages[responseChatMessages.length - 1].id);
+      this.scrollIntoView(responseChatMessages[responseChatMessages.length - 1].id, false);
     }
     //count and set list of unseen messages ids in room
     // this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
@@ -774,13 +774,17 @@ export class ChatService {
     );
   }
 
-  scrollIntoView(elementId: string, scrollConfig?: any) {
+  scrollIntoView(elementId: string, smooth: boolean) {
     let scrollWhenReady = setInterval(
       function () {
         let element: HTMLElement = document.getElementById(elementId);
         if (element) {
           //let scrollConfig = { behavior: "smooth"};
-          element.scrollIntoView();
+          if(smooth) {
+            element.scrollIntoView({ behavior: "smooth"});
+          }else{
+            element.scrollIntoView();
+          }
           clearInterval(scrollWhenReady);
         }
       }, 50);
@@ -800,6 +804,7 @@ export class ChatService {
     this.displayedChatRoom = null;
     this.resetChatService();
     this.store.resetStore();
+    this.chatPanelComponent.displaySearchInput = false;
     this.loginRegisterComponent.isLoggingIn = false;
     clearInterval(this.onlineStatusInterval);
     this.onlineStatusInterval = null;

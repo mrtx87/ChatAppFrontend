@@ -182,7 +182,7 @@ export class ChatPanelComponent implements OnInit {
       this.markedMessageJumpIndex = 0;
     }
 
-    this.scrollToSearchResult();
+    this.scrollToSearchResult(true);
   }
 
   nextResult() {
@@ -192,14 +192,14 @@ export class ChatPanelComponent implements OnInit {
       this.markedMessageJumpIndex = this.markedMessageCount - 1;
     }
 
-    this.scrollToSearchResult();
+    this.scrollToSearchResult(true);
 
   }
 
-  scrollToSearchResult() {
+  scrollToSearchResult(smooth: boolean) {
     let markedMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
     if (markedMessage) {
-      this.chatService.scrollIntoView(markedMessage.id);
+        this.chatService.scrollIntoView(markedMessage.id, smooth);
     }
   }
 
