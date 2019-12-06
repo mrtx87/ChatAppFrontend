@@ -78,9 +78,14 @@
                 <div><img src="assets/gif.svg"></div>
                 <div><img src="assets/img.svg"></div>
             </div>
+<<<<<<< HEAD
             <div class="chatmessage-container">
-            <div id="input-chat-messages" contenteditable="true" style="font-weight: normal;"
+            <div id="input-chatmessages" contenteditable="true" (keyup.enter)="triggerSendChatMessage()" style="font-weight: normal;"
                 [hidden]="!displayedChatRoom"></div></div>
+=======
+            <div id="input-chat-messages" contenteditable="true" style="font-weight: normal;"
+                [hidden]="!displayedChatRoom"></div>
+>>>>>>> 850329334196e73354d9ddedc44a9e874d3b6c4f
             <img class="send" src="assets/paper-plane.svg" [hidden]="!displayedChatRoom"
                 (click)="triggerSendChatMessage()">
         </div>
