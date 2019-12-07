@@ -12,6 +12,7 @@ export class ChatRoom {
     //ONLY FRONTEND
     unseenChatMessageIds: string[];
     oldestUnseenMessage: ChatMessage;
+    page: number = 0;
     
 
 }

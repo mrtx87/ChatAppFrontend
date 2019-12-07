@@ -92,7 +92,7 @@ export class GroupProfileComponent implements OnInit {
   }
 
   sendCreateNewGroupRoom() {
-    if (this.currentChatRoom) {
+    if (this.isValid()) {
       this.currentChatRoom.title = this.roomTitleText;
       this.currentChatRoom.userIds.push(this.localUser.id);
       this.chatService.sendCreateGroupRoom(this.localUser, this.currentChatRoom);
