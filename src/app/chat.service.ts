@@ -286,10 +286,11 @@ export class ChatService {
       case this.constants.TM_FUNCTION_CREATE_ROOM_AND_CONTACT: {
         let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
         this.addAvailableRoom(chatRoom);
+        this.sendRequestChatMessagesForSingleRoom(chatRoom);
         this.sendRequestContacts();
-        this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
         if (transferMessage.from.id === this.localUser.id) {
           this.displayedChatRoom = chatRoom;
+          this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
         }
       } break;
       case this.constants.TM_FUNCTION_CREATE_GROUP_ROOM: {
@@ -298,6 +299,7 @@ export class ChatService {
         this.sendRequestChatMessagesForSingleRoom(chatRoom);
         if (transferMessage.from.id === this.localUser.id) {
           this.displayedChatRoom = chatRoom;
+          this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
         }
       } break;
     }
@@ -431,8 +433,6 @@ export class ChatService {
     this.sendRequestContacts();
     this.sendRequestRoomList();
     this.listenForOnlineStatusOfContacts();
-
-    // this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   }
 
   private listenForOnlineStatusOfContacts() {
@@ -453,9 +453,7 @@ export class ChatService {
       this.availableRooms = new Map<string, ChatRoom>();
     }
     this.availableRooms.set(chatRoom.id, chatRoom);
-    this.sendRequestChatMessagesForSingleRoom(chatRoom);
     this.addMapToDATA(this.availableRooms);
-    // this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
   }
 
   private addNewAvailableRoom(chatRoom: ChatRoom) {
@@ -502,7 +500,7 @@ export class ChatService {
   // }
 
   private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom) {
-    chatRoom.page = chatRoom.page || 0; 
+    chatRoom.page = chatRoom.page || 0;
     this.sendRequestChatMessages(chatRoom.id, chatRoom.page);
   }
 
@@ -524,7 +522,7 @@ export class ChatService {
    */
   private sendRequestChatMessages(roomId: string, page: number) {
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId + "/page/" + page).subscribe(response => {
-      this.processRequestedChatMessages(roomId, <any> response);
+      this.processRequestedChatMessages(roomId, <any>response);
     })
   }
 
@@ -566,7 +564,7 @@ export class ChatService {
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-    let responseChatMessages : ChatMessage[] = responsePage.content;
+    let responseChatMessages: ChatMessage[] = responsePage.content;
 
     //generate list of unseen messages
     this.updateUnseenMessagesIds(roomId, responseChatMessages);
@@ -713,46 +711,48 @@ export class ChatService {
     chatRoomStub.title = title ? title : contact.name;
     chatRoomStub.userIds = [this.localUser.id, contact.id];
     transferMessage.chatRoom = chatRoomStub;
-    this.stompClient.send(
+    transferMessage.from = <Contact> this.localUser;
+    /*this.stompClient.send(
       this.constants.WS_BASE_URL+"/create-room",
       {},
       JSON.stringify(transferMessage)
-    );
+    );*/
 
-    // this.http
-    //   .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
-    //   .subscribe(response => {
-    //     this.addAvailableRoom(<ChatRoom>response);
-    //     this.sendRequestContacts();
-    //     this.displayedChatRoom = <ChatRoom>response;
-    //     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
-    //   });
+    this.http
+      .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
+      .subscribe(response => {
+        //this.addAvailableRoom(<ChatRoom>response);
+        //this.sendRequestContacts();
+        //this.displayedChatRoom = <ChatRoom>response;
+        //this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+      });
   }
 
-/*
-sendOutgoingChatMessage(chatRoom: ChatRoom, chatMessage: ChatMessage) {
-    this.stompClient.send(
-      "/app/send/chat-message",
-      {},
-      JSON.stringify({ from: <Contact>this.localUser, chatRoom: chatRoom, chatMessage: chatMessage })
-    );
-  }
-+/
-
-  /**
-   * send a request to create a new room with an unkown contact
-   * @param title 
-   */
+    /**
+     * send a request to create a new room with an unkown contact
+     * @param title 
+     */
   sendCreateGroupRoom(from: Contact, chatroom: ChatRoom) {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
-    transferMessage.from = from;
     chatroom.groupChat = true;
     transferMessage.chatRoom = chatroom;
-    this.stompClient.send(
-      this.constants.WS_BASE_URL+"/create-room",
+    transferMessage.from = <Contact> this.localUser;
+    /*this.stompClient.send(
+      this.constants.WS_BASE_URL + "/create-room",
       {},
       JSON.stringify(transferMessage)
-    );
+    );*/
+
+    this.http
+      .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
+      .subscribe(response => {
+        //this.addAvailableRoom(<ChatRoom>response);
+        //this.sendRequestContacts();
+        //this.displayedChatRoom = <ChatRoom>response;
+        //this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+      });
   }
   /**
    * Requests removal of a contact together with its room.
@@ -793,9 +793,9 @@ sendOutgoingChatMessage(chatRoom: ChatRoom, chatMessage: ChatMessage) {
         let element: HTMLElement = document.getElementById(elementId);
         if (element) {
           //let scrollConfig = { behavior: "smooth"};
-          if(smooth) {
-            element.scrollIntoView({ behavior: "smooth"});
-          }else{
+          if (smooth) {
+            element.scrollIntoView({ behavior: "smooth" });
+          } else {
             element.scrollIntoView();
           }
           clearInterval(scrollWhenReady);
