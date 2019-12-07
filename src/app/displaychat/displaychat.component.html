@@ -1,4 +1,4 @@
-<div class="display-chat-messages">
+<div id="displayChatMessages" class="display-chat-messages">
     <ng-template ngFor let-m [ngForOf]="currentDisplayMessages">
 
         <!-- Date MESSAGE CONTAINER -->
@@ -9,7 +9,7 @@
         </div>
 
         <!-- SYSTEM MESSAGE CONTAINER -->
-        <div class="System-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_TYPE">
+        <div class="System-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE">
             <div class="system-bubble">
                 {{ m?.body }}
                 {{ m?.createdAt | date: "hh:mm" }}</div>
@@ -17,7 +17,7 @@
 
         <!-- INCOMING MESSAGE CONTAINER -->
         <div class="incoming-message-container" id="{{m?.id}}"
-            *ngIf="m.fromId !== localUser.id && m.fromId !== constants.CHAT_MESSAGE_SYSTEM_TYPE && m.fromId !== constants.CHAT_MESSAGE_DATE_TYPE">
+            *ngIf="m.fromId !== localUser.id && m.fromId !== constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE && m.fromId !== constants.CHAT_MESSAGE_DATE_TYPE">
             <div [innerHTML]="m.searchBody ? m.searchBody : m.body" class="chat-bubble left">
             </div>
             <span>{{ m?.createdAt | date: "hh:mm" }}</span>

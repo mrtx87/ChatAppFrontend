@@ -286,7 +286,7 @@ export class ChatService {
       case this.constants.TM_FUNCTION_CREATE_ROOM_AND_CONTACT: {
         let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
         this.addAvailableRoom(chatRoom);
-        this.sendRequestChatMessagesForSingleRoom(chatRoom);
+        this.sendRequestInitialChatMessagesForSingleRoom(chatRoom);
         this.sendRequestContacts();
         if (transferMessage.from.id === this.localUser.id) {
           this.displayedChatRoom = chatRoom;
@@ -296,7 +296,7 @@ export class ChatService {
       case this.constants.TM_FUNCTION_CREATE_GROUP_ROOM: {
         let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
         this.addAvailableRoom(chatRoom);
-        this.sendRequestChatMessagesForSingleRoom(chatRoom);
+        this.sendRequestInitialChatMessagesForSingleRoom(chatRoom);
         if (transferMessage.from.id === this.localUser.id) {
           this.displayedChatRoom = chatRoom;
           this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
@@ -488,7 +488,7 @@ export class ChatService {
   }
 
   sendRequestInitialChatMessages() {
-    this.availableRooms.forEach((chatRoom, key) => this.sendRequestInitalChatMessagesForSingleRoom(chatRoom));
+    this.availableRooms.forEach((chatRoom, key) => this.sendRequestInitialChatMessagesForSingleRoom(chatRoom));
   }
 
   /**
@@ -499,27 +499,28 @@ export class ChatService {
   //   chatRooms.forEach(chatRoom => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   // }
 
-  private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom) {
-    chatRoom.page = chatRoom.page || 0;
-    this.sendRequestChatMessages(chatRoom.id, chatRoom.page);
+  /**
+ * gets all chat messages for a single room from backend
+ * @param roomId 
+ */
+  public sendRequestChatMessagesBatchForSingleRoom(chatRoom: ChatRoom) {
+    if(chatRoom.lastMessageToken){
+      this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + chatRoom.id + "/token/" + chatRoom.lastMessageToken).subscribe(response => {
+        let messages: ChatMessage[] = <ChatMessage[]>response;
+        chatRoom.lastMessageToken =  messages[0].fromId !== 'init' ? messages[0].id : null;
+        this.processChatMessageBatch(chatRoom.id, messages);
+      })
+    }
   }
 
-    /**
-   * gets all chat messages for a single room from backend
-   * @param roomId 
-   */
-  private sendRequestChatMessages(roomId: string, page: number) {
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId + "/page/" + page).subscribe(response => {
-      this.processRequestedChatMessages(roomId, <any>response);
-    })
-  }
-
-      /**
-   * gets all chat messages for a single room from backend
-   * @param roomId 
-   */
-  private sendRequestInitalChatMessagesForSingleRoom(chatRoom: ChatRoom) {
+  /**
+* gets all chat messages for a single room from backend
+* @param roomId 
+*/
+  private sendRequestInitialChatMessagesForSingleRoom(chatRoom: ChatRoom) {
     this.http.get(this.constants.BASE_URL + "/inital-messages/userId/" + this.localUser.id + "/roomId/" + chatRoom.id).subscribe(response => {
+      let messages: ChatMessage[] = <ChatMessage[]>response;
+      chatRoom.lastMessageToken =  messages[0].id !== 'init' ? messages[0].id : null;
       this.processRequestedChatMessages(chatRoom.id, <any>response);
     })
   }
@@ -559,6 +560,15 @@ export class ChatService {
         this.updateAvailableRooms(<ChatRoom[]>response);
         that.sendRequestInitialChatMessages()
       })
+  }
+
+
+  private processChatMessageBatch(roomId: string, response: ChatMessage[]) {
+    //console.log(response);
+    let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
+    let newMessages  = [...response, ...chatMessages];
+    this.chatMessagesByRoom.set(roomId, newMessages);
+    //console.log(newMessages)
   }
 
   processRequestedChatMessage(roomId: string, chatMessage: ChatMessage) {
@@ -723,7 +733,7 @@ export class ChatService {
     chatRoomStub.title = title ? title : contact.name;
     chatRoomStub.userIds = [this.localUser.id, contact.id];
     transferMessage.chatRoom = chatRoomStub;
-    transferMessage.from = <Contact> this.localUser;
+    transferMessage.from = <Contact>this.localUser;
     /*this.stompClient.send(
       this.constants.WS_BASE_URL+"/create-room",
       {},
@@ -740,17 +750,17 @@ export class ChatService {
       });
   }
 
-    /**
-     * send a request to create a new room with an unkown contact
-     * @param title 
-     */
+  /**
+   * send a request to create a new room with an unkown contact
+   * @param title 
+   */
   sendCreateGroupRoom(from: Contact, chatroom: ChatRoom) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
     chatroom.groupChat = true;
     transferMessage.chatRoom = chatroom;
-    transferMessage.from = <Contact> this.localUser;
+    transferMessage.from = <Contact>this.localUser;
     /*this.stompClient.send(
       this.constants.WS_BASE_URL + "/create-room",
       {},
