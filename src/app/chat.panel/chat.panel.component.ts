@@ -80,6 +80,10 @@ export class ChatPanelComponent implements OnInit {
     return this.emojiService.ICONS;
   }
 
+  get iconAliases(): any[] {
+    return this.icons.filter(icon => icon['alias']).map(icon => icon['alias']);
+  }
+
   constructor(private emojiService: EmojiService, private chatService: ChatService, private messageSearch: ChatMessageSearchService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
     this.chatService.registerChatPanelComponent(this);
   }
@@ -222,9 +226,35 @@ export class ChatPanelComponent implements OnInit {
     //this.chatInputText += icon.hexCode;
     this.inputField.innerHTML += icon.hexCode;
   }
+  
+  get selectionRange(){
+    let selection = window.getSelection();
+    console.log(selection)
+    return 0;
+  }
+  
+  set selectionRange(range: any){
+    
+  }
+
+  findReplaceEmoticons(event: KeyboardEvent){
+    let cursorPosition = event.target;
+    this.selectionRange
+    for (let aliasList of this.iconAliases) {
+      for (let alias of aliasList) {
+        if(this.inputField.innerText.includes(alias)){
+        let dezCode = this.emojiService.convertEmoji(alias)
+          if(dezCode){
+            this.inputField.innerHTML = this.inputField.innerText.replace(alias, dezCode)
+            break;
+          }
+        }
+      }
+    }
+  }
 
   changeValue(event: KeyboardEvent) {
-
+    this.findReplaceEmoticons(event)
     if(event.keyCode === this.constants.ENTER_KEY) {
       event.preventDefault();
       //console.log( event )
