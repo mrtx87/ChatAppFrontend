@@ -487,8 +487,8 @@ export class ChatService {
     // this.sendRequestAllChatMessagesForRooms(chatRooms);
   }
 
-  sendUpdateAllChatMessages() {
-    this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+  sendRequestInitialChatMessages() {
+    this.availableRooms.forEach((chatRoom, key) => this.sendRequestInitalChatMessagesForSingleRoom(chatRoom));
   }
 
   /**
@@ -504,6 +504,27 @@ export class ChatService {
     this.sendRequestChatMessages(chatRoom.id, chatRoom.page);
   }
 
+    /**
+   * gets all chat messages for a single room from backend
+   * @param roomId 
+   */
+  private sendRequestChatMessages(roomId: string, page: number) {
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId + "/page/" + page).subscribe(response => {
+      this.processRequestedChatMessages(roomId, <any>response);
+    })
+  }
+
+      /**
+   * gets all chat messages for a single room from backend
+   * @param roomId 
+   */
+  private sendRequestInitalChatMessagesForSingleRoom(chatRoom: ChatRoom) {
+    this.http.get(this.constants.BASE_URL + "/inital-messages/userId/" + this.localUser.id + "/roomId/" + chatRoom.id).subscribe(response => {
+      this.processRequestedChatMessages(chatRoom.id, <any>response);
+    })
+  }
+
+
   private addEntryToDATA(entry: any) {
     this.store.addEntryToDATA(entry);
   }
@@ -516,15 +537,6 @@ export class ChatService {
     this.store.addMapToDATA(dataMap);
   }
 
-  /**
-   * gets all chat messages for a single room from backend
-   * @param roomId 
-   */
-  private sendRequestChatMessages(roomId: string, page: number) {
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId + "/page/" + page).subscribe(response => {
-      this.processRequestedChatMessages(roomId, <any>response);
-    })
-  }
 
   /**
   * gets all contacts for the logged in user from backend
@@ -545,12 +557,12 @@ export class ChatService {
     this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
       .subscribe(response => {
         this.updateAvailableRooms(<ChatRoom[]>response);
-        that.sendUpdateAllChatMessages()
+        that.sendRequestInitialChatMessages()
       })
   }
 
   processRequestedChatMessage(roomId: string, chatMessage: ChatMessage) {
-    this.processRequestedChatMessages(roomId, { 'content': [chatMessage] })
+    this.processRequestedChatMessages(roomId, [chatMessage])
   }
 
   /**
@@ -559,12 +571,12 @@ export class ChatService {
    * @param roomId 
    * @param responseChatMessages 
    */
-  private processRequestedChatMessages(roomId: string, responsePage: any) {
+  private processRequestedChatMessages(roomId: string, response: any) {
     //create ChatMessages Entry for a room in Map if it's not already existing
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-    let responseChatMessages: ChatMessage[] = responsePage.content;
+    let responseChatMessages: ChatMessage[] = response;
 
     //generate list of unseen messages
     this.updateUnseenMessagesIds(roomId, responseChatMessages);
