@@ -274,7 +274,7 @@ export class ChatService {
     switch (transferMessage.function) {
 
       case this.constants.TM_TYPE_CHAT_MESSAGE: {
-        this.processRequestedChatMessages(transferMessage.chatMessage.roomId, [transferMessage.chatMessage])
+        this.processRequestedChatMessage(transferMessage.chatMessage.roomId, transferMessage.chatMessage)
       } break;
       case this.constants.TM_TYPE_UPDATE_ROOMS_AND_CONTACTS: {
         this.sendRequestRoomList();
@@ -502,7 +502,8 @@ export class ChatService {
   // }
 
   private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom) {
-    this.sendRequestChatMessages(chatRoom.id);
+    chatRoom.page = chatRoom.page || 0; 
+    this.sendRequestChatMessages(chatRoom.id, chatRoom.page);
   }
 
   private addEntryToDATA(entry: any) {
@@ -521,9 +522,9 @@ export class ChatService {
    * gets all chat messages for a single room from backend
    * @param roomId 
    */
-  private sendRequestChatMessages(roomId: string) {
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId).subscribe(response => {
-      this.processRequestedChatMessages(roomId, <ChatMessage[]>response);
+  private sendRequestChatMessages(roomId: string, page: number) {
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId + "/page/" + page).subscribe(response => {
+      this.processRequestedChatMessages(roomId, <any> response);
     })
   }
 
@@ -550,18 +551,22 @@ export class ChatService {
       })
   }
 
+  processRequestedChatMessage(roomId: string, chatMessage: ChatMessage) {
+    this.processRequestedChatMessages(roomId, { 'content': [chatMessage] })
+  }
+
   /**
    * processes the received chatmessages in a way that they can be displayed correclty
    * e.g. insert Date Messages for a correct displaying of Dates in the chatroom
    * @param roomId 
    * @param responseChatMessages 
    */
-  private processRequestedChatMessages(roomId: string, responseChatMessages: ChatMessage[]) {
+  private processRequestedChatMessages(roomId: string, responsePage: any) {
     //create ChatMessages Entry for a room in Map if it's not already existing
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-
+    let responseChatMessages : ChatMessage[] = responsePage.content;
 
     //generate list of unseen messages
     this.updateUnseenMessagesIds(roomId, responseChatMessages);
