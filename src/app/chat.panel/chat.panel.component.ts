@@ -8,7 +8,7 @@ import { DataStore } from '../data.store';
 import { ValueResolver } from '../value.resolver';
 import { Contact } from '../Entities/contact';
 import { ChatMessageSearchService } from '../chat-message-search.service';
-import { IconService } from '../emoji.service';
+import { EmojiService } from '../emoji.service';
 
 @Component({
   selector: 'app-chat-panel',
@@ -77,10 +77,10 @@ export class ChatPanelComponent implements OnInit {
   }
 
   get icons(): any[] {
-    return this.iconService.ICONS;
+    return this.emojiService.ICONS;
   }
 
-  constructor(private chatService: ChatService, private iconService: IconService, private messageSearch: ChatMessageSearchService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
+  constructor(private emojiService: EmojiService, private chatService: ChatService, private messageSearch: ChatMessageSearchService, private values: ValueResolver, private store: DataStore, private constants: Constants) {
     this.chatService.registerChatPanelComponent(this);
   }
 
@@ -88,9 +88,10 @@ export class ChatPanelComponent implements OnInit {
   ngOnInit() {
     let that = this
     let interval = setInterval(function () {
-       that.inputField = <HTMLTextAreaElement>document.getElementById('input-chat-messages');
+       that.inputField = <HTMLElement>document.getElementById('input-chat-messages');
       if (that.inputField) {
         that.inputField.addEventListener("keyup", event => that.changeValue(event));
+        //Verhindert Zeilenumbruch
         that.inputField.addEventListener("keydown", event => event.keyCode === that.constants.ENTER_KEY ? event.preventDefault() : {});
 
         clearInterval(interval);
@@ -226,7 +227,7 @@ export class ChatPanelComponent implements OnInit {
 
     if(event.keyCode === this.constants.ENTER_KEY) {
       event.preventDefault();
-      console.log( event )
+      //console.log( event )
       this.triggerSendChatMessage();
     }
     //let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');

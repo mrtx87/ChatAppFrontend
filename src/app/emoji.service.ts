@@ -5,7 +5,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class IconService {
+export class EmojiService {
+
 
   private ICONS_: any[];
 
@@ -30,6 +31,7 @@ export class IconService {
       },
       (err: HttpErrorResponse) => console.log(err.message)
       );
+    //add_new_user --> äquivalent zu this.GERMAN.add_new_user
   }
 
   public convertEmoji(input: string, trait: string = "dezCode") {
