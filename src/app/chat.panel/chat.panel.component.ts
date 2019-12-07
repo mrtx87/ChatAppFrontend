@@ -227,7 +227,19 @@ export class ChatPanelComponent implements OnInit {
     this.inputField.innerHTML += icon.hexCode;
   }
   
+  get selectionRange(){
+    let selection = window.getSelection();
+    console.log(selection)
+    return 0;
+  }
+  
+  set selectionRange(range: any){
+    
+  }
+
   findReplaceEmoticons(event: KeyboardEvent){
+    let cursorPosition = event.target;
+    this.selectionRange
     for (let aliasList of this.iconAliases) {
       for (let alias of aliasList) {
         if(this.inputField.innerText.includes(alias)){
