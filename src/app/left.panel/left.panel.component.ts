@@ -107,11 +107,11 @@ export class LeftPanelComponent implements OnInit {
     }
 
     if (chatRoom.oldestUnseenMessage) {
-      this.chatService.scrollIntoView(chatRoom.oldestUnseenMessage.id);
+      this.chatService.scrollIntoView(chatRoom.oldestUnseenMessage.id, false);
       chatRoom.oldestUnseenMessage = null;
     } else {
       let chatMessage: ChatMessage = this.store.getChatMessageByRoomIdAndIndex(chatRoom.id, -1);
-      this.chatService.scrollIntoView(chatMessage.id);
+      this.chatService.scrollIntoView(chatMessage.id, false);
     }
   }
 
@@ -127,7 +127,7 @@ export class LeftPanelComponent implements OnInit {
     let that = this;
     let interval = setInterval(function () {
       if (that.chatService.profileComponent) {
-        that.chatService.profileComponent.init(that.localUser.name, that.localUser.info, that.localUser.iconUrl, false);
+        that.chatService.profileComponent.init(that.localUser.name, that.localUser.info, that.localUser.iconUrl);
         clearInterval(interval);
       }
     }, 5);

@@ -5,7 +5,7 @@
                 <img (click)="initSlideOut()" src="assets/left-arrow.svg">
             </div>
             <div class="r2bp">
-                {{ 'add_new_contact' | tl8 }}
+                {{ 'add_participant' | tl8 }}
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
 
         <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
             <input (focus)="isClicked()" (focusout)="focusOut()"  [(ngModel)]="query"
-                class="search-contact-inputfield" type="text" placeholder="search chats">
+                class="search-contact-inputfield" type="text" placeholder="Kontaktnamen eingeben">
             <div class="icons">
                 <span class="magni"></span>
                 <span (click)="focusOut()" class="blue-arrow"></span>

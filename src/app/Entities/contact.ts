@@ -3,4 +3,5 @@ export class Contact {
     name: string;
     info: string;
     iconUrl: string;
+    online: boolean;
 }

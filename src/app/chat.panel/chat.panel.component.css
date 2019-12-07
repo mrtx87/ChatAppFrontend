@@ -27,30 +27,102 @@ background: rgba(0,0,0,.1);
 }
 
 
+
 .senden-container {
     width: 100%;
-    display: flex;
-    justify-content: space-evenly;
     padding: 15px 0;
     background: var(--white-grey);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto;
+}
+
+.emoji-container {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  display:flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  height: 0px;
+  transition: 0.2s;
+  padding: 0 20px;
+}
+
+.emoji-container.open {
+  height: 150px;
+}
+
+.emoji-controller {
+  display: flex;
+  padding: 0 15px;
+}
+
+.emoji-controller > div {
+  transition: 0.3s;
+  overflow: hidden;
+  margin: 0;
+  align-self: center;
+}
+
+.emoji-controller > div:nth-child(1), .emoji-controller > div:nth-child(3), .emoji-controller > div:nth-child(4) {
+  width: 0;
+  opacity: 0;
+}
+.emoji-controller > div:nth-child(2) {
+  width: 26px;
+  margin: 0 8px;
+}
+
+.bottom-container.open .emoji-controller > div:nth-child(1), .bottom-container.open .emoji-controller > div:nth-child(3), .bottom-container.open .emoji-controller > div:nth-child(4) {
+  width: 26px;
+  opacity: 1;
+  margin: 0 8px;
+}
+
+
+.bottom-container {
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
 }
 
 .senden-container img {
-    width: 3vh;
-    margin: 0 20px;
-    opacity: 0.5;
+  width: 26px;
 }
 
-.senden-container textarea {
-    width: 90%;
-    border-radius: 25px;
-    border: none;
-    padding: 0 15px;
-    min-height: 38px;
+.senden-container #input-chat-messages {
+  width: 100%;
+  align-self: center;
+  max-height: 76px;
+  overflow: auto;
+  padding: 0 10px 0 0;
 }
 
-.senden-container textarea:focus {
+.chatmessage-container {
+  width: 100%;
+  border-radius: 25px;
+  border: none;
+  padding: 15px 20px;
+  min-height: 38px;
+  align-self: center;
+  max-height: 106px;
+  background: #fff;
+  display: inherit;
+}
+
+.open .chatmessage-container {
+margin: 10px 0 0 0;
+}
+
+.senden-container #input-chat-messages:focus {
   outline: none;
+}
+
+.send {
+  margin: 0 33px 0 20px;
+  align-self: center;
+  opacity: 0.5;
 }
 
 .chat-panel-header {
@@ -153,6 +225,7 @@ background: rgba(0,0,0,.1);
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: 65px 1fr auto;
+    background-color: #e5ddd5;
   }
 
   .chat-panel-header {
@@ -176,8 +249,12 @@ background: rgba(0,0,0,.1);
   .overlay-comp-container{
     width:0px;
     grid-row: 1 / 4;
-    grid-column: 2 / 3;
+    grid-column: 2 / 4;
+    z-index: 2;
+    overflow: hidden;
   }
+
+
 
 
   .animation-in-from-right {
@@ -231,5 +308,4 @@ background: rgba(0,0,0,.1);
 
 
 
- 
-  
+
