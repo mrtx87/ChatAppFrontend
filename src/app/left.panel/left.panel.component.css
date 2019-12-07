@@ -30,6 +30,7 @@
     overflow: hidden;
     display: block;
     background: #fff;
+    cursor: pointer;
 }
 
 .user-name {
@@ -45,6 +46,7 @@
 .new-user-logo-img, .user-list-img {
     height: 25px;
     opacity: 0.5;
+    cursor: pointer;
 }
 
 .user-app-burger {
@@ -68,6 +70,7 @@
 .user-app-burger-img {
     height: 23px;
     opacity: 0.5;
+    cursor: pointer;
 }
 
 /* .user-app-burger-img:hover {
@@ -203,6 +206,7 @@
     height: 75px;
     padding: 0px 0px 0px 15px;
     border-bottom: 1px solid #F1F1F1;
+    cursor: pointer;
 }
 
 .room-title-container {
