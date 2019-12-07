@@ -15,7 +15,7 @@ import {
 import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from './language.service';
 import { BaseComponent } from './base-component';
-import { IconService } from './emoji.service';
+import { EmojiService } from './emoji.service';
 
 @Component({
   selector: 'app-root',
@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
     this.chatService.closeLocalWebsocketConnection();
   }
 
-  constructor(private icons: IconService, private chatService: ChatService, private store: DataStore,
+  constructor(private icons: EmojiService, private chatService: ChatService, private store: DataStore,
     private constants: Constants, private values: ValueResolver, private cookieService: CookieService, private langService: LanguageService) {
     
     chatService.registerAppComponent(this);
