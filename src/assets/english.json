@@ -18,6 +18,9 @@
     "new_chat": "new chat",
     "contact": "Contacts",
     "search_contacts": "search Contacts",
-    "add_participant": "add participant"
-
+    "add_participant": "add participant",
+    "frequently_contacted": "Frequently contacted",
+    "put_contactname": "Enter contact name",
+    "contact_profile": "Contact Profile",
+    "group_info": "Group info"
 }

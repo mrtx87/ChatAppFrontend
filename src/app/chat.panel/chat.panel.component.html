@@ -35,7 +35,7 @@
                 <img (click)="toggleRoomMenuDisplay()" class="menu-img" src="assets/burger.svg">
                 <div id="room-menu" *ngIf="displayRoomMenu" class="room-menu">
                     <div (click)="initDisplayProfile()" class="room-row sub-room-menu">
-                        {{displayedChatRoom && displayedChatRoom.groupChat ? 'Gruppeninfo' : 'Nutzerprofil'}}
+                        {{ displayedChatRoom && displayedChatRoom.groupChat ? 'group_info' : 'contact_profile' | tl8 }}
                     </div>
                     <div class="room-row sub-room-menu">
                         {{ 'choose_message' | tl8 }}

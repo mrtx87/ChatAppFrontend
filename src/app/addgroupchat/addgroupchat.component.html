@@ -21,7 +21,7 @@
 
         <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
             <input (focus)="isClicked()" (focusout)="focusOut()"  [(ngModel)]="query"
-                class="search-contact-inputfield" type="text" placeholder="Kontaktnamen eingeben">
+                class="search-contact-inputfield" type="text" placeholder="{{ 'put_contactname' | tl8 }}">
             <div class="icons">
                 <span class="magni"></span>
                 <span (click)="focusOut()" class="blue-arrow"></span>

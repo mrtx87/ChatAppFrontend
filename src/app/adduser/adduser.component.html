@@ -15,7 +15,7 @@
 
 
         <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="searchNewContactInputText"
-            class="search-contact-inputfield" (keyup.enter)="triggerNewContactSearch()" type="text" placeholder="add new contact">
+            class="search-contact-inputfield" (keyup.enter)="triggerNewContactSearch()" type="text" placeholder="{{ 'add_new_contact' | tl8 }}">
         <div class="icons">
             <span class="magni"></span>
             <span (click)="focusOut()" class="blue-arrow"></span>

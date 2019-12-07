@@ -18,6 +18,10 @@
     "new_chat": "neuer Chat",
     "contact": "Kontakte",
     "search_contacts": "Suche Kontakte",
-    "add_participant": "Teilnehmer hinzufügen"
+    "add_participant": "Teilnehmer hinzufügen",
+    "frequently_contacted": "Häufig kontaktiert",
+    "put_contactname": "Kontaktnamen eingeben",
+    "contact_profile": "Nutzerprofil",
+    "group_info": "Gruppeninfo"
     
 }

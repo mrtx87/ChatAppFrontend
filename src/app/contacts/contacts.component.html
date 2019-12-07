@@ -5,7 +5,7 @@
                <img (click)="initSlideOut()" src="assets/left-arrow.svg">
             </div>
             <div class="r2bp">
-                Neuer chat
+                {{ 'new_chat' | tl8 }}
             </div>
         </div>
     </div>
@@ -13,7 +13,7 @@
 
 
         <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="query"
-            class="search-contact-inputfield" type="text" placeholder="search contacts">
+            class="search-contact-inputfield" type="text" placeholder="{{ 'search_contacts' | tl8 }}">
         <div class="icons">
             <span class="magni"></span>
             <span (click)="focusOut()" class="blue-arrow"></span>
@@ -32,12 +32,12 @@
                 <img src="assets/group.svg">
             </div>
             <span>
-                Neue Gruppe
+               {{ 'new_group' | tl8 }}
             </span>
         </div>
 
         <div class="contacted-recently">
-            <span>Häufig kontaktiert</span>
+            <span>{{ 'frequently_contacted' | tl8 }}</span>
         </div>
         <div class="contacts-container">
             <div *ngFor="let contact of contacts" class="contacts-row">
