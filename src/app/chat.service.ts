@@ -713,38 +713,46 @@ export class ChatService {
     chatRoomStub.title = title ? title : contact.name;
     chatRoomStub.userIds = [this.localUser.id, contact.id];
     transferMessage.chatRoom = chatRoomStub;
+    this.stompClient.send(
+      this.constants.WS_BASE_URL+"/create-room",
+      {},
+      JSON.stringify(transferMessage)
+    );
 
-
-    this.http
-      .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
-      .subscribe(response => {
-        this.addAvailableRoom(<ChatRoom>response);
-        this.sendRequestContacts();
-        this.displayedChatRoom = <ChatRoom>response;
-        this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
-      });
+    // this.http
+    //   .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
+    //   .subscribe(response => {
+    //     this.addAvailableRoom(<ChatRoom>response);
+    //     this.sendRequestContacts();
+    //     this.displayedChatRoom = <ChatRoom>response;
+    //     this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+    //   });
   }
+
+/*
+sendOutgoingChatMessage(chatRoom: ChatRoom, chatMessage: ChatMessage) {
+    this.stompClient.send(
+      "/app/send/chat-message",
+      {},
+      JSON.stringify({ from: <Contact>this.localUser, chatRoom: chatRoom, chatMessage: chatMessage })
+    );
+  }
++/
 
   /**
    * send a request to create a new room with an unkown contact
-   * @clearLeftPanelComponentStackparam contact 
    * @param title 
    */
   sendCreateGroupRoom(from: Contact, chatroom: ChatRoom) {
-    const headers = new HttpHeaders()
-      .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
     transferMessage.from = from;
     chatroom.groupChat = true;
     transferMessage.chatRoom = chatroom;
-    this.http
-      .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
-      .subscribe(response => {
-        let chatRoom: ChatRoom = <ChatRoom>response;
-        this.addAvailableRoom(chatRoom);
-        this.sendRequestChatMessagesForSingleRoom(chatRoom);
-        this.displayedChatRoom = chatRoom;
-      });
+    this.stompClient.send(
+      this.constants.WS_BASE_URL+"/create-room",
+      {},
+      JSON.stringify(transferMessage)
+    );
   }
   /**
    * Requests removal of a contact together with its room.
