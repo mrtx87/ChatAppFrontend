@@ -260,12 +260,6 @@ export class ChatPanelComponent implements OnInit {
       //console.log( event )
       this.triggerSendChatMessage();
     }
-    //let textArea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('input-chatmessages');
-
-    //this.inputField.innerHTML += event.key || '';
-    //textArea.innerHTML = this.chatInputText;
-
-
   }
 
   EmojiContainerState: boolean = false;

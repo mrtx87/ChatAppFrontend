@@ -313,6 +313,7 @@ export class ChatService {
         this.cookieService.set(this.constants.USER_COOKIE_KEY, transferMessage.cookie);
       }
       this.isLoggedIn = true;
+      this.store.resetLoginAndRegisterVars();
     }
 
   }
@@ -463,14 +464,17 @@ export class ChatService {
     this.availableRooms.set(chatRoom.id, chatRoom);
   }
 
-  private updateAvailableRooms(chatRooms: ChatRoom[]) {
+  private updateAvailableRooms(latestChatRooms: ChatRoom[]) {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
     let nextAvailableRooms: Map<string, ChatRoom> = new Map<string, ChatRoom>();
-    chatRooms.forEach(chatRoom => {
+    latestChatRooms.forEach(chatRoom => {
       if (this.availableRooms.has(chatRoom.id)) {
         let transferRoom = this.availableRooms.get(chatRoom.id);
+        transferRoom.iconUrl = chatRoom.iconUrl;
+        transferRoom.title = chatRoom.title;
+        transferRoom.userIds = chatRoom.userIds;
         nextAvailableRooms.set(transferRoom.id, transferRoom);
       } else {
         nextAvailableRooms.set(chatRoom.id, chatRoom);
@@ -499,18 +503,61 @@ export class ChatService {
   //   chatRooms.forEach(chatRoom => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   // }
 
+  isPullingMessages : boolean = false;
+
   /**
  * gets all chat messages for a single room from backend
  * @param roomId 
  */
   public sendRequestChatMessagesBatchForSingleRoom(chatRoom: ChatRoom) {
     if(chatRoom.lastMessageToken){
+      this.isPullingMessages = true;
       this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + chatRoom.id + "/token/" + chatRoom.lastMessageToken).subscribe(response => {
         let messages: ChatMessage[] = <ChatMessage[]>response;
         chatRoom.lastMessageToken =  messages[0].fromId !== 'init' ? messages[0].id : null;
+        this.isPullingMessages = false;
+        let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(chatRoom.id);
+
+        /*
+        let lastMessage = chatMessages[0];
+        if(lastMessage)
+        this.scrollIntoView(lastMessage.id, true);*/
         this.processChatMessageBatch(chatRoom.id, messages);
-      })
+      });
     }
+  }
+
+  private processChatMessageBatch(roomId: string, responseChatMessages: ChatMessage[]) {
+    //console.log(response);
+    let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
+    this.displayChatComponent.lastKnowScrollPosition
+    this.displayChatComponent.displayChatMessagesContainer.scrollTop += 100;
+    this.chatMessagesByRoom.set(roomId, [...responseChatMessages, ...chatMessages]);
+
+
+    //console.log(newMessages)
+  }
+
+  insertDateMessages(allChatMessages: ChatMessage[]) : ChatMessage[] {
+        //process received chatmessages and insert date message if needed 
+        let withDateMessages: ChatMessage[] = [this.buildDateMessage(allChatMessages[0].createdAt)];
+        for (let message of allChatMessages) {
+          if (this.areDaysDifferent(message.createdAt, withDateMessages[withDateMessages.length - 1].createdAt)) {
+            let dateMessage = this.buildDateMessage(message.createdAt);
+            withDateMessages.push(dateMessage);
+          }
+          withDateMessages.push(message);
+        }
+
+        return withDateMessages;
+  }
+
+  buildDateMessage(createdAt: string) : ChatMessage {
+    let dateMessage = new ChatMessage();
+    dateMessage.seen = true;
+    dateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
+    dateMessage.createdAt = createdAt;
+    return dateMessage;
   }
 
   /**
@@ -523,52 +570,6 @@ export class ChatService {
       chatRoom.lastMessageToken =  messages[0].id !== 'init' ? messages[0].id : null;
       this.processRequestedChatMessages(chatRoom.id, <any>response);
     })
-  }
-
-
-  private addEntryToDATA(entry: any) {
-    this.store.addEntryToDATA(entry);
-  }
-
-  private addListOfEntriesToDATA(entries: any[]) {
-    this.store.addListOfEntriesToDATA(entries);
-  }
-
-  private addMapToDATA(dataMap: Map<string, any>) {
-    this.store.addMapToDATA(dataMap);
-  }
-
-
-  /**
-  * gets all contacts for the logged in user from backend
-  * 
-  */
-  private sendRequestContacts() {
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/contacts").subscribe(response => {
-      this.updateContacts(<Contact[]>response);
-    })
-  }
-
-  /**
-  * gets all chatrooms for the logged in user from backend
-  * 
-  */
-  private sendRequestRoomList() {
-    let that = this;
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
-      .subscribe(response => {
-        this.updateAvailableRooms(<ChatRoom[]>response);
-        that.sendRequestInitialChatMessages()
-      })
-  }
-
-
-  private processChatMessageBatch(roomId: string, response: ChatMessage[]) {
-    //console.log(response);
-    let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
-    let newMessages  = [...response, ...chatMessages];
-    this.chatMessagesByRoom.set(roomId, newMessages);
-    //console.log(newMessages)
   }
 
   processRequestedChatMessage(roomId: string, chatMessage: ChatMessage) {
@@ -615,22 +616,22 @@ export class ChatService {
 
     //if there are no chatMessages for given roomId we generate the inital date message
     let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
-    if (chatMessages.length == 0) {
+    /*if (chatMessages.length == 0) {
       let initialDateMessage = new ChatMessage();
       initialDateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
       initialDateMessage.createdAt = responseChatMessages[0].createdAt;
       chatMessages.push(initialDateMessage);
-    }
+    }*/
 
     //process received chatmessages and insert date message if needed 
     for (let message of responseChatMessages) {
-      if (this.areDaysDifferent(message.createdAt, chatMessages[chatMessages.length - 1].createdAt)) {
+      /*if (this.areDaysDifferent(message.createdAt, chatMessages[chatMessages.length - 1].createdAt)) {
         let dateMessage = new ChatMessage();
         dateMessage.seen = true;
         dateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
         dateMessage.createdAt = message.createdAt;
         chatMessages.push(dateMessage);
-      }
+      }*/
       chatMessages.push(message);
     }
   }
@@ -809,6 +810,31 @@ export class ChatService {
     );
   }
 
+  /**
+  * gets all contacts for the logged in user from backend
+  * 
+  */
+  private sendRequestContacts() {
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/contacts").subscribe(response => {
+      this.updateContacts(<Contact[]>response);
+    })
+  }
+
+  /**
+  * gets all chatrooms for the logged in user from backend
+  * 
+  */
+  private sendRequestRoomList() {
+    let that = this;
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
+      .subscribe(response => {
+        this.updateAvailableRooms(<ChatRoom[]>response);
+        that.sendRequestInitialChatMessages()
+      })
+  }
+
+
+
   scrollIntoView(elementId: string, smooth: boolean) {
     let scrollWhenReady = setInterval(
       function () {
@@ -849,11 +875,20 @@ export class ChatService {
 
   }
 
-
-
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) {
     this.leftPanelComponentStack_ = new ComponentStack();
+  }
 
+  private addEntryToDATA(entry: any) {
+    this.store.addEntryToDATA(entry);
+  }
+
+  private addListOfEntriesToDATA(entries: any[]) {
+    this.store.addListOfEntriesToDATA(entries);
+  }
+
+  private addMapToDATA(dataMap: Map<string, any>) {
+    this.store.addMapToDATA(dataMap);
   }
 
 

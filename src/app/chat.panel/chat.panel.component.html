@@ -18,6 +18,7 @@
                 </div>
             </div>
         </div>
+
         <div class="chat-panel-right-container">
             <div class="menu-item-container">
               <div class="search-input-container" [hidden]="!displaySearchInput">
@@ -55,7 +56,6 @@
         </div>
 
     </div>
-
     <app-displaychat id="app-displaychat" class="displaychat"></app-displaychat>
 
     <app-edit-group-profile *ngIf="constants.EDIT_GROUP_CHAT_PROFILE === currentDisplayedRightPanel"

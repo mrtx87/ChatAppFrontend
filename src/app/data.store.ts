@@ -191,18 +191,22 @@ export class DataStore {
         return this.TEMPDATA.get(id);
     }
 
-
-    resetStore() {
-        this.DATA_ = new Map<string, any>();
-        this.TEMPDATA_ = new Map<string, any>();
-
-        // LOGIN AND REGISTRATION PROPERTIES
+    resetLoginAndRegisterVars() {
         this.registerUsername_ = null;;
         this.registerPassword_ = null;
         this.registerPasswordRepeat_ = null;
 
         this.loginUsername_ = "default";
         this.loginPassword_ = "123";
+    }
+
+    resetStore() {
+        this.DATA_ = new Map<string, any>();
+        this.TEMPDATA_ = new Map<string, any>();
+
+        // LOGIN AND REGISTRATION PROPERTIES
+        this.resetLoginAndRegisterVars();
+        
         this.searchNewContactInputText_ = null;
         this.newContactsList_ = null;
 
