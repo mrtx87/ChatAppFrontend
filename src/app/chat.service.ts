@@ -274,7 +274,7 @@ export class ChatService {
     switch (transferMessage.function) {
 
       case this.constants.TM_TYPE_CHAT_MESSAGE: {
-        this.processRequestedChatMessages(transferMessage.chatMessage.roomId, [transferMessage.chatMessage])
+        this.processRequestedChatMessage(transferMessage.chatMessage.roomId, transferMessage.chatMessage)
       } break;
       case this.constants.TM_TYPE_UPDATE_ROOMS_AND_CONTACTS: {
         this.sendRequestRoomList();
@@ -286,18 +286,20 @@ export class ChatService {
       case this.constants.TM_FUNCTION_CREATE_ROOM_AND_CONTACT: {
         let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
         this.addAvailableRoom(chatRoom);
+        this.sendRequestInitialChatMessagesForSingleRoom(chatRoom);
         this.sendRequestContacts();
-        this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
         if (transferMessage.from.id === this.localUser.id) {
           this.displayedChatRoom = chatRoom;
+          this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
         }
       } break;
       case this.constants.TM_FUNCTION_CREATE_GROUP_ROOM: {
         let chatRoom: ChatRoom = <ChatRoom>transferMessage.chatRoom;
         this.addAvailableRoom(chatRoom);
-        this.sendRequestChatMessagesForSingleRoom(chatRoom);
+        this.sendRequestInitialChatMessagesForSingleRoom(chatRoom);
         if (transferMessage.from.id === this.localUser.id) {
           this.displayedChatRoom = chatRoom;
+          this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
         }
       } break;
     }
@@ -311,6 +313,7 @@ export class ChatService {
         this.cookieService.set(this.constants.USER_COOKIE_KEY, transferMessage.cookie);
       }
       this.isLoggedIn = true;
+      this.store.resetLoginAndRegisterVars();
     }
 
   }
@@ -431,8 +434,6 @@ export class ChatService {
     this.sendRequestContacts();
     this.sendRequestRoomList();
     this.listenForOnlineStatusOfContacts();
-
-    // this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   }
 
   private listenForOnlineStatusOfContacts() {
@@ -453,9 +454,7 @@ export class ChatService {
       this.availableRooms = new Map<string, ChatRoom>();
     }
     this.availableRooms.set(chatRoom.id, chatRoom);
-    this.sendRequestChatMessagesForSingleRoom(chatRoom);
     this.addMapToDATA(this.availableRooms);
-    // this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
   }
 
   private addNewAvailableRoom(chatRoom: ChatRoom) {
@@ -465,14 +464,17 @@ export class ChatService {
     this.availableRooms.set(chatRoom.id, chatRoom);
   }
 
-  private updateAvailableRooms(chatRooms: ChatRoom[]) {
+  private updateAvailableRooms(latestChatRooms: ChatRoom[]) {
     if (!this.availableRooms) {
       this.availableRooms = new Map<string, ChatRoom>();
     }
     let nextAvailableRooms: Map<string, ChatRoom> = new Map<string, ChatRoom>();
-    chatRooms.forEach(chatRoom => {
+    latestChatRooms.forEach(chatRoom => {
       if (this.availableRooms.has(chatRoom.id)) {
         let transferRoom = this.availableRooms.get(chatRoom.id);
+        transferRoom.iconUrl = chatRoom.iconUrl;
+        transferRoom.title = chatRoom.title;
+        transferRoom.userIds = chatRoom.userIds;
         nextAvailableRooms.set(transferRoom.id, transferRoom);
       } else {
         nextAvailableRooms.set(chatRoom.id, chatRoom);
@@ -489,8 +491,8 @@ export class ChatService {
     // this.sendRequestAllChatMessagesForRooms(chatRooms);
   }
 
-  sendUpdateAllChatMessages() {
-    this.availableRooms.forEach((chatRoom, key) => this.sendRequestChatMessagesForSingleRoom(chatRoom));
+  sendRequestInitialChatMessages() {
+    this.availableRooms.forEach((chatRoom, key) => this.sendRequestInitialChatMessagesForSingleRoom(chatRoom));
   }
 
   /**
@@ -501,53 +503,77 @@ export class ChatService {
   //   chatRooms.forEach(chatRoom => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   // }
 
-  private sendRequestChatMessagesForSingleRoom(chatRoom: ChatRoom) {
-    this.sendRequestChatMessages(chatRoom.id);
+  isPullingMessages : boolean = false;
+
+  /**
+ * gets all chat messages for a single room from backend
+ * @param roomId 
+ */
+  public sendRequestChatMessagesBatchForSingleRoom(chatRoom: ChatRoom) {
+    if(chatRoom.lastMessageToken){
+      this.isPullingMessages = true;
+      this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + chatRoom.id + "/token/" + chatRoom.lastMessageToken).subscribe(response => {
+        let messages: ChatMessage[] = <ChatMessage[]>response;
+        chatRoom.lastMessageToken =  messages[0].fromId !== 'init' ? messages[0].id : null;
+        this.isPullingMessages = false;
+        let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(chatRoom.id);
+
+        /*
+        let lastMessage = chatMessages[0];
+        if(lastMessage)
+        this.scrollIntoView(lastMessage.id, true);*/
+        this.processChatMessageBatch(chatRoom.id, messages);
+      });
+    }
   }
 
-  private addEntryToDATA(entry: any) {
-    this.store.addEntryToDATA(entry);
+  private processChatMessageBatch(roomId: string, responseChatMessages: ChatMessage[]) {
+    //console.log(response);
+    let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
+    this.displayChatComponent.lastKnowScrollPosition
+    this.displayChatComponent.displayChatMessagesContainer.scrollTop += 100;
+    this.chatMessagesByRoom.set(roomId, [...responseChatMessages, ...chatMessages]);
+
+
+    //console.log(newMessages)
   }
 
-  private addListOfEntriesToDATA(entries: any[]) {
-    this.store.addListOfEntriesToDATA(entries);
+  insertDateMessages(allChatMessages: ChatMessage[]) : ChatMessage[] {
+        //process received chatmessages and insert date message if needed 
+        let withDateMessages: ChatMessage[] = [this.buildDateMessage(allChatMessages[0].createdAt)];
+        for (let message of allChatMessages) {
+          if (this.areDaysDifferent(message.createdAt, withDateMessages[withDateMessages.length - 1].createdAt)) {
+            let dateMessage = this.buildDateMessage(message.createdAt);
+            withDateMessages.push(dateMessage);
+          }
+          withDateMessages.push(message);
+        }
+
+        return withDateMessages;
   }
 
-  private addMapToDATA(dataMap: Map<string, any>) {
-    this.store.addMapToDATA(dataMap);
+  buildDateMessage(createdAt: string) : ChatMessage {
+    let dateMessage = new ChatMessage();
+    dateMessage.seen = true;
+    dateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
+    dateMessage.createdAt = createdAt;
+    return dateMessage;
   }
 
   /**
-   * gets all chat messages for a single room from backend
-   * @param roomId 
-   */
-  private sendRequestChatMessages(roomId: string) {
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + roomId).subscribe(response => {
-      this.processRequestedChatMessages(roomId, <ChatMessage[]>response);
+* gets all chat messages for a single room from backend
+* @param roomId 
+*/
+  private sendRequestInitialChatMessagesForSingleRoom(chatRoom: ChatRoom) {
+    this.http.get(this.constants.BASE_URL + "/inital-messages/userId/" + this.localUser.id + "/roomId/" + chatRoom.id).subscribe(response => {
+      let messages: ChatMessage[] = <ChatMessage[]>response;
+      chatRoom.lastMessageToken =  messages[0].id !== 'init' ? messages[0].id : null;
+      this.processRequestedChatMessages(chatRoom.id, <any>response);
     })
   }
 
-  /**
-  * gets all contacts for the logged in user from backend
-  * 
-  */
-  private sendRequestContacts() {
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/contacts").subscribe(response => {
-      this.updateContacts(<Contact[]>response);
-    })
-  }
-
-  /**
-  * gets all chatrooms for the logged in user from backend
-  * 
-  */
-  private sendRequestRoomList() {
-    let that = this;
-    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
-      .subscribe(response => {
-        this.updateAvailableRooms(<ChatRoom[]>response);
-        that.sendUpdateAllChatMessages()
-      })
+  processRequestedChatMessage(roomId: string, chatMessage: ChatMessage) {
+    this.processRequestedChatMessages(roomId, [chatMessage])
   }
 
   /**
@@ -556,12 +582,12 @@ export class ChatService {
    * @param roomId 
    * @param responseChatMessages 
    */
-  private processRequestedChatMessages(roomId: string, responseChatMessages: ChatMessage[]) {
+  private processRequestedChatMessages(roomId: string, response: any) {
     //create ChatMessages Entry for a room in Map if it's not already existing
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-
+    let responseChatMessages: ChatMessage[] = response;
 
     //generate list of unseen messages
     this.updateUnseenMessagesIds(roomId, responseChatMessages);
@@ -590,22 +616,22 @@ export class ChatService {
 
     //if there are no chatMessages for given roomId we generate the inital date message
     let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
-    if (chatMessages.length == 0) {
+    /*if (chatMessages.length == 0) {
       let initialDateMessage = new ChatMessage();
       initialDateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
       initialDateMessage.createdAt = responseChatMessages[0].createdAt;
       chatMessages.push(initialDateMessage);
-    }
+    }*/
 
     //process received chatmessages and insert date message if needed 
     for (let message of responseChatMessages) {
-      if (this.areDaysDifferent(message.createdAt, chatMessages[chatMessages.length - 1].createdAt)) {
+      /*if (this.areDaysDifferent(message.createdAt, chatMessages[chatMessages.length - 1].createdAt)) {
         let dateMessage = new ChatMessage();
         dateMessage.seen = true;
         dateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
         dateMessage.createdAt = message.createdAt;
         chatMessages.push(dateMessage);
-      }
+      }*/
       chatMessages.push(message);
     }
   }
@@ -708,37 +734,47 @@ export class ChatService {
     chatRoomStub.title = title ? title : contact.name;
     chatRoomStub.userIds = [this.localUser.id, contact.id];
     transferMessage.chatRoom = chatRoomStub;
-
+    transferMessage.from = <Contact>this.localUser;
+    /*this.stompClient.send(
+      this.constants.WS_BASE_URL+"/create-room",
+      {},
+      JSON.stringify(transferMessage)
+    );*/
 
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
-        this.addAvailableRoom(<ChatRoom>response);
-        this.sendRequestContacts();
-        this.displayedChatRoom = <ChatRoom>response;
-        this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
+        //this.addAvailableRoom(<ChatRoom>response);
+        //this.sendRequestContacts();
+        //this.displayedChatRoom = <ChatRoom>response;
+        //this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
       });
   }
 
   /**
    * send a request to create a new room with an unkown contact
-   * @clearLeftPanelComponentStackparam contact 
    * @param title 
    */
   sendCreateGroupRoom(from: Contact, chatroom: ChatRoom) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
     let transferMessage: TransferMessage = new TransferMessage();
-    transferMessage.from = from;
     chatroom.groupChat = true;
     transferMessage.chatRoom = chatroom;
+    transferMessage.from = <Contact>this.localUser;
+    /*this.stompClient.send(
+      this.constants.WS_BASE_URL + "/create-room",
+      {},
+      JSON.stringify(transferMessage)
+    );*/
+
     this.http
       .post(this.constants.BASE_URL + "/create-room", transferMessage, { headers })
       .subscribe(response => {
-        let chatRoom: ChatRoom = <ChatRoom>response;
-        this.addAvailableRoom(chatRoom);
-        this.sendRequestChatMessagesForSingleRoom(chatRoom);
-        this.displayedChatRoom = chatRoom;
+        //this.addAvailableRoom(<ChatRoom>response);
+        //this.sendRequestContacts();
+        //this.displayedChatRoom = <ChatRoom>response;
+        //this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
       });
   }
   /**
@@ -774,15 +810,40 @@ export class ChatService {
     );
   }
 
+  /**
+  * gets all contacts for the logged in user from backend
+  * 
+  */
+  private sendRequestContacts() {
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/contacts").subscribe(response => {
+      this.updateContacts(<Contact[]>response);
+    })
+  }
+
+  /**
+  * gets all chatrooms for the logged in user from backend
+  * 
+  */
+  private sendRequestRoomList() {
+    let that = this;
+    this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/rooms")
+      .subscribe(response => {
+        this.updateAvailableRooms(<ChatRoom[]>response);
+        that.sendRequestInitialChatMessages()
+      })
+  }
+
+
+
   scrollIntoView(elementId: string, smooth: boolean) {
     let scrollWhenReady = setInterval(
       function () {
         let element: HTMLElement = document.getElementById(elementId);
         if (element) {
           //let scrollConfig = { behavior: "smooth"};
-          if(smooth) {
-            element.scrollIntoView({ behavior: "smooth"});
-          }else{
+          if (smooth) {
+            element.scrollIntoView({ behavior: "smooth" });
+          } else {
             element.scrollIntoView();
           }
           clearInterval(scrollWhenReady);
@@ -814,11 +875,20 @@ export class ChatService {
 
   }
 
-
-
   constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) {
     this.leftPanelComponentStack_ = new ComponentStack();
+  }
 
+  private addEntryToDATA(entry: any) {
+    this.store.addEntryToDATA(entry);
+  }
+
+  private addListOfEntriesToDATA(entries: any[]) {
+    this.store.addListOfEntriesToDATA(entries);
+  }
+
+  private addMapToDATA(dataMap: Map<string, any>) {
+    this.store.addMapToDATA(dataMap);
   }
 
 

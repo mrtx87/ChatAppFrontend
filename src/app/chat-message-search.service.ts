@@ -68,7 +68,7 @@ export class ChatMessageSearchService {
     let searchBody: string = "";
     let occurenceCount = 0;
     while (restOfBody.length > 0) {
-      let startIndex = restOfBody.indexOf(searchTerm);
+      let startIndex = restOfBody.toLowerCase().indexOf(searchTerm.toLowerCase());
       if (startIndex > -1) {
         let prefix = restOfBody.substring(0, startIndex);
         let foundText = restOfBody.substring(startIndex, startIndex + searchTerm.length);

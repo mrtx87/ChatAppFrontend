@@ -1,11 +1,11 @@
 <div class="wrapper chat" *ngIf="displayedChatRoom">
-    <div class="chat-panel-header">
+    <div [ngClass]="displaySearchInput? 'searchOpen' : ''" class="chat-panel-header">
         <div class="chat-panel-left-container">
             <div class="chat-name-container">
-                <div *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img class="chat-img"
+                <div class="chat-img-container" *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img class="chat-img"
                         src="{{displayedChatRoom | img}}"></div>
                 <div class="chat-name-member">
-                    <div class="chat-name"> {{displayedChatRoom | chatRoomName}}</div>
+                    <span class="chat-name"> {{displayedChatRoom | chatRoomName}}</span>
                     <div class="chat-member-container" *ngIf="displayedChatRoom.groupChat">
                         <span *ngFor="let id of displayedChatRoom?.userIds; let i = index" class="chat-member">
                             {{ id | contactName}}
@@ -18,18 +18,23 @@
                 </div>
             </div>
         </div>
+
         <div class="chat-panel-right-container">
-            <div class="menu-item-container"> <img class="magnifier-img" src="assets/magnifier-glass.svg"
-                    (click)="toggleDisplaySearch()">
-                <div *ngIf="displaySearchInput" style="display:flex;">
-                    <input type="text" [(ngModel)]="searchInputField">
-                    <div><img (click)="previousResult()" style="width: 25px; height:auto;" src="assets/arrow-down.svg">
-                    </div>
-                    <div><img (click)="nextResult()" style="width: 25px; height:auto;" src="assets/arrow-up.svg"></div>
-                    <div>
-                        {{ markedMessageCount > 0 ? markedMessageCount-markedMessageJumpIndex : '0'}}/{{markedMessageCount > 0 ? markedMessageCount : '0'}}
-                    </div>
-                </div>
+            <div class="menu-item-container">
+              <div class="search-input-container" [hidden]="!displaySearchInput">
+                  <input type="text" [(ngModel)]="searchInputField" placeholder="Was suchst du?">
+                  <div><img (click)="previousResult()" src="assets/arrow-down.svg">
+                  </div>
+                  <div><img (click)="nextResult()" src="assets/arrow-up.svg">
+                  </div>
+                  <div class="counter">
+                      {{ markedMessageCount > 0 ? markedMessageCount-markedMessageJumpIndex : '0'}}/{{markedMessageCount > 0 ? markedMessageCount : '0'}}
+                  </div>
+              </div>
+              <div class="controller">
+                <div class="magnifier-img" (click)="toggleDisplaySearch()"></div>
+                <div class="close-img" src="assets/magnifier-glass.svg" (click)="toggleDisplaySearch()"></div>
+              </div>
             </div>
             <div class="rightpanel-burger-menu" [ngClass]="displayRoomMenu ? 'active' : ''" tabindex="-1">
                 <img (click)="toggleRoomMenuDisplay()" class="menu-img" src="assets/burger.svg">
@@ -51,8 +56,7 @@
         </div>
 
     </div>
-
-    <app-displaychat class="displaychat"></app-displaychat>
+    <app-displaychat id="app-displaychat" class="displaychat"></app-displaychat>
 
     <app-edit-group-profile *ngIf="constants.EDIT_GROUP_CHAT_PROFILE === currentDisplayedRightPanel"
         class="overlay-comp-container"

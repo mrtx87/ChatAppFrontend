@@ -11,7 +11,10 @@ export class OnlineStatusPipe implements PipeTransform {
 
   transform(room: ChatRoom): any {
     let contact: Contact = this.values.resolveNotLocalUser(room.userIds);
-    return this.values.resolveOnlineStatusOfUser(contact.id) ? 'online' : '';
+    if (contact) {
+      return this.values.resolveOnlineStatusOfUser(contact.id) ? 'online' : '';
+    }
+    return '';
   }
 
   constructor(private values: ValueResolver) { }

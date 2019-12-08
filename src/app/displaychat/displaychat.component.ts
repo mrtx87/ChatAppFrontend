@@ -29,19 +29,38 @@ export class DisplaychatComponent implements OnInit {
     this.chatService.localUser = val;
   }
 
-
-
   get currentDisplayMessages(): ChatMessage[] {
     if (this.chatService.chatMessagesByRoom && this.displayedChatRoom) {
-      return this.chatService.chatMessagesByRoom.get(this.displayedChatRoom.id);
+      let rawMessages : ChatMessage[] =  this.chatService.chatMessagesByRoom.get(this.displayedChatRoom.id);
+      let withDateMessages = this.chatService.insertDateMessages(rawMessages);
+      return withDateMessages;
     }
     return [];
   }
 
-  constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) { }
+  constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) { 
+    this.chatService.registerDisplayChatComponent(this);
+  }
+
+  displayChatMessagesContainer: HTMLElement;
+  public lastKnowScrollPosition = 0;
 
   ngOnInit() {
-
+    let that = this;
+    let interval = setInterval(function () {
+      that.displayChatMessagesContainer = document.getElementById("app-displaychat");
+      if (that.displayChatMessagesContainer) {
+        that.displayChatMessagesContainer.addEventListener('scroll', function (e) {
+          that.lastKnowScrollPosition = that.displayChatMessagesContainer.scrollTop;
+          if(that.lastKnowScrollPosition == 0){
+            console.log("SCROLL: " + that.lastKnowScrollPosition);
+            // nachladen bitte
+            that.chatService.sendRequestChatMessagesBatchForSingleRoom(that.displayedChatRoom);
+          }
+        });
+        clearInterval(interval);
+      }
+    }, 10);
   }
 
 
