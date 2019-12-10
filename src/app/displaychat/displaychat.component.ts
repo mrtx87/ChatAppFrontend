@@ -92,7 +92,7 @@ export class DisplaychatComponent implements OnInit {
       if (that.displayedChatRoom && that.medianDateInView !== nextMedianDateInView ) {
         that.medianDateInView = nextMedianDateInView;
       }
-      console.log(that.listenForMedianDateInView)
+      // console.log(that.listenForMedianDateInView)
 
     }, 100)
 
