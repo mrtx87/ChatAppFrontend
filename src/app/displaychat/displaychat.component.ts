@@ -14,13 +14,22 @@ import { DataStore } from '../data.store';
 })
 export class DisplaychatComponent implements OnInit {
 
+  medianDateInView_: string;
+
+  get medianDateInView(): string {
+    return this.medianDateInView_
+  }
+
+  set medianDateInView(val: string) {
+    this.medianDateInView_ = val;
+  }
+
   get displayedChatRoom(): ChatRoom {
     return this.chatService.displayedChatRoom;
   }
   set displayedChatRoom(val: ChatRoom) {
     this.chatService.displayedChatRoom = val;
   }
-
 
   get localUser(): User {
     return this.chatService.localUser;
@@ -29,38 +38,65 @@ export class DisplaychatComponent implements OnInit {
     this.chatService.localUser = val;
   }
 
-  get currentDisplayMessages(): ChatMessage[] {
-    if (this.chatService.chatMessagesByRoom && this.displayedChatRoom) {
-      let rawMessages : ChatMessage[] =  this.chatService.chatMessagesByRoom.get(this.displayedChatRoom.id);
-      let withDateMessages = this.chatService.insertDateMessages(rawMessages);
-      return withDateMessages;
-    }
-    return [];
+  get allChatMessageInRoom(): ChatMessage[] {
+    return this.displayedChatRoom ? this.chatService.chatMessagesByRoom.get(this.displayedChatRoom.id) : [];
   }
 
-  constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) { 
+
+  rawMessages__ : ChatMessage[] = [];
+  withDateMessage__ : ChatMessage[] = [];
+  get currentDisplayedMessages(): ChatMessage[] {
+    if (this.allChatMessageInRoom && this.chatService.chatMessagesByRoom && this.displayedChatRoom && this.rawMessages__.length != this.allChatMessageInRoom.length) {
+      this.rawMessages__ = this.allChatMessageInRoom;
+      this.withDateMessage__ = this.chatService.insertDateMessages(this.rawMessages__);
+      return this.withDateMessage__;
+    }
+    return this.withDateMessage__;
+  }
+
+  constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) {
     this.chatService.registerDisplayChatComponent(this);
   }
 
   displayChatMessagesContainer: HTMLElement;
   public lastKnowScrollPosition = 0;
+  public lastKnowScrollHeight = 0;
 
+  listenForMedianDateInView : any;
   ngOnInit() {
     let that = this;
-    let interval = setInterval(function () {
+    let reloadChatMessagesOnScroll = setInterval(function () {
       that.displayChatMessagesContainer = document.getElementById("app-displaychat");
       if (that.displayChatMessagesContainer) {
         that.displayChatMessagesContainer.addEventListener('scroll', function (e) {
           that.lastKnowScrollPosition = that.displayChatMessagesContainer.scrollTop;
-          if(that.lastKnowScrollPosition == 0){
-            console.log("SCROLL: " + that.lastKnowScrollPosition);
+          that.lastKnowScrollHeight = that.displayChatMessagesContainer.scrollHeight;
+          if (that.lastKnowScrollPosition == 0) {
+            //console.log("SCROLL: " + that.lastKnowScrollPosition);
             // nachladen bitte
             that.chatService.sendRequestChatMessagesBatchForSingleRoom(that.displayedChatRoom);
           }
         });
-        clearInterval(interval);
+        clearInterval(reloadChatMessagesOnScroll);
       }
     }, 10);
+
+
+    this.listenForMedianDateInView = setInterval(function () {
+      if (!that.displayedChatRoom) {
+        console.log("cleared")
+        clearInterval(that.listenForMedianDateInView);
+      }
+
+      let nextMedianDateInView = that.chatService.getMedianDateInView();
+      if (that.displayedChatRoom && that.medianDateInView !== nextMedianDateInView ) {
+        that.medianDateInView = nextMedianDateInView;
+      }
+      console.log(that.listenForMedianDateInView)
+
+    }, 100)
+
+
   }
 
 

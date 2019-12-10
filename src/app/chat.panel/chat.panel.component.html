@@ -2,8 +2,8 @@
     <div [ngClass]="displaySearchInput? 'searchOpen' : ''" class="chat-panel-header">
         <div class="chat-panel-left-container">
             <div class="chat-name-container">
-                <div class="chat-img-container" *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img class="chat-img"
-                        src="{{displayedChatRoom | img}}"></div>
+                <div class="chat-img-container" *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img
+                        class="chat-img" src="{{displayedChatRoom | img}}"></div>
                 <div class="chat-name-member">
                     <span class="chat-name"> {{displayedChatRoom | chatRoomName}}</span>
                     <div class="chat-member-container" *ngIf="displayedChatRoom.groupChat">
@@ -21,20 +21,20 @@
 
         <div class="chat-panel-right-container">
             <div class="menu-item-container">
-              <div class="search-input-container" [hidden]="!displaySearchInput">
-                  <input type="text" [(ngModel)]="searchInputField" placeholder="Was suchst du?">
-                  <div><img (click)="previousResult()" src="assets/arrow-down.svg">
-                  </div>
-                  <div><img (click)="nextResult()" src="assets/arrow-up.svg">
-                  </div>
-                  <div class="counter">
-                      {{ markedMessageCount > 0 ? markedMessageCount-markedMessageJumpIndex : '0'}}/{{markedMessageCount > 0 ? markedMessageCount : '0'}}
-                  </div>
-              </div>
-              <div class="controller">
-                <div class="magnifier-img" (click)="toggleDisplaySearch()"></div>
-                <div class="close-img" src="assets/magnifier-glass.svg" (click)="toggleDisplaySearch()"></div>
-              </div>
+                <div class="search-input-container" [hidden]="!displaySearchInput">
+                    <input type="text" [(ngModel)]="searchInputField" placeholder="Was suchst du?">
+                    <div><img (click)="previousResult()" src="assets/arrow-down.svg">
+                    </div>
+                    <div><img (click)="nextResult()" src="assets/arrow-up.svg">
+                    </div>
+                    <div class="counter">
+                        {{ markedMessageCount > 0 ? markedMessageCount-markedMessageJumpIndex : '0'}}/{{markedMessageCount > 0 ? markedMessageCount : '0'}}
+                    </div>
+                </div>
+                <div class="controller">
+                    <div class="magnifier-img" (click)="toggleDisplaySearch()"></div>
+                    <div class="close-img" src="assets/magnifier-glass.svg" (click)="toggleDisplaySearch()"></div>
+                </div>
             </div>
             <div class="rightpanel-burger-menu" [ngClass]="displayRoomMenu ? 'active' : ''" tabindex="-1">
                 <img (click)="toggleRoomMenuDisplay()" class="menu-img" src="assets/burger.svg">
@@ -56,7 +56,17 @@
         </div>
 
     </div>
+
+    <!-- CHAT AREA -->
+    <div
+        style="position:absolute; z-index: 1000; top:75px; width:100%; display: flex; justify-content: center; align-items: center; ">
+        <div
+            style=" box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3); background-color: #e1f5feeb;padding: 5px 9px; border-radius:5px;">
+            {{(chatService.displayChatComponent.medianDateInView ? chatService.displayChatComponent.medianDateInView : '01.01.2001') | date : "dd.MM.yyyy"}}
+        </div>
+    </div>
     <app-displaychat id="app-displaychat" class="displaychat"></app-displaychat>
+    <!-- CHAT AREA END-->
 
     <app-edit-group-profile *ngIf="constants.EDIT_GROUP_CHAT_PROFILE === currentDisplayedRightPanel"
         class="overlay-comp-container"
@@ -83,8 +93,9 @@
                 <div><img src="assets/img.svg"></div>
             </div>
             <div class="chatmessage-container">
-            <div id="input-chat-messages" contenteditable="true" style="font-weight: normal;"
-                [hidden]="!displayedChatRoom"></div></div>
+                <div id="input-chat-messages" contenteditable="true" style="font-weight: normal;"
+                    [hidden]="!displayedChatRoom"></div>
+            </div>
             <img class="send" src="assets/paper-plane.svg" [hidden]="!displayedChatRoom"
                 (click)="triggerSendChatMessage()">
         </div>

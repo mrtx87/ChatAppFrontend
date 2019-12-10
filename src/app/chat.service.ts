@@ -503,18 +503,18 @@ export class ChatService {
   //   chatRooms.forEach(chatRoom => this.sendRequestChatMessagesForSingleRoom(chatRoom));
   // }
 
-  isPullingMessages : boolean = false;
+  isPullingMessages: boolean = false;
 
   /**
  * gets all chat messages for a single room from backend
  * @param roomId 
  */
   public sendRequestChatMessagesBatchForSingleRoom(chatRoom: ChatRoom) {
-    if(chatRoom.lastMessageToken){
+    if (chatRoom.lastMessageToken) {
       this.isPullingMessages = true;
       this.http.get(this.constants.BASE_URL + "/userId/" + this.localUser.id + "/roomId/" + chatRoom.id + "/token/" + chatRoom.lastMessageToken).subscribe(response => {
         let messages: ChatMessage[] = <ChatMessage[]>response;
-        chatRoom.lastMessageToken =  messages[0].fromId !== 'init' ? messages[0].id : null;
+        chatRoom.lastMessageToken = messages && messages.length > 0 && !messages[0].fromId.includes('init') ? messages[0].id : null;
         this.isPullingMessages = false;
         let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(chatRoom.id);
 
@@ -538,21 +538,68 @@ export class ChatService {
     //console.log(newMessages)
   }
 
-  insertDateMessages(allChatMessages: ChatMessage[]) : ChatMessage[] {
-        //process received chatmessages and insert date message if needed 
-        let withDateMessages: ChatMessage[] = [this.buildDateMessage(allChatMessages[0].createdAt)];
-        for (let message of allChatMessages) {
-          if (this.areDaysDifferent(message.createdAt, withDateMessages[withDateMessages.length - 1].createdAt)) {
-            let dateMessage = this.buildDateMessage(message.createdAt);
-            withDateMessages.push(dateMessage);
-          }
-          withDateMessages.push(message);
-        }
+  insertDateMessages(allChatMessages: ChatMessage[]): ChatMessage[] {
+    //process received chatmessages and insert date message if needed 
+    let withDateMessages: ChatMessage[] = [this.buildDateMessage(allChatMessages[0].createdAt)];
+    for (let message of allChatMessages) {
+      if (this.areDaysDifferent(message.createdAt, withDateMessages[withDateMessages.length - 1].createdAt)) {
+        let dateMessage = this.buildDateMessage(message.createdAt);
+        withDateMessages.push(dateMessage);
+      }
+      withDateMessages.push(message);
+    }
 
-        return withDateMessages;
+    return withDateMessages;
   }
 
-  buildDateMessage(createdAt: string) : ChatMessage {
+  getMedianDateInView(): string {
+    if (this.displayedChatRoom) {
+      let messagesInView = this.chatMessagesByRoom.get(this.displayedChatRoom.id).filter(m => this.isChatMessageInViewport(m))
+      let dates: Map<string, number> = new Map<string, number>();
+      for (let messageInView of messagesInView) {
+        let key: string = messageInView.createdAt.substring(0, 10);
+        if (dates.has(key)) {
+          let val = dates.get(key);
+          dates.set(key, val + 1);
+        } else {
+          dates.set(key, 1);
+        }
+      }
+
+      let date: string;
+      let maxOcc = 0;
+      dates.forEach((value, key) => {
+        if (date) {
+          if (maxOcc < value) {
+            maxOcc = value;
+            date = key;
+          }
+        } else {
+          date = key;
+          maxOcc = value;
+        }
+      })
+      return messagesInView && messagesInView.length > 0 ? date : null;
+    }
+    return null;
+  }
+
+  isChatMessageInViewport(chatMessage: ChatMessage): boolean {
+    let elem: HTMLElement = document.getElementById(chatMessage.id);
+    return  this.isInViewport(elem);
+  };
+
+  isInViewport(elem: HTMLElement): boolean {
+    let bounding = elem.getBoundingClientRect();
+    return (
+      bounding.top >= 0 &&
+      bounding.left >= 0 &&
+      bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+  };
+
+  buildDateMessage(createdAt: string): ChatMessage {
     let dateMessage = new ChatMessage();
     dateMessage.seen = true;
     dateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
@@ -567,7 +614,7 @@ export class ChatService {
   private sendRequestInitialChatMessagesForSingleRoom(chatRoom: ChatRoom) {
     this.http.get(this.constants.BASE_URL + "/inital-messages/userId/" + this.localUser.id + "/roomId/" + chatRoom.id).subscribe(response => {
       let messages: ChatMessage[] = <ChatMessage[]>response;
-      chatRoom.lastMessageToken =  messages[0].id !== 'init' ? messages[0].id : null;
+      chatRoom.lastMessageToken = !messages[0].fromId.includes('init') ? messages[0].id : null;
       this.processRequestedChatMessages(chatRoom.id, <any>response);
     })
   }
@@ -582,28 +629,23 @@ export class ChatService {
    * @param roomId 
    * @param responseChatMessages 
    */
-  private processRequestedChatMessages(roomId: string, response: any) {
+  private processRequestedChatMessages(roomId: string, responseChatMessages: ChatMessage[]) {
     //create ChatMessages Entry for a room in Map if it's not already existing
     if (!this.chatMessagesByRoom.has(roomId)) {
       this.chatMessagesByRoom.set(roomId, []);
     }
-    let responseChatMessages: ChatMessage[] = response;
-
     //generate list of unseen messages
     this.updateUnseenMessagesIds(roomId, responseChatMessages);
 
     //filter for incoming messages
     let incomingMessages = responseChatMessages.filter(cm => cm.fromId != this.localUser.id);
-    if (incomingMessages && incomingMessages.length > 0) {
-
-      if (this.displayedChatRoom && roomId == this.displayedChatRoom.id) {
-        this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id, false);
-      }
+    if (incomingMessages && this.displayedChatRoom && incomingMessages.length > 0 && roomId == this.displayedChatRoom.id) {
+      //Scroll to oldest unseen
+      this.scrollIntoView(this.store.DATA.get(roomId).oldestUnseenMessage.id, false);
     } else {
+      //Scroll to latest message
       this.scrollIntoView(responseChatMessages[responseChatMessages.length - 1].id, false);
     }
-    //count and set list of unseen messages ids in room
-    // this.availableRooms.get(roomId).unseenChatMessageIds = this.getUnseenMessagesIds(responseChatMessages);
 
     //save responseChatMessages in DATA Store
     this.addListOfEntriesToDATA(responseChatMessages);
@@ -614,26 +656,8 @@ export class ChatService {
       this.availableRooms.get(roomId).unseenChatMessageIds = [];
     }
 
-    //if there are no chatMessages for given roomId we generate the inital date message
     let chatMessages: ChatMessage[] = this.chatMessagesByRoom.get(roomId);
-    /*if (chatMessages.length == 0) {
-      let initialDateMessage = new ChatMessage();
-      initialDateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
-      initialDateMessage.createdAt = responseChatMessages[0].createdAt;
-      chatMessages.push(initialDateMessage);
-    }*/
-
-    //process received chatmessages and insert date message if needed 
-    for (let message of responseChatMessages) {
-      /*if (this.areDaysDifferent(message.createdAt, chatMessages[chatMessages.length - 1].createdAt)) {
-        let dateMessage = new ChatMessage();
-        dateMessage.seen = true;
-        dateMessage.fromId = this.constants.CHAT_MESSAGE_DATE_TYPE;
-        dateMessage.createdAt = message.createdAt;
-        chatMessages.push(dateMessage);
-      }*/
-      chatMessages.push(message);
-    }
+    this.chatMessagesByRoom.set(roomId, [...chatMessages, ...responseChatMessages]);
   }
 
   /**

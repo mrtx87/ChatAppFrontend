@@ -2,7 +2,7 @@
     <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
         <div *ngIf="chatService.isPullingMessages" id="" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     </div>
-    <ng-template ngFor let-m [ngForOf]="currentDisplayMessages">
+    <ng-template ngFor let-m [ngForOf]="currentDisplayedMessages">
 
         <!-- Date MESSAGE CONTAINER -->
         <div class="date-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_DATE_TYPE">
@@ -12,7 +12,7 @@
         </div>
 
         <!-- SYSTEM MESSAGE CONTAINER -->
-        <div class="System-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE">
+        <div id="{{m?.id}}" class="System-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE">
             <div class="system-bubble">
                 {{ m?.body }}
                 {{ m?.createdAt | date: "hh:mm" }}</div>
