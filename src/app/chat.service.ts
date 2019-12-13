@@ -811,11 +811,11 @@ export class ChatService {
    * @param chatRoom 
    * @param chatMessage 
    */
-  sendOutgoingChatMessage(chatRoom: ChatRoom, chatMessage: ChatMessage) {
+  sendOutgoingChatMessage(userIds: string[], chatMessage: ChatMessage) {
     this.stompClient.send(
       "/app/send/chat-message",
       {},
-      JSON.stringify({ from: <Contact>this.localUser, chatRoom: chatRoom, chatMessage: chatMessage })
+      JSON.stringify({ from: <Contact>this.localUser, unseenChatMessageIds: userIds, chatMessage: chatMessage })
     );
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { ChatRoom } from '../Entities/chat.room';
 import { ChatMessage } from '../Entities/chat.message';
@@ -12,7 +12,7 @@ import { DataStore } from '../data.store';
   templateUrl: './displaychat.component.html',
   styleUrls: ['./displaychat.component.css']
 })
-export class DisplaychatComponent implements OnInit {
+export class DisplaychatComponent implements OnInit, OnDestroy {
 
   medianDateInView_: string;
 
@@ -42,9 +42,6 @@ export class DisplaychatComponent implements OnInit {
     return this.displayedChatRoom ? this.chatService.chatMessagesByRoom.get(this.displayedChatRoom.id) : [];
   }
 
-
-  rawMessages__: ChatMessage[] = [];
-  withDateMessage__: ChatMessage[] = [];
   get currentDisplayedMessages(): ChatMessage[] {
     return this.allChatMessageInRoom;
   }
@@ -95,7 +92,9 @@ export class DisplaychatComponent implements OnInit {
 
   }
 
-
+  ngOnDestroy() {
+    clearInterval(this.listenForMedianDateInView);
+  }
 
 
 }

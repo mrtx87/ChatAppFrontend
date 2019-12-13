@@ -114,7 +114,7 @@ export class ChatPanelComponent implements OnInit {
       chatMessage.body = this.inputField.innerText;
       chatMessage.fromId = this.localUser.id;
       chatMessage.roomId = this.displayedChatRoom.id;
-      this.chatService.sendOutgoingChatMessage(this.displayedChatRoom, chatMessage);
+      this.chatService.sendOutgoingChatMessage(this.displayedChatRoom.userIds, chatMessage);
       this.inputField.innerHTML = "";
       this.inputField.innerText = "";
 
