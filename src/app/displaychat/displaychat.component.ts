@@ -43,15 +43,10 @@ export class DisplaychatComponent implements OnInit {
   }
 
 
-  rawMessages__ : ChatMessage[] = [];
-  withDateMessage__ : ChatMessage[] = [];
+  rawMessages__: ChatMessage[] = [];
+  withDateMessage__: ChatMessage[] = [];
   get currentDisplayedMessages(): ChatMessage[] {
-    if (this.allChatMessageInRoom && this.chatService.chatMessagesByRoom && this.displayedChatRoom && this.rawMessages__.length != this.allChatMessageInRoom.length) {
-      this.rawMessages__ = this.allChatMessageInRoom;
-      this.withDateMessage__ = this.chatService.insertDateMessages(this.rawMessages__);
-      return this.withDateMessage__;
-    }
-    return this.withDateMessage__;
+    return this.allChatMessageInRoom;
   }
 
   constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) {
@@ -62,7 +57,7 @@ export class DisplaychatComponent implements OnInit {
   public lastKnowScrollPosition = 0;
   public lastKnowScrollHeight = 0;
 
-  listenForMedianDateInView : any;
+  listenForMedianDateInView: any;
   ngOnInit() {
     let that = this;
     let reloadChatMessagesOnScroll = setInterval(function () {
@@ -84,16 +79,17 @@ export class DisplaychatComponent implements OnInit {
 
     this.listenForMedianDateInView = setInterval(function () {
       if (!that.displayedChatRoom) {
-        console.log("cleared")
+        //console.log("cleared")
         clearInterval(that.listenForMedianDateInView);
       }
 
-      let nextMedianDateInView = that.chatService.getMedianDateInView();
-      if (that.displayedChatRoom && that.medianDateInView !== nextMedianDateInView ) {
-        that.medianDateInView = nextMedianDateInView;
+      if (that.displayedChatRoom) {
+        let nextMedianDateInView = that.chatService.getMedianDateInView();
+        if (that.medianDateInView !== nextMedianDateInView) {
+          that.medianDateInView = nextMedianDateInView;
+        }
+        //console.log(that.listenForMedianDateInView)
       }
-      console.log(that.listenForMedianDateInView)
-
     }, 100)
 
 

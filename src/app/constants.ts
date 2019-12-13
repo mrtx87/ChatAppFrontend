@@ -34,7 +34,7 @@ export class Constants {
 
   public DEFAULT_PANEL: string = "default-panel";
 
-  public CHAT_MESSAGE_DATE_TYPE: string = "DATE";
+  public CHAT_MESSAGE_DATE_TYPE: string = "date";
   public CHAT_MESSAGE_SYSTEM_TYPE: string = "system";
   public CHAT_MESSAGE_SYSTEM_INIT_TYPE: string = "init";
 

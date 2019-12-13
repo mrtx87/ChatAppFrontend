@@ -5,7 +5,7 @@ import { ChatRoom } from './Entities/chat.room';
 import { AppComponent } from './app.component';
 import { Contact } from './Entities/contact';
 import { User } from './Entities/user';
-import { TransferMessage } from './Entities/transfer.message';
+import { DataTransferContainer } from './Entities/datatransfer.container';
 import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
@@ -270,11 +270,11 @@ export class ChatService {
     });
   }
 
-  handleServerResponse(transferMessage: TransferMessage) {
+  handleServerResponse(transferMessage: DataTransferContainer) {
     switch (transferMessage.function) {
 
       case this.constants.TM_TYPE_CHAT_MESSAGE: {
-        this.processRequestedChatMessage(transferMessage.chatMessage.roomId, transferMessage.chatMessage)
+        this.processRequestedChatMessages(transferMessage.chatRoomId, transferMessage.chatMessages)
       } break;
       case this.constants.TM_TYPE_UPDATE_ROOMS_AND_CONTACTS: {
         this.sendRequestRoomList();
@@ -306,7 +306,7 @@ export class ChatService {
 
   }
 
-  finalizeLogin(transferMessage: TransferMessage) {
+  finalizeLogin(transferMessage: DataTransferContainer) {
 
     if (this.localUser.id === transferMessage.from.id) {
       if (transferMessage.cookie) {
@@ -323,7 +323,6 @@ export class ChatService {
       this.localUser = receivedUser;
       this.addEntryToDATA(<Contact>this.localUser);
       this.init();
-      let that = this
       return;
     }
     console.log("fehlerhafter login response")
@@ -538,20 +537,6 @@ export class ChatService {
     //console.log(newMessages)
   }
 
-  insertDateMessages(allChatMessages: ChatMessage[]): ChatMessage[] {
-    //process received chatmessages and insert date message if needed 
-    let withDateMessages: ChatMessage[] = [this.buildDateMessage(allChatMessages[0].createdAt)];
-    for (let message of allChatMessages) {
-      if (this.areDaysDifferent(message.createdAt, withDateMessages[withDateMessages.length - 1].createdAt)) {
-        let dateMessage = this.buildDateMessage(message.createdAt);
-        withDateMessages.push(dateMessage);
-      }
-      withDateMessages.push(message);
-    }
-
-    return withDateMessages;
-  }
-
   getMedianDateInView(): string {
     if (this.displayedChatRoom) {
       let messagesInView = this.chatMessagesByRoom.get(this.displayedChatRoom.id).filter(m => this.isChatMessageInViewport(m))
@@ -586,7 +571,7 @@ export class ChatService {
 
   isChatMessageInViewport(chatMessage: ChatMessage): boolean {
     let elem: HTMLElement = document.getElementById(chatMessage.id);
-    return  this.isInViewport(elem);
+    return  elem ? this.isInViewport(elem) : false;
   };
 
   isInViewport(elem: HTMLElement): boolean {
@@ -732,7 +717,7 @@ export class ChatService {
   sendUpdateUnseenMessages(unseenChatMessageIds: string[]) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
-    let transferMessage: TransferMessage = new TransferMessage();
+    let transferMessage: DataTransferContainer = new DataTransferContainer();
     transferMessage.unseenChatMessageIds = unseenChatMessageIds;
     transferMessage.from = <Contact>this.localUser;
     this.http
@@ -752,7 +737,7 @@ export class ChatService {
   sendCreateRoomAndContact(contact: Contact, title?: string) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
-    let transferMessage: TransferMessage = new TransferMessage();
+    let transferMessage: DataTransferContainer = new DataTransferContainer();
     let chatRoomStub = new ChatRoom();
     chatRoomStub.groupChat = false;
     chatRoomStub.title = title ? title : contact.name;
@@ -782,7 +767,7 @@ export class ChatService {
   sendCreateGroupRoom(from: Contact, chatroom: ChatRoom) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
-    let transferMessage: TransferMessage = new TransferMessage();
+    let transferMessage: DataTransferContainer = new DataTransferContainer();
     chatroom.groupChat = true;
     transferMessage.chatRoom = chatroom;
     transferMessage.from = <Contact>this.localUser;
@@ -808,7 +793,7 @@ export class ChatService {
   sendRemoveContact(conatactToRemove: Contact, chatRoom: ChatRoom) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json");
-    let transferMessage: TransferMessage = new TransferMessage();
+    let transferMessage: DataTransferContainer = new DataTransferContainer();
     transferMessage.from = this.localUser;
     transferMessage.chatRoom = chatRoom;
     this.http
