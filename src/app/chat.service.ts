@@ -604,10 +604,6 @@ export class ChatService {
     })
   }
 
-  processRequestedChatMessage(roomId: string, chatMessage: ChatMessage) {
-    this.processRequestedChatMessages(roomId, [chatMessage])
-  }
-
   /**
    * processes the received chatmessages in a way that they can be displayed correclty
    * e.g. insert Date Messages for a correct displaying of Dates in the chatroom
@@ -665,7 +661,7 @@ export class ChatService {
    */
   private updateUnseenMessagesIds(roomId: string, chatMessages: ChatMessage[]) {
     let chatRoom: ChatRoom = this.availableRooms.get(roomId);
-    let hasAlreadyUnseenMessages: boolean = chatRoom.unseenChatMessageIds && chatRoom.unseenChatMessageIds.length > 0 ? true : false;
+    let hasAlreadyUnseenMessages: boolean = chatRoom.unseenChatMessageIds && chatRoom.unseenChatMessageIds.length > 0;
     if (!hasAlreadyUnseenMessages) {
       chatRoom.unseenChatMessageIds = [];
     }
