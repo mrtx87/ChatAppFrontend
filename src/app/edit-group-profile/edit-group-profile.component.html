@@ -1,9 +1,71 @@
 <div class="profile">
+  <div class="return-2-user-panel" >
+    <div class="return-button-2-panel">
+        <div class="r2upa">
+           <img (click)="initSlideOut()" src="assets/close.svg">
+        </div>
+        <div class="r2bp">
+            Gruppenprofil
+        </div>
+    </div>
+</div>
+  <div class="profile-container">
+      <div class="profile-pic-container">
+          <div class="pp">
+              <!--<img *ngIf="localUser" class="img-test" src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">!-->
+              <img (click)="!readOnly ? fileInput.click() : ''"
+                  src="{{iconUrl || 'assets/default-user-icon.svg'}}" class="img-test">
+              <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+          </div>
+
+      </div>
+      <div class="edit-name-container">
+          <div class="profile-name">
+              <span>
+                  {{ 'your_name' | tl8 }}
+              </span>
+          </div>
+          <div class="edit-profile-name">
+                  <input tabindex="-1" id="checkbox1" type="checkbox">
+                  <label *ngIf="!readOnly" for="checkbox1" (click)="updateUserProfile()"></label>
+                  <div *ngIf="!readOnly" class="submenu"><span>12</span><a class="smiley"></a><span></span></div>
+                  <input [(ngModel)]="name" type="text" placeholder="edit name">
+                  <span></span>
+
+          </div>
+      </div>
+      <div class="disclaimer-text">
+          {{ 'disclaimer_text' | tl8 }}
+      </div>
+      <div class="edit-info-container">
+          <div class="profile-info">
+              <span>
+                  {{ 'info' | tl8 }}
+              </span>
+          </div>
+          <div class="edit-profile-info">
+                  <input tabindex="-1" id="checkbox2" type="checkbox">
+                  <label *ngIf="!readOnly" for="checkbox2" (click)="updateUserProfile()"></label>
+                  <div *ngIf="!readOnly" class="submenu"><span>12</span><a class="smiley"></a><span></span></div>
+                  <input  [(ngModel)]="info" type="text" placeholder="edit info">
+                  <span></span>
+          </div>
+      </div>
+
+      <div class="delete-contact-container" >
+        <div (click)="removeContact()"> {{ 'remove_user' | tl8 }} </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- <div class="profile">
     <div class="return-2-user-panel">
         <div class="return-button-2-panel">
-            <!--<div class="r2upa">
-                <img src="assets/left-arrow.svg">
-            </div>!-->
+
             <div class="r2upa">
                 <img (click)="initSlideOut()"
                     src="assets/left-arrow.svg">
@@ -16,7 +78,6 @@
     <div class="profile-container">
         <div class="profile-pic-container">
             <div class="pp">
-                <!--<img *ngIf="localUser" class="img-test" src="{{localUser.iconUrl ? localUser.iconUrl : 'assets/default-user-icon.svg'}}">!-->
                 <img (click)="!readOnly ? fileInput.click() : ''"
                     src="{{currentChatRoom | img}}" class="img-test">
                 <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
@@ -56,4 +117,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

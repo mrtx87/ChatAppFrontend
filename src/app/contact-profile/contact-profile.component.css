@@ -15,7 +15,7 @@
     padding-right: 20px;
 }
 
-.return-button-2-panel{
+.return-button-2-panel {
     position: absolute;
     bottom: 0px;
     display: flex;
@@ -40,7 +40,7 @@
 
 
 .r2bp {
-    font-size: 19px;
+    font-size: 16px;
     align-self: center;
 }
 

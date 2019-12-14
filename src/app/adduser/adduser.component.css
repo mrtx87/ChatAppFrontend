@@ -1,7 +1,6 @@
 .adduser {
     display: flex;
     flex-direction: column;
-    background-color: #F7F7F7;
 }
 
 .return-2-user-panel {
@@ -104,10 +103,10 @@
 .user-app-burger-img:active {
     height: 45%;
     margin: 16px 26px 15px 0px;
-} 
+}
 
 .text-container {
-    font-size:30px; 
+    font-size:30px;
     color:white;
 }
 
@@ -139,46 +138,39 @@
     align-items: center;
     width: 100%;
     height:85px;
-    padding: 0px 5px;
+    position: relative;
+    transition: 0.1s;
 }
 
 .new-contact-icon{
     border-radius: 50%;
     height: 55px;
-    padding: 3px;
+}
+
+.new-contact-icon-container {
+  padding: 0 0 0 15px;
 }
 
 .new-contact-text-container{
-    display: flex;
-    align-items: center;
-    width: 80%;
-    height: 55px;
-    margin-left: 5px;
-    border-bottom: 1px solid #F1F1F1;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin: 0 15px;
+  border-bottom: 1px solid #F1F1F1;
 }
 
 .create-room-icon-container{
-    display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 
-.create-room-icon-container:hover .create-room-icon{
-    height: 33px;
-    width: 33px;
-}
 
 .new-contact-row:hover{
     background-color: #F1F1F1;
 }
-
-.new-contact-row:hover .create-room-icon-container{
-    display: flex;
-}
-
-.create-room-icon{
-    height: 30px;
-    width: 30px;
-}
-
 
 .search-contact-container {
     width: 100%;
