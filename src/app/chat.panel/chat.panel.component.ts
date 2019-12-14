@@ -127,6 +127,7 @@ export class ChatPanelComponent implements OnInit {
     if (this.messageSearch.markedMessages.length > 0) {
       // jump to last (in time)
       this.markedMessageJumpIndex = this.messageSearch.markedMessages.length - 1;
+      this.scrollToSearchResult(true)
     }
   }
 
@@ -181,6 +182,8 @@ export class ChatPanelComponent implements OnInit {
   }
 
   previousResult() {
+    let markedMessage: ChatMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
+    markedMessage.highlightedSearchBody = null;
     if (this.markedMessageJumpIndex + 1 < this.markedMessageCount) {
       this.markedMessageJumpIndex += 1;
     } else {
@@ -191,6 +194,8 @@ export class ChatPanelComponent implements OnInit {
   }
 
   nextResult() {
+    let markedMessage: ChatMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
+    markedMessage.highlightedSearchBody = null;
     if (this.markedMessageJumpIndex - 1 >= 0) {
       this.markedMessageJumpIndex -= 1;
     } else {
@@ -202,7 +207,8 @@ export class ChatPanelComponent implements OnInit {
   }
 
   scrollToSearchResult(smooth: boolean) {
-    let markedMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
+    let markedMessage: ChatMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
+    markedMessage.highlightedSearchBody = markedMessage.searchBody.replace("searchRes", "searchResHighlight")
     if (markedMessage) {
         this.chatService.scrollIntoView(markedMessage.id, smooth);
     }

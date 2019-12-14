@@ -59,7 +59,7 @@ export class Constants {
 
   //SEARCH STUFF
 
-  MARK_OPEN: string = "<span class=\"test\">"
+  MARK_OPEN: string = "<span class=\"searchRes\">"
   MARK_CLOSE: string = "</span>"
 
   //KEYCODES

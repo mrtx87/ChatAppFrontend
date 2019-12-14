@@ -35,8 +35,12 @@ body {
 }
 
 
-.test {
+.searchRes {
   background-color:rgb(247, 192, 91);
+}
+
+.searchResHighlight {
+  background-color:rgb(195, 117, 247);
 }
 
 
