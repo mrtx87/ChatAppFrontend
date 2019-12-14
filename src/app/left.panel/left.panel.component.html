@@ -17,7 +17,7 @@
         </div>
         <div [ngClass]="displayUserMenu ? 'active' : ''" class="user-app-burger" tabindex="-1">
             <img class="user-app-burger-img" src="assets/burger.svg" (click)="displayUserMenu=!displayUserMenu">
-            <div id="leftpanel-burger-menu" *ngIf="displayUserMenu" class="user-menu">
+            <div id="leftpanel-burger-menu" [ngClass]="displayUserMenu ? 'enlarge user-menu' : 'hidden'">
 
                 <div (click) ="initDisplayNewGroup();displayUserMenu=false" class="menu-row super-user-menu">
                     {{ 'new_group' | tl8 }}

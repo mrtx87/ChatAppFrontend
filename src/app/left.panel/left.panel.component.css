@@ -89,6 +89,32 @@
     z-index: 1;
   }
 
+  .hidden {
+    display:none;
+
+  }
+
+  .enlarge {
+    display:initial;
+    overflow: hidden;
+    animation: enlargeAnim 0.15s ease-in-out;
+  }
+
+  @keyframes enlargeAnim {
+    0% {
+      width:0px;
+      height:0px;
+      background-color: white;
+    }
+    100% {
+      width:180px;
+      height:160px;
+      background-color:initial;
+    }
+  }
+  
+  
+
 .super-user-menu {
     color: #444;
     padding-left: 24px;
@@ -306,3 +332,4 @@
       left: -400px;
     }
   }
+
