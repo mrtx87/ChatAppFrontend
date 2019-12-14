@@ -208,7 +208,7 @@ export class ChatPanelComponent implements OnInit {
 
   scrollToSearchResult(smooth: boolean) {
     let markedMessage: ChatMessage = this.messageSearch.getMarkedMessageByIndex(this.markedMessageJumpIndex);
-    markedMessage.highlightedSearchBody = markedMessage.searchBody.replace("searchRes", "searchResHighlight")
+    markedMessage.highlightedSearchBody = markedMessage.searchBody.split("searchRes").join("searchResHighlight");
     if (markedMessage) {
         this.chatService.scrollIntoView(markedMessage.id, smooth);
     }
