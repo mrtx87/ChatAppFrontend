@@ -82,7 +82,7 @@ export class DisplaychatComponent implements OnInit, OnDestroy {
 
       if (that.displayedChatRoom) {
         let nextMedianDateInView = that.chatService.getMedianDateInView();
-        if (that.medianDateInView !== nextMedianDateInView) {
+        if (nextMedianDateInView && that.medianDateInView !== nextMedianDateInView) {
           that.medianDateInView = nextMedianDateInView;
         }
         //console.log(that.listenForMedianDateInView)
