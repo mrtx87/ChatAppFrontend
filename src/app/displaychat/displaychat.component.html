@@ -30,10 +30,10 @@
         </div>
 
         <!-- INCOMING MESSAGE CONTAINER -->
-        <div class="incoming-message-container" id="{{m?.id}}"
-            *ngIf="m.fromId !== localUser.id && !m.fromId.includes(constants.CHAT_MESSAGE_DATE_TYPE) &&
+        <div class="incoming-message-container" id="{{m?.id}}" *ngIf="m.fromId !== localUser.id && !m.fromId.includes(constants.CHAT_MESSAGE_DATE_TYPE) &&
             !m.fromId.includes(constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE)">
             <div class="chat-bubble left">
+                <h5 *ngIf="displayedChatRoom.groupChat"> {{ m.fromId | contactName }} </h5>
                 <div [innerHTML]="m.searchBody ? m.searchBody : m.body"></div>
                 <span>{{ m?.createdAt | date: "hh:mm" }}</span>
             </div>
