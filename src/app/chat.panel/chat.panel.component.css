@@ -15,6 +15,7 @@
   border-radius: 23px;
   background: none;
   transition: 0.2s;
+  display: flex;
 }
 
 .rightpanel-burger-menu:focus{
@@ -98,7 +99,6 @@ background: rgba(0,0,0,.1);
   max-height: 76px;
   overflow: auto;
   padding: 0 10px 0 0;
-  min-height:20px; /* DEBUG FÜR FIREFOX DAMIT EINGABE GEHT */
 }
 
 .chatmessage-container {
@@ -177,6 +177,7 @@ margin: 10px 0 0 0;
     height: 23px;
     opacity: 0.5;
     cursor: pointer;
+    align-self: center;
 }
 
 
@@ -355,100 +356,94 @@ margin: 10px 0 0 0;
 }
 
 
-  .wrapper.chat {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: 65px 1fr auto;
-    background-color: #e5ddd5;
-  }
+.wrapper.chat {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 65px 1fr auto;
+  background-color: #e5ddd5;
+}
 
-  .chat-panel-header {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-    z-index: 2;
-    width: 100%;
-    min-height: 65px;
-    height: 65px;
-    background-color: var(--white-grey);
-    transition: 0.3s;
-  }
+.chat-panel-header {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  z-index: 2;
+  width: 100%;
+  min-height: 65px;
+  height: 65px;
+  background-color: var(--white-grey);
+  transition: 0.3s;
+}
 
-  .displaychat {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-    overflow: auto;
-    z-index: 1;
-  }
-  .senden-container {
-    grid-column: 1 / 2;
-    grid-row: 3 / 4;
-    z-index: 1;
-  }
+.displaychat {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  overflow: auto;
+  z-index: 1;
+  padding: 0 0 0 15px;
+}
+.senden-container {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+  z-index: 1;
+}
 
-  .overlay-comp-container{
+.overlay-comp-container{
+  width:0px;
+  grid-row: 1 / 4;
+  grid-column: 2 / 4;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.animation-in-from-right {
+  animation: animFromRight 0.25s ease-out forwards;
+}
+
+@keyframes animFromRight {
+  0% {
     width:0px;
-    grid-row: 1 / 4;
-    grid-column: 2 / 4;
-    z-index: 2;
-    overflow: hidden;
   }
-
-
-
-
-  .animation-in-from-right {
-    animation: animFromRight 0.25s ease-out forwards;
+  100% {
+    width:400px;
   }
+}
 
-  @keyframes animFromRight {
-    0% {
-      width:0px;
-    }
-    100% {
-      width:400px;
-    }
+.animation-out-to-right {
+  animation: animFromLeft 0.25s ease-out forwards;
+}
+
+@keyframes animFromLeft {
+  0% {
+    width:400px;
   }
-
-  .animation-out-to-right {
-    animation: animFromLeft 0.25s ease-out forwards;
+  100% {
+    width:0px;
   }
-
-  @keyframes animFromLeft {
-    0% {
-      width:400px;
-    }
-    100% {
-      width:0px;
-    }
-  }
+}
 
 
 
-  .wrapper.home:after {
-    background:none;
-  }
+.wrapper.home:after {
+  background:none;
+}
 
-  .wrapper:after {
-    content: "";
-    background: url(../../assets/bg-chat.png);
-    opacity: 0.08;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: 0;
-  }
+.wrapper:after {
+  content: "";
+  background: url(../../assets/bg-chat.png);
+  opacity: 0.08;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: 0;
+}
 
-  .wrapper.home h1{
-    text-align: center;
-    font-weight: 100;
-  }
+.wrapper.home h1{
+  text-align: center;
+  font-weight: 100;
+}
 
 
 
 
-
-
-
-  

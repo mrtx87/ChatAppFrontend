@@ -90,6 +90,10 @@
     scroll-behavior: smooth;
 }
 
+.display-chat-messages > div:last-child {
+  margin-bottom: 20px;
+}
+
 .date-message-container {
     width:100%;
     display:flex;
@@ -224,5 +228,5 @@
       transform: rotate(360deg);
     }
   }
-  
+
 
