@@ -4,7 +4,7 @@
             <div class="chat-name-container">
                 <div class="chat-img-container" *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img
                         class="chat-img" src="{{displayedChatRoom | img}}"></div>
-                <div class="chat-name-member">
+                <div [ngClass]="displayedChatRoom.groupChat ? 'chat-name-member' : 'chat-name-member-two'">
                     <span class="chat-name"> {{displayedChatRoom | chatRoomName}}</span>
                     <div class="chat-member-container" *ngIf="displayedChatRoom.groupChat">
                         <span *ngFor="let id of displayedChatRoom?.userIds; let i = index" class="chat-member">
@@ -40,7 +40,7 @@
                 <img (click)="toggleRoomMenuDisplay()" class="menu-img" src="assets/burger.svg">
                 <div id="room-menu" *ngIf="displayRoomMenu" class="room-menu">
                     <div (click)="initDisplayProfile()" class="room-row sub-room-menu">
-                        {{ displayedChatRoom && displayedChatRoom.groupChat ? 'group_info' : 'contact_profile' | tl8 }}
+                        {{ (displayedChatRoom && displayedChatRoom.groupChat ? 'group_info' : 'contact_profile') | tl8 }}
                     </div>
                     <div class="room-row sub-room-menu">
                         {{ 'choose_message' | tl8 }}

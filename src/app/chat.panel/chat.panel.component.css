@@ -154,6 +154,12 @@ margin: 10px 0 0 0;
   padding: 8px;
 }
 
+.chat-name-member-two {
+  display:flex;
+  flex-direction: column;
+  padding: 8px;
+  justify-content: center;
+}
 .chat-name{
   color: var(--medium-black);
 }
