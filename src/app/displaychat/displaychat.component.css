@@ -115,6 +115,16 @@
     margin-top:15px;
 }
 
+.incoming-message-container h5 {
+  position: absolute;
+  top: 5px;
+  margin: 0;
+}
+
+.chat-message {
+  margin: 23px 0 6px 0;
+}
+
 .outgoing-message-container {
     width:100%;
     display:flex;

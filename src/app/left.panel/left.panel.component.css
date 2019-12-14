@@ -112,8 +112,8 @@
       background-color:initial;
     }
   }
-  
-  
+
+
 
 .super-user-menu {
     color: #444;
@@ -292,7 +292,7 @@
     bottom:0px;
     right:0px;
     width:100%;
-    background-color: var(--white-grey);
+    background-color: #fff;
   }
 
   .anim-in {

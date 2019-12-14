@@ -180,6 +180,7 @@
     height: 2px;
     background:  var(--main-green);
     transition: .5s;
+    margin-top: 10px;
 }
 
 .edit-profile-name input[type="checkbox"]:checked + label + .submenu + input + span::after {

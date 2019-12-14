@@ -393,6 +393,7 @@ margin: 10px 0 0 0;
   grid-column: 2 / 4;
   z-index: 2;
   overflow: hidden;
+  background: #f7f7f7;
 }
 
 .animation-in-from-right {

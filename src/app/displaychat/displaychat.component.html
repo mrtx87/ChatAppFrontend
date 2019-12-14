@@ -34,7 +34,7 @@
             !m.fromId.includes(constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE)">
             <div class="chat-bubble left">
                 <h5 *ngIf="displayedChatRoom.groupChat"> {{ m.fromId | contactName }} </h5>
-                <div [innerHTML]="m.highlightedSearchBody || m.searchBody || m.body"></div>
+                <div class="chat-message" [innerHTML]="m.highlightedSearchBody || m.searchBody || m.body"></div>
                 <span>{{ m?.createdAt | date: "hh:mm" }}</span>
             </div>
         </div>
