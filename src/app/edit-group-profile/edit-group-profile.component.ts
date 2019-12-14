@@ -51,9 +51,9 @@ export class EditGroupProfileComponent implements OnInit {
     }
     that.imageListener = setInterval(function () {
       if (that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE) && that.currentChatRoom) {
-        that.currentChatRoom.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE);
+        that.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE);
         that.store.deleteFromTEMPDATA(that.constants.NEW_GROUP_IMAGE);
-        that.chatService.sendUpdateChatRoomProfile(that.currentChatRoom)
+        that.triggerUpdateChatRoomProfile();
         clearInterval(that.imageListener)
         that.imageListener = null;
       }
@@ -63,17 +63,26 @@ export class EditGroupProfileComponent implements OnInit {
 
   currentChatRoom: ChatRoom;
   roomTitleText: string;
-  info: string;
-  iconUrl:string;
+  description: string;
+  iconUrl: string;
   validator: () => {
 
+  }
+
+  triggerUpdateChatRoomProfile() {
+    if (this.currentChatRoom.title !== this.roomTitleText || this.currentChatRoom.description !== this.description || this.currentChatRoom.iconUrl !== this.iconUrl) {
+      this.currentChatRoom.title = this.roomTitleText;
+      this.currentChatRoom.description = this.description;
+      this.currentChatRoom.iconUrl = this.iconUrl;
+      this.chatService.sendUpdateChatRoomProfile(this.currentChatRoom)
+    }
   }
 
   constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants, private imageService: ImageService) {
     chatService.registerEditGroupProfileComponent(this);
   }
 
-  updateChatroomTitle() {
+  setChatroomTitle() {
     if (this.currentChatRoom && !this.readOnly) {
       this.currentChatRoom.title = this.roomTitleText;
     }
@@ -84,7 +93,7 @@ export class EditGroupProfileComponent implements OnInit {
     this.currentChatRoom = chatRoom;
 
     this.roomTitleText = chatRoom.title;
-    this.info = "MOCK";
+    this.description = chatRoom.description;
     this.iconUrl = chatRoom.iconUrl;
   }
 

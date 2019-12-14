@@ -185,6 +185,14 @@ export class ValueResolver {
     return null;
   }
 
+  resolveUserIconUrl(userId: string) {
+    let icons = this.store.contacts.filter(c => userId === c.id);
+    if(icons.length > 0) {
+      return icons[0].iconUrl;
+    }
+    return null;
+  }
+
 
    resolveNotLocalUser(userIds: string[]): Contact {
     let userId : string = this.getNotLocalUserId(userIds);

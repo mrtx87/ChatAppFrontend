@@ -44,7 +44,7 @@ export class GroupProfileComponent implements OnInit {
     }
     that.imageListener = setInterval(function () {
       if (that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE) && that.currentChatRoom) {
-        that.currentChatRoom.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE);
+        that.iconUrl = that.store.lookUpInTEMPDATA(that.constants.NEW_GROUP_IMAGE);
         that.store.deleteFromTEMPDATA(that.constants.NEW_GROUP_IMAGE);
         clearInterval(that.imageListener)
         that.imageListener = null;
@@ -52,31 +52,31 @@ export class GroupProfileComponent implements OnInit {
     }, 200);
   }
 
+  triggeredUpdate: boolean = false;
 
   currentChatRoom: ChatRoom;
   roomTitleText: string;
   info: string;
   iconUrl:string;
-  validator: () => {
-
-  }
+  description: string;
 
   constructor(private chatService: ChatService, private values: ValueResolver, private store: DataStore, private constants: Constants, private imageService: ImageService) {
     chatService.registerGroupProfileComponent(this);
     chatService.currentComponent(this.constants.GROUP_CHAT_PROFILE)
   }
 
-  updateChatroomTitle() {
-    if (this.currentChatRoom) {
+  setChatroomTitle() {
       this.currentChatRoom.title = this.roomTitleText;
-    }
   }
 
   init(chatRoom: ChatRoom, readOnly: boolean) {
+    this.triggeredUpdate = false;
+
     this.currentChatRoom = chatRoom;
+    this.currentChatRoom.userIds.push(this.localUser.id);
 
     this.roomTitleText = chatRoom.title;
-    this.info = "MOCK";
+    this.description = chatRoom.description;
     this.iconUrl = chatRoom.iconUrl;
   }
 
@@ -86,18 +86,22 @@ export class GroupProfileComponent implements OnInit {
     
   }
 
-
   isValid() {
-    return this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
+    return !this.triggeredUpdate && this.currentChatRoom && this.roomTitleText && this.currentChatRoom.userIds && this.roomTitleText.length >= 3;
   }
 
   sendCreateNewGroupRoom() {
-    if (this.isValid()) {
+    if (this.isValid() && !this.triggeredUpdate) {
+      this.triggeredUpdate = true;
+
       this.currentChatRoom.title = this.roomTitleText;
+      this.currentChatRoom.description = this.description;
+      this.currentChatRoom.iconUrl = this.iconUrl;
       this.currentChatRoom.userIds.push(this.localUser.id);
       this.chatService.sendCreateGroupRoom(this.localUser, this.currentChatRoom);
       this.chatService.clearLeftPanelComponentStack();
       this.initSlideOut();
+      
     }
   }
 

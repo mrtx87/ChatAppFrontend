@@ -3,7 +3,7 @@
         <div class="chat-panel-left-container">
             <div class="chat-name-container">
                 <div class="chat-img-container" *ngIf="displayedChatRoom" (click)="initDisplayProfile()"><img
-                        class="chat-img" src="{{displayedChatRoom | img}}"></div>
+                        class="chat-img" src="{{displayedChatRoom | roomImg}}"></div>
                 <div [ngClass]="displayedChatRoom.groupChat ? 'chat-name-member' : 'chat-name-member-two'">
                     <span class="chat-name"> {{displayedChatRoom | chatRoomName}}</span>
                     <div class="chat-member-container" *ngIf="displayedChatRoom.groupChat">

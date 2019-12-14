@@ -422,6 +422,7 @@ export class ChatService {
         let chatRoomDTO = <ChatRoom>response;
         chatRoom.iconUrl = chatRoomDTO.iconUrl;
         chatRoom.title = chatRoomDTO.title;
+        chatRoom.description = chatRoomDTO.description;
         console.log(response)
       });
   } ///data/online/status/contacts/userId/{userId}
@@ -474,6 +475,7 @@ export class ChatService {
         let transferRoom = this.availableRooms.get(chatRoom.id);
         transferRoom.iconUrl = chatRoom.iconUrl;
         transferRoom.title = chatRoom.title;
+        transferRoom.description = chatRoom.description;
         transferRoom.userIds = chatRoom.userIds;
         nextAvailableRooms.set(transferRoom.id, transferRoom);
       } else {

@@ -3,7 +3,7 @@ import { ChatRoom } from './Entities/chat.room';
 import { ValueResolver } from './value.resolver';
 
 @Pipe({
-  name: 'img',
+  name: 'roomImg',
   pure: false
 })
 export class ImgPipe implements PipeTransform {

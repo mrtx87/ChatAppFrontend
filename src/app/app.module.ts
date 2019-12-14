@@ -29,6 +29,7 @@ import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profi
 import { EmojiPipe } from './emoji.pipe';
 import { OnlineStatusPipe } from './online-status.pipe'
 import { DatePipe } from '@angular/common';
+import { UserimgPipe } from './userimg.pipe';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { DatePipe } from '@angular/common';
     ContactProfileComponent,
     EditGroupProfileComponent,
     EmojiPipe,
-    OnlineStatusPipe
+    OnlineStatusPipe,
+    UserimgPipe
   ],
   imports: [
     BrowserModule,

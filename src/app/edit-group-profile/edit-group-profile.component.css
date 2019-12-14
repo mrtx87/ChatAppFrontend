@@ -1,8 +1,8 @@
 .profile {
   display: flex;
   flex-direction: column;
-  height: 100%;
-}
+  overflow-y: scroll;
+  max-height: 750px;}
 
 
 .return-2-user-panel {
@@ -20,7 +20,6 @@
   color: var(--text-black);
   height: 100%;
 }
-
 
 
 .return-button-2-panel img {
@@ -88,6 +87,10 @@
 .edit-profile-name {
   padding-top: 10px;
   position: relative;
+}
+
+.edit-profile-name input {
+  font-size: 25px;
 }
 
 .edit-profile-name input[type="text"] {
@@ -342,4 +345,53 @@ width: 26px;
 height: 26px;
 position: absolute;
 left: 30px;
+}
+
+
+.contact-row{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height:85px;
+  position: relative;
+  transition: 0.1s;
+}
+
+
+.new-contact-icon{
+  border-radius: 50%;
+  height: 55px;
+}
+
+.new-contact-icon-container {
+padding: 0 0 0 15px;
+}
+
+.new-contact-text-container{
+display: flex;
+align-items: center;
+height: 100%;
+width: 100%;
+margin: 0 15px;
+border-bottom: 1px solid #F1F1F1;
+}
+
+.create-room-icon-container{
+position: absolute;
+width: 100%;
+height: 100%;
+cursor: pointer;
+}
+
+
+.contact-row:hover{
+  background-color: #F1F1F1;
+}
+
+.group-members {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
