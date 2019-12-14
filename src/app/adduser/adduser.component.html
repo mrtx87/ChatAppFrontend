@@ -9,7 +9,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
 
@@ -26,14 +26,13 @@
 
     <div class="rooms-container">
         <div *ngFor="let contact of newContactsList" class="new-contact-row">
-            <div>
+            <div class="new-contact-icon-container">
                 <img src="assets/testicon.png" class="new-contact-icon">
             </div>
             <div class="new-contact-text-container">
                 {{contact?.name}}
             </div>
             <div class="create-room-icon-container" (click)="createRoom(contact)">
-                <img src="assets/plus.svg" class="create-room-icon">
             </div>
         </div>
     </div>
