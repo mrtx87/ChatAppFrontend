@@ -260,12 +260,13 @@ export class ChatPanelComponent implements OnInit {
   }
 
   changeValue(event: KeyboardEvent) {
-    this.findReplaceEmoticons(event)
     if(event.keyCode === this.constants.ENTER_KEY) {
       event.preventDefault();
       //console.log( event )
       this.triggerSendChatMessage();
+      return;
     }
+    this.findReplaceEmoticons(event) 
   }
 
   EmojiContainerState: boolean = false;
