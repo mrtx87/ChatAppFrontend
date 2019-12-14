@@ -39,7 +39,10 @@ export class ChatMessageSearchService {
   }
 
   resetSearch() {
-    this.markedMessages.forEach(message => message.searchBody = null);
+    this.markedMessages.forEach(message => { 
+      message.searchBody = null 
+      message.highlightedSearchBody = null;
+    });
     this.markedMessages = [];
     this.markedMessageJumpIndex = -1;
   }

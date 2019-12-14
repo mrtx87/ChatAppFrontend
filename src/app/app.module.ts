@@ -28,6 +28,7 @@ import { ContactProfileComponent } from './contact-profile/contact-profile.compo
 import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profile.component';
 import { EmojiPipe } from './emoji.pipe';
 import { OnlineStatusPipe } from './online-status.pipe'
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,7 @@ import { OnlineStatusPipe } from './online-status.pipe'
 
 
   ],
-  providers: [CookieService],
+  providers: [CookieService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

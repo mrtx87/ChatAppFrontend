@@ -5,7 +5,7 @@ import { ChatRoom } from './Entities/chat.room';
 import { AppComponent } from './app.component';
 import { Contact } from './Entities/contact';
 import { User } from './Entities/user';
-import { TransferMessage } from './Entities/transfer.message';
+import { DataTransferContainer } from './Entities/datatransfer.container';
 import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';

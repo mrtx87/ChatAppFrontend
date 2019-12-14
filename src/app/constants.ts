@@ -34,7 +34,7 @@ export class Constants {
 
   public DEFAULT_PANEL: string = "default-panel";
 
-  public CHAT_MESSAGE_DATE_TYPE: string = "DATE";
+  public CHAT_MESSAGE_DATE_TYPE: string = "date";
   public CHAT_MESSAGE_SYSTEM_TYPE: string = "system";
   public CHAT_MESSAGE_SYSTEM_INIT_TYPE: string = "init";
 
@@ -59,7 +59,7 @@ export class Constants {
 
   //SEARCH STUFF
 
-  MARK_OPEN: string = "<span class=\"test\">"
+  MARK_OPEN: string = "<span class=\"searchRes\">"
   MARK_CLOSE: string = "</span>"
 
   //KEYCODES

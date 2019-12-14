@@ -1,37 +1,50 @@
 <div id="displayChatMessages" class="display-chat-messages">
     <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
-        <div *ngIf="chatService.isPullingMessages" id="" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div *ngIf="chatService.isPullingMessages" id="" class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
-    <ng-template ngFor let-m [ngForOf]="currentDisplayMessages">
+    <ng-template ngFor let-m [ngForOf]="currentDisplayedMessages">
 
         <!-- Date MESSAGE CONTAINER -->
-        <div class="date-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_DATE_TYPE">
+        <div class="date-message-container" *ngIf="m.fromId.includes(constants.CHAT_MESSAGE_DATE_TYPE)">
             <div class="date-bubble">
                 {{ m?.createdAt | date: 'dd.MM.yyyy'}}
             </div>
         </div>
 
         <!-- SYSTEM MESSAGE CONTAINER -->
-        <div class="System-message-container" *ngIf="m.fromId === constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE">
+        <div id="{{m?.id}}" class="System-message-container"
+            *ngIf="m.fromId.includes(constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE)">
             <div class="system-bubble">
                 {{ m?.body }}
-                {{ m?.createdAt | date: "hh:mm" }}</div>
+                {{ m?.createdAt | date: "hh:mm" }}
+            </div>
         </div>
 
         <!-- INCOMING MESSAGE CONTAINER -->
-        <div class="incoming-message-container" id="{{m?.id}}"
-            *ngIf="m.fromId !== localUser.id && m.fromId !== constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE && m.fromId !== constants.CHAT_MESSAGE_DATE_TYPE">
-            <div [innerHTML]="m.searchBody ? m.searchBody : m.body" class="chat-bubble left">
+        <div class="incoming-message-container" id="{{m?.id}}" *ngIf="m.fromId !== localUser.id && !m.fromId.includes(constants.CHAT_MESSAGE_DATE_TYPE) &&
+            !m.fromId.includes(constants.CHAT_MESSAGE_SYSTEM_INIT_TYPE)">
+            <div class="chat-bubble left">
+                <h5 *ngIf="displayedChatRoom.groupChat"> {{ m.fromId | contactName }} </h5>
+                <div [innerHTML]="m.highlightedSearchBody || m.searchBody || m.body"></div>
+                <span>{{ m?.createdAt | date: "hh:mm" }}</span>
             </div>
-            <span>{{ m?.createdAt | date: "hh:mm" }}</span>
         </div>
 
         <!-- OUTGOING MESSAGE CONTAINER -->
         <div class="outgoing-message-container" id="{{m?.id}}" *ngIf="m.fromId === localUser.id">
-            <div [innerHTML]="m.searchBody ? m.searchBody : m.body" class="chat-bubble right">
-                
+            <div class="chat-bubble right">
+                <div class="message" [innerHTML]="m.highlightedSearchBody || m.searchBody || m.body"></div>
+                <span>{{ m?.createdAt | date: "hh:mm" }}</span>
             </div>
-            <span>{{ m?.createdAt | date: "hh:mm" }}</span>
         </div>
 
     </ng-template>

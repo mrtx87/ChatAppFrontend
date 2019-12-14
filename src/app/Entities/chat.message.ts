@@ -8,4 +8,5 @@ export class ChatMessage {
 	
 	seen: boolean;
 	searchBody: string;
+	highlightedSearchBody: string;
 }

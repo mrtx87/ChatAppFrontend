@@ -15,11 +15,15 @@ import { User } from '../Entities/user';
 export class AddgroupchatComponent implements OnInit {
 
 
-  creatingRoomContacts: Contact[] = [];
+  creatingRoomContacts: Map<string, Contact> = new Map<string, Contact>();
   query: string = "";
 
+  get selectedContacts() : Contact[] {
+    return [...this.creatingRoomContacts.values()];
+  } 
+
   get contacts(): Contact[] {
-    return this.chatService.contacts.filter(contact => contact.name.includes(this.query) && !this.creatingRoomContacts.includes(contact));
+    return this.chatService.contacts.filter(contact => contact.name.includes(this.query) && !this.creatingRoomContacts.has(contact.id));
   }
   set contacts(val: Contact[]) {
     this.chatService.contacts = val;
@@ -51,25 +55,25 @@ export class AddgroupchatComponent implements OnInit {
 
   addToCreatingRoom(contact: Contact) {
     if (this.creatingRoomContacts) {
-      if (!this.creatingRoomContacts.includes(contact)) {
-        this.creatingRoomContacts.push(contact);
+      if (!this.creatingRoomContacts.has(contact.id)) {
+        this.creatingRoomContacts.set(contact.id, contact);
       }
     }
   }
 
   ToRoomProfileCreation() {
     let room: ChatRoom = new ChatRoom();
-    room.userIds = this.creatingRoomContacts.map(c => c.id);
+    room.userIds = [...this.creatingRoomContacts.values()].map(contact => contact.id);
     this.chatService.asyncInitRoomProfile(room, false);
     this.chatService.currentDisplayedLeftPanel = this.constants.GROUP_CHAT_PROFILE;
   }
 
   removeFromCreatingRoomContacts(contact: Contact) {
-    this.creatingRoomContacts = this.creatingRoomContacts.filter(c => c.id !== contact.id);
+    this.creatingRoomContacts.delete(contact.id);
   }
 
   isValid(): boolean {
-    return this.creatingRoomContacts && this.creatingRoomContacts.length > 0;
+    return this.creatingRoomContacts && this.creatingRoomContacts.size > 0;
   }
 
 

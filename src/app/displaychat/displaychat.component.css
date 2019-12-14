@@ -9,8 +9,10 @@
 }
 
 .chat-bubble {
-    padding: 5px 9px;
-    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3)
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3);
+    display:flex;
+    position: relative;
+    padding: 5px 60px 5px 9px;
 }
 
 .chat-bubble.left {
@@ -26,10 +28,17 @@
 }
 
 .chat-bubble span {
-    font-size: 11px;
+    font-size: 12px;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
-    color: var(--light-grey);
+    color: var(--medium-grey);
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+}
+
+.chat-bubble .message {
+  font-size: 14px;
 }
 
 .chat-bubble::after {
@@ -37,18 +46,18 @@
     position: absolute;
     border-top: 0px solid transparent;
     border-bottom: 10px solid transparent;
+    top:0;
 }
 
 .chat-bubble.right::after {
     border-left: 7px solid var(--light-green);
-    margin: -5px 0 0 9px;
+    right: -7px;
 }
 
 .chat-bubble.left::after {
     border-right: 7px solid var(--white-grey);
     border-left:0;
-    left: 7px;
-    margin: -5px 0 0 1px;
+    left: -7px;
 }
 
 .chat-bubble::before {
@@ -57,19 +66,18 @@
     border-top: 0px solid transparent;
     border-left: 7px solid rgba(0,0,0,0.1);
     border-bottom: 10px solid transparent;
-    margin-top: -5px;
+    top:0;
 }
 
 .chat-bubble.right::before {
     border-left: 7px solid rgba(0,0,0,0.1);
-    margin: -5px 0 0 9px;
-    right: 7px;
+    right: -8px;
 }
 
 .chat-bubble.left::before {
     border-right: 7px solid rgba(0,0,0,0.1);
     border-left:0;
-    left: 7px;
+    left: -8px;
 }
 
 .display-chat-messages {
