@@ -30,6 +30,7 @@ import { ContactProfileComponent } from './contact-profile/contact-profile.compo
 import { ComponentStack } from './component-stack';
 import { BaseComponent } from './base-component';
 import { EditGroupProfileComponent } from './edit-group-profile/edit-group-profile.component';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -542,7 +543,7 @@ export class ChatService {
       let messagesInView = this.chatMessagesByRoom.get(this.displayedChatRoom.id).filter(m => this.isChatMessageInViewport(m))
       let dates: Map<string, number> = new Map<string, number>();
       for (let messageInView of messagesInView) {
-        let key: string = messageInView.createdAt.substring(0, 10);
+        let key: string = this.datePipe.transform(messageInView.createdAt, 'dd.MM.yyyy');
         if (dates.has(key)) {
           let val = dates.get(key);
           dates.set(key, val + 1);
@@ -571,7 +572,7 @@ export class ChatService {
 
   isChatMessageInViewport(chatMessage: ChatMessage): boolean {
     let elem: HTMLElement = document.getElementById(chatMessage.id);
-    return  elem ? this.isInViewport(elem) : false;
+    return elem ? this.isInViewport(elem) : false;
   };
 
   isInViewport(elem: HTMLElement): boolean {
@@ -880,7 +881,7 @@ export class ChatService {
 
   }
 
-  constructor(private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) {
+  constructor(private datePipe: DatePipe, private http: HttpClient, private constants: Constants, private store: DataStore, private cookieService: CookieService) {
     this.leftPanelComponentStack_ = new ComponentStack();
   }
 

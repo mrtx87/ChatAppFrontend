@@ -62,7 +62,7 @@
         style="position:absolute; z-index: 1000; top:75px; width:100%; display: flex; justify-content: center; align-items: center; ">
         <div
             style=" box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3); background-color: #e1f5feeb;padding: 5px 9px; border-radius:5px;">
-            {{(chatService.displayChatComponent.medianDateInView ? chatService.displayChatComponent.medianDateInView : '01.01.2001') | date : "dd.MM.yyyy"}}
+            {{ chatService.displayChatComponent.medianDateInView }}
         </div>
     </div>
     <app-displaychat id="app-displaychat" class="displaychat"></app-displaychat>
