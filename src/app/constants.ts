@@ -45,8 +45,8 @@ export class Constants {
   public TM_FUNCTION_LOGIN_AND_COOKIE: string = "login-and-cookie";
   public TM_FUNCTION_CREATE_ROOM_AND_CONTACT: string = "create-room";
   public TM_FUNCTION_CREATE_GROUP_ROOM: string = "create-group-room";
-
-
+	public TM_FUNCTION_UPDATE_SINGLE_USER_PROFILE : string = "update-single-user-profile";
+	public TM_FUNCTION_UPDATE_SINGLE_GROUP_PROFILE : string = "update-single-group-profile";
 
 
   public CREATING_ROOM_CONTACTS_ID: string = "creating-room-contacts";

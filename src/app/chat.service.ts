@@ -303,8 +303,22 @@ export class ChatService {
           this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
         }
       } break;
+      case this.constants.TM_FUNCTION_UPDATE_SINGLE_GROUP_PROFILE: {
+        this.updateSingleAvailableRoom(transferMessage);
+      } break;
+      case this.constants.TM_FUNCTION_UPDATE_SINGLE_USER_PROFILE: {
+        console.log(transferMessage)
+      } break;
     }
 
+  }
+
+  updateSingleAvailableRoom(transferMessage: DataTransferContainer) {
+    let updateRoom: ChatRoom = transferMessage.chatRoom;
+    let currentRoom: ChatRoom = this.availableRooms.get(updateRoom.id);
+    currentRoom.iconUrl = updateRoom.iconUrl;
+    currentRoom.title = updateRoom.title;
+    currentRoom.description = updateRoom.description;
   }
 
   finalizeLogin(transferMessage: DataTransferContainer) {
