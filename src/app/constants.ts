@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class Constants {
 
+  public TIMER_VALUE : number = 5000;
+
   //COMPONENT IDS
   public ADD_USER_PANEL: string = "adduser-panel";
   public ADD_GROUP_CHAT: string = "add-group-chat";

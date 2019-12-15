@@ -93,7 +93,7 @@ export class DisplaychatComponent implements OnInit, OnDestroy {
 
             that.displayPermaDateTimer = setInterval(function() {
               that.timer += 10;
-              if(that.timer >= 5000) {
+              if(that.timer >= that.constants.TIMER_VALUE) {
                 that.isScrollingInChat = false;
                 that.timer = 0;
                 clearInterval(that.displayPermaDateTimer)
