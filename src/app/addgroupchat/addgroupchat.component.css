@@ -168,14 +168,6 @@
   outline: none;
 }
 
-.row-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 75px;
-    padding: 0px 5px;
-    justify-content: space-between
-}
 
 .next-step-item {
     display: flex;
@@ -198,7 +190,7 @@
     color:white;
 }
 
-.added-user {
+.added-users {
      display:flex; 
      flex-direction:column; 
      align-items: center;
@@ -207,8 +199,9 @@
 
 .preview {
     display: flex;
-    background: var( --white-grey);
+    background: #e8e8e8;
     border-radius: 25px;
+    align-items: center;
 }
 
 .profilimage {
@@ -224,10 +217,19 @@
 }
 
 .remove {
-    display:block;
-  box-sizing:border-box;
-  margin: 7px 9px 0 0;
-  width:10px;
-  height:10px;
-  background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, var( --light-grey) 46%,  var( --light-grey) 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, var( --light-grey) 46%,  var( --light-grey) 56%,transparent 56%, transparent 100%);
+    margin: 5px;
+}
+
+.remove:hover {
+ background-color: darkgrey;
+ border-radius: 50%;
+}
+
+.selected-contacts-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 75px;
+    padding: 0px 5px;
+    flex-wrap: wrap;
 }

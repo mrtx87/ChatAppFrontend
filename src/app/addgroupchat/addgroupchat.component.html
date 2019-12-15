@@ -9,19 +9,21 @@
             </div>
         </div>
     </div>
-    <div class="added-user">
-        <div class="row-item">
+    <div class="added-users">
+        <div class="selected-contacts-container">
             <div class="preview" *ngFor="let selected_contact of selectedContacts">
                 <div class="profilimage"><img style="height:25px; border-radius: 25px;"
-                        src="{{selected_contact.iconUrl}}"></div> <span>{{selected_contact.name}} </span>
-                <div (click)="removeFromCreatingRoomContacts(selected_contact)" class="remove"></div>
+                        src="{{selected_contact.iconUrl || 'assets/default-user-icon.svg'}}"></div>
+                <span>{{selected_contact.name}} </span>
+                <img class="remove" img (click)="removeFromCreatingRoomContacts(selected_contact)"
+                    src="assets/close.svg">
             </div>
         </div>
-        
+
 
         <div class="search-contact-container" [ngClass]="isFocused ? 'is-focused' : ''">
-            <input (focus)="isClicked()" (focusout)="focusOut()"  [(ngModel)]="query"
-                class="search-contact-inputfield" type="text" placeholder="{{ 'put_contactname' | tl8 }}">
+            <input (focus)="isClicked()" (focusout)="focusOut()" [(ngModel)]="query" class="search-contact-inputfield"
+                type="text" placeholder="{{ 'put_contactname' | tl8 }}">
             <div class="icons">
                 <span class="magni"></span>
                 <span (click)="focusOut()" class="blue-arrow"></span>
@@ -33,7 +35,7 @@
             <div *ngFor="let contact of contacts" class="contacts-row" (click)="addToCreatingRoom(contact)">
                 <div>
                     <img style="border-radius: 20px; width:40px;"
-                        src="{{contact.iconUrl ? contact.iconUrl : 'assets/default-user-icon.svg'}}">
+                        src="{{contact.iconUrl || 'assets/default-user-icon.svg'}}">
                 </div>
                 <div class="contact-text-container">
                     {{contact?.name}}
