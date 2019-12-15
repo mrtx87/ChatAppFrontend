@@ -454,7 +454,6 @@ margin: 10px 0 0 0;
 .date-container {
   position:absolute;
   z-index: 1000;
-  top:13px;
   width:100%;
   display: flex;
   justify-content: center;
@@ -468,4 +467,35 @@ margin: 10px 0 0 0;
   background-color: #e1f5feeb;
   padding: 5px 9px;
   border-radius:5px;
+}
+
+
+.anim-date-in {
+  animation: animationDateIn 0.35s ease-out forwards;
+}
+
+.anim-date-out {
+  animation: animationDateOut 0.25s ease-out forwards;
+}
+
+@keyframes animationDateIn {
+  0% {
+    top: -50px;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    top: 18px;
+  }
+}
+
+@keyframes animationDateOut {
+  0% {
+    opacity: 1;
+    top: 18px;
+  }
+  100% {
+    top: -50px;
+    opacity: 0;
+  }
 }
