@@ -46,11 +46,11 @@ export class DisplaychatComponent implements OnInit, OnDestroy {
     return this.allChatMessageInRoom;
   }
 
-  set isScrollingInChat(val: boolean){
+  set isScrollingInChat(val: boolean) {
     this.chatService.chatPanelComponent.isScrollingInChat = val;
   }
 
-  get isScrollingInChat(){
+  get isScrollingInChat() {
     return this.chatService.chatPanelComponent.isScrollingInChat;
   }
 
@@ -81,19 +81,19 @@ export class DisplaychatComponent implements OnInit, OnDestroy {
             that.chatService.sendRequestChatMessagesBatchForSingleRoom(that.displayedChatRoom);
           }
 
-          if(that.isScrollingInChat && that.displayPermaDateTimer) {
+          if (that.isScrollingInChat && that.displayPermaDateTimer) {
             that.timer = 0;
-          }else{
+          } else {
             that.isScrollingInChat = true;
             that.timer = 0;
-            if(that.displayPermaDateTimer) {
+            if (that.displayPermaDateTimer) {
               clearInterval(that.displayPermaDateTimer);
               that.displayPermaDateTimer = null;
             }
 
-            that.displayPermaDateTimer = setInterval(function() {
+            that.displayPermaDateTimer = setInterval(function () {
               that.timer += 10;
-              if(that.timer >= that.constants.TIMER_VALUE) {
+              if (that.timer >= that.constants.TIMER_VALUE) {
                 that.isScrollingInChat = false;
                 that.timer = 0;
                 clearInterval(that.displayPermaDateTimer)

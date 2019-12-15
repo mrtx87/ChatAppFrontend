@@ -437,9 +437,8 @@ export class ChatService {
         chatRoom.iconUrl = chatRoomDTO.iconUrl;
         chatRoom.title = chatRoomDTO.title;
         chatRoom.description = chatRoomDTO.description;
-        console.log(response)
       });
-  } ///data/online/status/contacts/userId/{userId}
+  } 
 
 
 

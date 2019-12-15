@@ -97,14 +97,12 @@ export class GroupProfileComponent implements OnInit {
       this.currentChatRoom.title = this.roomTitleText;
       this.currentChatRoom.description = this.description;
       this.currentChatRoom.iconUrl = this.iconUrl;
-      this.currentChatRoom.userIds.push(this.localUser.id);
       this.chatService.sendCreateGroupRoom(this.localUser, this.currentChatRoom);
       this.chatService.clearLeftPanelComponentStack();
       this.initSlideOut();
       
     }
   }
-
 
   slideOut: boolean = false;
   intervalTimer = 0;
