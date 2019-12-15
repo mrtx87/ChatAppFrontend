@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class Constants {
 
-  public TIMER_VALUE : number = 5000;
+  public TIMER_VALUE : number = 3000;
 
   //COMPONENT IDS
   public ADD_USER_PANEL: string = "adduser-panel";
