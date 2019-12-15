@@ -7,14 +7,14 @@ export class ComponentStack {
     }
 
     push(compId: string) {
-        console.log(this.componentIds)
+        //console.log(this.componentIds)
         if (!this.includes(compId)) {
             this.componentIds.push(compId);
         }
     }
 
     pop(): string {
-        console.log(this.componentIds)
+        //console.log(this.componentIds)
         return this.componentIds.pop();
     }
 
