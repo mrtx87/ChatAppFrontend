@@ -8,25 +8,23 @@
             {{localUser?.name}}
         </label>
         <div class="new-user-logo">
-            <img class="user-list-img" src="assets/comment.svg"
-                (click)="initDisplayContacts()">
+            <img class="user-list-img" src="assets/comment.svg" (click)="initDisplayContacts()">
         </div>
         <div class="new-user-logo">
-            <img class="new-user-logo-img" src="assets/new-user.svg"
-                (click)="initDisplayAddContact()">
+            <img class="new-user-logo-img" src="assets/new-user.svg" (click)="initDisplayAddContact()">
         </div>
-        <div [ngClass]="displayUserMenu ? 'active' : ''" class="user-app-burger" tabindex="-1">
-            <img class="user-app-burger-img" src="assets/burger.svg" (click)="displayUserMenu=!displayUserMenu">
-            <div id="leftpanel-burger-menu" [ngClass]="displayUserMenu ? 'enlarge user-menu' : 'hidden'">
+        <div [ngClass]="displayUserMenu == 1 ? 'active' : ''" class="user-app-burger" tabindex="-1">
+            <img class="user-app-burger-img" src="assets/burger.svg" (click)="toggleUserMenu()">
+            <div id="leftpanel-burger-menu" [ngClass]="setUserMenuClassName()">
 
-                <div (click) ="initDisplayNewGroup();displayUserMenu=false" class="menu-row super-user-menu">
+                <div (click)="initDisplayNewGroup();displayUserMenu = 0" class="menu-row super-user-menu">
                     {{ 'new_group' | tl8 }}
                 </div>
-                <div (click) ="initDisplayProfile(); displayUserMenu=false"  class="menu-row super-user-menu">
-                   {{ 'user_profile' | tl8 }}
+                <div (click)="initDisplayProfile(); displayUserMenu = 0" class="menu-row super-user-menu">
+                    {{ 'user_profile' | tl8 }}
                 </div>
-                <div (click) ="initDisplaySettings(); displayUserMenu=false" class="menu-row super-user-menu">
-                   {{ 'user_settings' | tl8 }}
+                <div (click)="initDisplaySettings(); displayUserMenu = 0" class="menu-row super-user-menu">
+                    {{ 'user_settings' | tl8 }}
                 </div>
                 <div (click)="initLogout()" class="menu-row super-user-menu">
                     {{ 'log_out' | tl8 }}
@@ -79,28 +77,29 @@
 
 
     <!-- OTHER OVERLAYING COMPONENTS -->
-    <app-adduser *ngIf="constants.ADD_USER_PANEL === currentDisplayedLeftPanel"
-    class="overlay-comp-container" [ngClass]="chatService.adduserComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
+    <app-adduser *ngIf="constants.ADD_USER_PANEL === currentDisplayedLeftPanel" class="overlay-comp-container"
+        [ngClass]="chatService.adduserComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
     </app-adduser>
 
     <app-contacts *ngIf="constants.CONTACTS_COMPONENT === currentDisplayedLeftPanel"
-    class="new-chat overlay-comp-container" [ngClass]="chatService.contactsComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
+        class="new-chat overlay-comp-container"
+        [ngClass]="chatService.contactsComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
     </app-contacts>
 
-    <app-addgroupchat *ngIf="constants.ADD_GROUP_CHAT === currentDisplayedLeftPanel"
-    class="overlay-comp-container" [ngClass]="chatService.addGroupChatComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
+    <app-addgroupchat *ngIf="constants.ADD_GROUP_CHAT === currentDisplayedLeftPanel" class="overlay-comp-container"
+        [ngClass]="chatService.addGroupChatComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
     </app-addgroupchat>
 
-    <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedLeftPanel"
-    class="overlay-comp-container" [ngClass]="chatService.groupProfileComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
+    <app-group-profile *ngIf="constants.GROUP_CHAT_PROFILE === currentDisplayedLeftPanel" class="overlay-comp-container"
+        [ngClass]="chatService.groupProfileComponent.slideOut ? 'anim-out-fast' : 'anim-in'">
     </app-group-profile>
 
-    <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedLeftPanel"
-        class="overlay-comp-container" [ngClass]="chatService.profileComponent.slideOut ? 'anim-out-fast' : 'anim-in'"></app-profile>
+    <app-profile *ngIf="constants.USER_PROFILE === currentDisplayedLeftPanel" class="overlay-comp-container"
+        [ngClass]="chatService.profileComponent.slideOut ? 'anim-out-fast' : 'anim-in'"></app-profile>
 
-    <app-settings *ngIf="constants.USER_SETTINGS === currentDisplayedLeftPanel"
-        class="overlay-comp-container" [ngClass]="chatService.settingsComponent.slideOut ? 'anim-out-fast' : 'anim-in'"></app-settings>
+    <app-settings *ngIf="constants.USER_SETTINGS === currentDisplayedLeftPanel" class="overlay-comp-container"
+        [ngClass]="chatService.settingsComponent.slideOut ? 'anim-out-fast' : 'anim-in'"></app-settings>
 
-<!--class="anim overlay-comp-container"-->
+    <!--class="anim overlay-comp-container"-->
 
 </div>

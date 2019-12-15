@@ -20,7 +20,7 @@ export class LeftPanelComponent implements OnInit {
   searchChatInputText: string = "";
   uploadImage: string;
 
-  displayUserMenu_: boolean = false;
+  displayUserMenu_: number = -1;
   displayProfile: boolean = false;
   displaySettingsMenu: boolean = false;
 
@@ -34,11 +34,11 @@ export class LeftPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  get displayUserMenu() : boolean {
-    return this.displayUserMenu_ ? true : false;
+  get displayUserMenu() : number {
+    return this.displayUserMenu_;
   }
 
-  set displayUserMenu(val: boolean) {
+  set displayUserMenu(val: number) {
     this.displayUserMenu_ = val;
   }
 
@@ -165,6 +165,22 @@ export class LeftPanelComponent implements OnInit {
   initLogout() {
     this.chatService.sendDisconnectMessage(this.localUser);
     this.chatService.resetClient();
+  }
+
+  toggleUserMenu() {
+    this.displayUserMenu = this.displayUserMenu <= 0 ? 1 : 0;
+  }
+
+  setUserMenuClassName() {
+    if(this.displayUserMenu == 0) {
+      return 'shrinking user-menu invisible';
+    }
+
+    if(this.displayUserMenu == 1) {
+      return 'enlarge user-menu visible';
+    }
+
+    return 'hidden';
   }
 
 }

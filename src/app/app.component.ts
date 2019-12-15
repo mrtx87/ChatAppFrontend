@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     }
 
     if (e.srcElement.className != "user-app-burger-img") {
-      this.chatService.lefPanelComponent.displayUserMenu = false;
+      this.chatService.lefPanelComponent.displayUserMenu = 0;
     }
   }
 
