@@ -21,6 +21,8 @@ export class ChatPanelComponent implements OnInit {
   displayRoomMenu: boolean = false;
   currentDisplayedRightPanel_: string = "null";
   searchInputField_ = "";
+  isScrollingInChat : boolean = false;
+
 
   get searchInputField() {
     return this.searchInputField_;
@@ -100,7 +102,7 @@ export class ChatPanelComponent implements OnInit {
 
         clearInterval(interval);
       }
-    }, 250); 
+    }, 50); 
   }
 
   toggleRoomMenuDisplay() {

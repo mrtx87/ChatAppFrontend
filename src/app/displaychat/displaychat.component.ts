@@ -46,6 +46,14 @@ export class DisplaychatComponent implements OnInit, OnDestroy {
     return this.allChatMessageInRoom;
   }
 
+  set isScrollingInChat(val: boolean){
+    this.chatService.chatPanelComponent.isScrollingInChat = val;
+  }
+
+  get isScrollingInChat(){
+    return this.chatService.chatPanelComponent.isScrollingInChat;
+  }
+
   constructor(private chatService: ChatService, private constants: Constants, private store: DataStore) {
     this.chatService.registerDisplayChatComponent(this);
   }
@@ -55,6 +63,10 @@ export class DisplaychatComponent implements OnInit, OnDestroy {
   public lastKnowScrollHeight = 0;
 
   listenForMedianDateInView: any;
+
+  timer: number = 0;
+  displayPermaDateTimer: any;
+
   ngOnInit() {
     let that = this;
     let reloadChatMessagesOnScroll = setInterval(function () {
@@ -68,11 +80,34 @@ export class DisplaychatComponent implements OnInit, OnDestroy {
             // nachladen bitte
             that.chatService.sendRequestChatMessagesBatchForSingleRoom(that.displayedChatRoom);
           }
+
+          if(that.isScrollingInChat && that.displayPermaDateTimer) {
+            that.timer = 0;
+          }else{
+            that.isScrollingInChat = true;
+            that.timer = 0;
+            if(that.displayPermaDateTimer) {
+              clearInterval(that.displayPermaDateTimer);
+              that.displayPermaDateTimer = null;
+            }
+
+            that.displayPermaDateTimer = setInterval(function() {
+              that.timer += 10;
+              if(that.timer >= 5000) {
+                that.isScrollingInChat = false;
+                that.timer = 0;
+                clearInterval(that.displayPermaDateTimer)
+                that.displayPermaDateTimer = null;
+                console.log("timer cleared")
+              }
+            }, 10)
+            console.log("timer started")
+          }
+
         });
         clearInterval(reloadChatMessagesOnScroll);
       }
     }, 10);
-
 
     this.listenForMedianDateInView = setInterval(function () {
       if (!that.displayedChatRoom) {

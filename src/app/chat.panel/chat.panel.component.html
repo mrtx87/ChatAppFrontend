@@ -58,7 +58,7 @@
     </div>
 
     <!-- CHAT AREA -->
-    <div class="date-container">
+    <div id="permanent-date" *ngIf="isScrollingInChat" class="date-container">
         <div class="date">
             {{ chatService.displayChatComponent.medianDateInView }}
         </div>
