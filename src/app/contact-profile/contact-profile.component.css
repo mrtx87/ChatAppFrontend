@@ -349,3 +349,34 @@
   position: absolute;
   left: 30px;
 }
+
+.common-group {
+    display: flex;
+    padding: 10px;
+    transition: 0.2s;
+}
+
+.common-group:hover {
+    background: var(--white-grey);
+}
+
+.common-group img  {
+    width: 50px;    
+    align-self: center;
+    border-radius: 25px;
+    background-color: #c1c1c1;
+}
+.common-group span {
+    align-self: center;
+    margin-left: 12px;
+}
+
+.common-groups-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    margin-bottom: 10px;
+    width: 100%;
+    cursor:pointer;
+}
