@@ -6,6 +6,7 @@ import { ValueResolver } from '../value.resolver';
 import { User } from '../Entities/user';
 import { ImageService } from '../image.service';
 import { Contact } from '../Entities/contact';
+import { ChatRoom } from '../Entities/chat.room';
 
 @Component({
   selector: 'app-contact-profile',
@@ -39,8 +40,31 @@ export class ContactProfileComponent implements OnInit {
     this.chatService.registerContactProfileComponent(this);
   }
 
+  get commonGroups(): ChatRoom[] {
+    let rooms: ChatRoom[] = [...this.chatService.availableRooms.values()];
+    let filteredRooms = [];
+    for(let room of rooms){
+      if(this.isInRoom(room.userIds) && room.groupChat){
+        filteredRooms.push(room);
+      }
+    }
 
+    return filteredRooms;
+  }
 
+  isInRoom(userIds: string[]) : boolean{
+    for(let userId of userIds){
+      if(userId == this.currentlyDisplayedContact.id){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  switchDisplayedRoom(cGroup: ChatRoom){
+    this.initSlideOut()
+    this.chatService.displayedChatRoom = cGroup;
+  }
 
   ngOnInit() {
   }
@@ -82,3 +106,4 @@ export class ContactProfileComponent implements OnInit {
   }
 
 }
+

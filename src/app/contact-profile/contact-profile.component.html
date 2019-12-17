@@ -40,6 +40,13 @@
                     <span></span>
             </div>
         </div>
+        <div class="common-groups-container">
+            <div (click)="switchDisplayedRoom(cGroup)" class="common-group" *ngFor="let cGroup of commonGroups">
+                <img src="{{cGroup.iconUrl || 'assets/group-black.svg'}}"> 
+                <span>{{cGroup.title}}</span>
+            </div>
+
+        </div>
 
         <div class="delete-contact-container" >
             <div (click)="removeContact()"> {{ 'remove_user' | tl8 }} </div>
