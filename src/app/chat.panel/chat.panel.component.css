@@ -10,7 +10,7 @@
 
 .rightpanel-burger-menu {
   position: relative;
-  margin: 0 10px 0 0;
+  margin: 0 10px 0 10px;
   padding: 5px;
   border-radius: 23px;
   background: none;
@@ -149,7 +149,8 @@
 .chat-name-member {
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding: 10px;
+  justify-content: center;
 }
 
 .chat-name-member-two {
@@ -165,6 +166,8 @@
 
 .chat-member-container {
   display: flex;
+  opacity: 0.4;
+  font-size: 13px;
 }
 
 .chat-member {
@@ -180,7 +183,7 @@
 
 .menu-img {
   height: 23px;
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: pointer;
   align-self: center;
 }
@@ -247,7 +250,7 @@
   background-size: 20px 20px;
   width: 20px;
   display: block;
-  opacity: 0.5;
+  opacity: 0.4;
   height: 100%;
   transition: 0.3s;
   transform: rotate(0deg);
