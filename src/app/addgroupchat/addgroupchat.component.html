@@ -12,11 +12,10 @@
     <div class="added-users">
         <div class="selected-contacts-container">
             <div class="preview" *ngFor="let selected_contact of selectedContacts">
-                <div class="profilimage"><img style="height:25px; border-radius: 25px;"
-                        src="{{selected_contact.iconUrl || 'assets/default-user-icon.svg'}}"></div>
+                <div class="profilimage"><img src="{{selected_contact.iconUrl || 'assets/default-user-icon.svg'}}"></div>
                 <span>{{selected_contact.name}} </span>
                 <img class="remove" img (click)="removeFromCreatingRoomContacts(selected_contact)"
-                    src="assets/close.svg">
+                    src="assets/close-small.svg">
             </div>
         </div>
 

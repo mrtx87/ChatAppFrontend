@@ -5,8 +5,8 @@
     /* top: 0px; */
     /* left: 0px; */
     /* width: 100%; */
-    height: 90vh;
-    background-color: #F7F7F7;
+    height: 100%;
+    background-color: #fff;
 }
 
 .return-2-user-panel {
@@ -96,7 +96,7 @@
 
 .search-contact-container {
     width: 100%;
-    background-color: #F8F8F8;
+    background-color: #fff;
     transition: 0.2s;
     position: relative;
 }
@@ -176,39 +176,49 @@
 }
 
 .search-contact-inputfield{
-    border: none;
-    border-radius: 7px;
-    width: 85%;
-    height: 70%;
-    margin-top: 8px;
-    margin-left: 7%;
-    padding-left: 25px;
+  border: none;
+  border-radius: 17px;
+  width: calc(100% - 30px);
+  height: 34px;
+  margin: 8px 15px;
+  padding-left: 65px;
+  background: #fff;
+  background-size: 15px;
 }
 
 .add-user-2-group {
-    font-size:30px; 
+    font-size:30px;
     color:white;
 }
 
 .added-users {
-     display:flex; 
-     flex-direction:column; 
+     display:flex;
+     flex-direction:column;
      align-items: center;
 }
 
 
 .preview {
     display: flex;
-    background: #e8e8e8;
+    background: var(--white-grey);
     border-radius: 25px;
     align-items: center;
+    font-size: 13.5px;
+    color: var(--text-black);
+    margin: 5px 5px 0 0;
 }
+
 
 .profilimage {
     display:flex;
     align-items: center;
     justify-content: center;
-    margin: 0 0 0 10px;
+    margin:  0 10px 0 0 ;
+}
+
+.profilimage img {
+  height:26px;
+  border-radius: 13px;
 }
 
 .added-user span {
@@ -217,11 +227,11 @@
 }
 
 .remove {
-    margin: 5px;
+  margin: 0 6px 0 7px;
 }
 
 .remove:hover {
- background-color: darkgrey;
+ background-color: #fff;
  border-radius: 50%;
 }
 
@@ -229,7 +239,6 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: 75px;
-    padding: 0px 5px;
+    padding: 0 15px;
     flex-wrap: wrap;
 }
