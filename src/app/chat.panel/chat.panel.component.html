@@ -48,7 +48,7 @@
                     <div class="room-row sub-room-menu">
                         {{ 'clear_messages' | tl8 }}
                     </div>
-                    <div class="room-row sub-room-menu">
+                    <div (click)="triggerSendRemoveContactFromGroupRoom" class="room-row sub-room-menu">
                         {{ 'leave_group' | tl8 }}
                     </div>
                 </div>

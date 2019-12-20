@@ -105,6 +105,10 @@ export class ChatPanelComponent implements OnInit {
     }, 50); 
   }
 
+  triggerSendRemoveUserFromGroupRoom(){
+    this.chatService.sendRemoveUserFromGroupRoom();
+  }
+
   toggleRoomMenuDisplay() {
     this.displayedChatRoom ? this.displayRoomMenu = !this.displayRoomMenu : this.displayRoomMenu = false;
   }

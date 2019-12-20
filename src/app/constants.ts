@@ -15,7 +15,7 @@ export class Constants {
   public USER_PROFILE: string = "user-profile";
   public APP_COMPONENT: string = "app-component";
   public CONTACTS_COMPONENT: string = "contacts-component";
-
+  public TM_FUNCTION_REMOVE_USER_FROM_GRP: string = "remove-user-from-grp";
 
 
 

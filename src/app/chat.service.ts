@@ -548,8 +548,6 @@ export class ChatService {
     this.displayChatComponent.lastKnowScrollPosition
     this.displayChatComponent.displayChatMessagesContainer.scrollTop += 100;
     this.chatMessagesByRoom.set(roomId, [...responseChatMessages, ...chatMessages]);
-
-
     //console.log(newMessages)
   }
 
@@ -588,6 +586,8 @@ export class ChatService {
   isChatMessageInViewport(chatMessage: ChatMessage): boolean {
     let elem: HTMLElement = document.getElementById(chatMessage.id);
     return elem ? this.isInViewport(elem) : false;
+    }
+    return false;
   };
 
   isInViewport(elem: HTMLElement): boolean {
@@ -738,6 +738,16 @@ export class ChatService {
         /**
          * currently no response handling
          */
+      });
+  }
+
+  public sendRemoveUserFromGroupRoom(){
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+      this.http
+      .get(this.constants.BASE_URL + "/leave-room/roomId/"+this.displayedChatRoom.id+"/userId/"+this.localUser.id)
+      .subscribe(response => {
+        this.appComponent.currentDisplayedLeftPanel = this.constants.DEFAULT_PANEL;
       });
   }
 
