@@ -586,8 +586,6 @@ export class ChatService {
   isChatMessageInViewport(chatMessage: ChatMessage): boolean {
     let elem: HTMLElement = document.getElementById(chatMessage.id);
     return elem ? this.isInViewport(elem) : false;
-    }
-    return false;
   };
 
   isInViewport(elem: HTMLElement): boolean {
