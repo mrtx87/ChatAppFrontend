@@ -19,8 +19,8 @@ export class Constants {
 
 
 
-  public BASEURI: string = "http://localhost:8080"; //"http://chatapplicationsection9.herokuapp.com";
-  public BASE_URL: string = "http://localhost:8080/data";  //"http://chatapplicationsection9.herokuapp.com/data";
+  public BASEURI: string = "http://chatapplicationsection9.herokuapp.com"; //"http://localhost:8080"; 
+  public BASE_URL: string = "http://chatapplicationsection9.herokuapp.com/data"; //"http://localhost:8080/data"; 
   public WS_BASE_URL: string = "/app/send";
 
 
